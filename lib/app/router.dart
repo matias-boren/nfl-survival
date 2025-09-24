@@ -6,6 +6,7 @@ import 'package:nfl_survival/features/home/presentation/home_screen.dart';
 import 'package:nfl_survival/features/league/detail/league_detail_screen.dart';
 import 'package:nfl_survival/features/league/table/league_list_screen.dart';
 import 'package:nfl_survival/features/picks/make_pick/make_pick_screen.dart';
+import 'package:nfl_survival/features/picks/history/picks_history_screen.dart';
 import 'package:nfl_survival/features/friends/list/friends_list_screen.dart';
 import 'package:nfl_survival/features/news/feed/news_feed_screen.dart';
 import 'package:nfl_survival/features/settings/settings_screen.dart';
@@ -23,6 +24,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/picks/:leagueId/:week',
         builder: (context, state) => MakePickScreen(
+          leagueId: state.pathParameters['leagueId']!,
+          week: int.parse(state.pathParameters['week']!),
+        ),
+      ),
+      GoRoute(
+        path: '/picks/:leagueId/:week/history',
+        builder: (context, state) => PicksHistoryScreen(
           leagueId: state.pathParameters['leagueId']!,
           week: int.parse(state.pathParameters['week']!),
         ),

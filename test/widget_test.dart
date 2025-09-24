@@ -14,6 +14,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 void main() {
   testWidgets('App renders home', (WidgetTester tester) async {
     await tester.pumpWidget(const ProviderScope(child: App()));
-    expect(find.text('NFL Survival MVP'), findsOneWidget);
+    expect(find.text('Home'), findsOneWidget);
   });
 }
