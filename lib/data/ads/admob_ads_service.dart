@@ -1,45 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'ads_service.dart';
+import 'package:nfl_survival/data/ads/ads_service.dart';
 
 class AdMobAdsService implements AdsService {
-  BannerAd? _bannerAd;
-  bool _isLoaded = false;
-
   @override
   Future<void> init() async {
-    await MobileAds.instance.initialize();
+    // TODO: Initialize MobileAds when dependency is added
+    await Future.delayed(const Duration(milliseconds: 500));
   }
 
   @override
   Widget banner() {
-    if (!_isLoaded) {
-      _loadBanner();
-      return const SizedBox.shrink();
-    }
-    
+    // TODO: Implement actual AdMob banner ad when dependency is added
     return Container(
+      height: 50,
+      color: Colors.green[100],
       alignment: Alignment.center,
-      width: _bannerAd!.size.width.toDouble(),
-      height: _bannerAd!.size.height.toDouble(),
-      child: AdWidget(ad: _bannerAd!),
+      child: const Text('AdMob Banner (Placeholder)'),
     );
-  }
-
-  void _loadBanner() {
-    _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111', // Test ad unit
-      size: AdSize.banner,
-      request: const AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          _isLoaded = true;
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        },
-      ),
-    );
-    _bannerAd!.load();
   }
 }

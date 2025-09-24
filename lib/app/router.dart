@@ -10,11 +10,13 @@ import 'package:nfl_survival/features/friends/list/friends_list_screen.dart';
 import 'package:nfl_survival/features/news/feed/news_feed_screen.dart';
 import 'package:nfl_survival/features/settings/settings_screen.dart';
 import 'package:nfl_survival/features/paywall/paywall_screen.dart';
+import 'package:nfl_survival/features/auth/sign_in_screen.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     routes: [
       GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
+      GoRoute(path: '/sign-in', builder: (context, state) => const SignInScreen()),
       GoRoute(path: '/leagues', builder: (context, state) => const LeagueListScreen()),
       GoRoute(
         path: '/league/:id',

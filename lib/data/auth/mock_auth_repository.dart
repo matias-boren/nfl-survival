@@ -20,20 +20,8 @@ class MockAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<User> signInAnonymously() async {
-    final user = User(
-      id: 'user_${DateTime.now().millisecondsSinceEpoch}',
-      displayName: 'Guest User',
-      isPremium: false,
-      joinedLeagueIds: [],
-    );
-    final box = await _openUserBox();
-    await box.put(_currentUserKey, user.toJson().toString());
-    return user;
-  }
-
-  @override
   Future<User> signInWithEmail(String email, String password) async {
+    // Mock: Always create a new user for demo purposes
     final user = User(
       id: 'user_${DateTime.now().millisecondsSinceEpoch}',
       displayName: email.split('@').first,
@@ -44,6 +32,42 @@ class MockAuthRepository implements AuthRepository {
     final box = await _openUserBox();
     await box.put(_currentUserKey, user.toJson().toString());
     return user;
+  }
+
+  @override
+  Future<User> signUpWithEmail(String email, String password, String displayName) async {
+    final user = User(
+      id: 'user_${DateTime.now().millisecondsSinceEpoch}',
+      displayName: displayName,
+      email: email,
+      isPremium: false,
+      joinedLeagueIds: [],
+    );
+    final box = await _openUserBox();
+    await box.put(_currentUserKey, user.toJson().toString());
+    return user;
+  }
+
+  @override
+  Future<User> signInWithGoogle() async {
+    // Mock: Create a user with Google-like data
+    final user = User(
+      id: 'google_user_${DateTime.now().millisecondsSinceEpoch}',
+      displayName: 'Google User',
+      email: 'user@gmail.com',
+      avatarUrl: 'https://via.placeholder.com/150',
+      isPremium: false,
+      joinedLeagueIds: [],
+    );
+    final box = await _openUserBox();
+    await box.put(_currentUserKey, user.toJson().toString());
+    return user;
+  }
+
+  @override
+  Future<void> resetPassword(String email) async {
+    // Mock: Simulate password reset
+    await Future.delayed(const Duration(seconds: 1));
   }
 
   @override

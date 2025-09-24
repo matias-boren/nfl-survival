@@ -1,8 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:nfl_survival/app/providers.dart';
-import 'package:nfl_survival/data/models/nfl.dart';
 
 class DeadlineService {
   // Computes the pick deadline for a given week and season

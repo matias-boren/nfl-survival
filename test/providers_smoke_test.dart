@@ -7,15 +7,44 @@ void main() {
     final container = ProviderContainer();
     addTearDown(container.dispose);
 
-    expect(container.read(authRepositoryProvider), isNotNull);
-    expect(container.read(billingRepositoryProvider), isNotNull);
-    expect(container.read(adsServiceProvider), isNotNull);
-    expect(container.read(nflRepositoryProvider), isNotNull);
-    expect(container.read(leagueRepositoryProvider), isNotNull);
-    expect(container.read(picksRepositoryProvider), isNotNull);
+    // Test AuthRepository
+    final authRepo = container.read(authRepositoryProvider);
+    expect(authRepo, isNotNull);
 
-    // read one value from premiumStatusProvider
-    final async = container.read(premiumStatusProvider);
-    expect(async.hasValue || async.isLoading, isTrue);
+    // Test BillingRepository
+    final billingRepo = container.read(billingRepositoryProvider);
+    expect(billingRepo, isNotNull);
+
+    // Test AdsService
+    final adsService = container.read(adsServiceProvider);
+    expect(adsService, isNotNull);
+
+    // Test NflDataRepository
+    final nflDataRepo = container.read(nflDataRepositoryProvider);
+    expect(nflDataRepo, isNotNull);
+
+    // Test LeagueRepository
+    final leagueRepo = container.read(leagueRepositoryProvider);
+    expect(leagueRepo, isNotNull);
+
+    // Test PicksRepository
+    final picksRepo = container.read(picksRepositoryProvider);
+    expect(picksRepo, isNotNull);
+
+    // Test FriendsRepository
+    final friendsRepo = container.read(friendsRepositoryProvider);
+    expect(friendsRepo, isNotNull);
+
+    // Test DeadlineService
+    final deadlineService = container.read(deadlineServiceProvider);
+    expect(deadlineService, isNotNull);
+
+    // Test currentUserProvider (stream)
+    final currentUser = await container.read(currentUserProvider.future);
+    expect(currentUser, isNull); // Initially null for mock
+
+    // Test premiumStatusProvider (stream)
+    final isPremium = await container.read(premiumStatusProvider.future);
+    expect(isPremium, isFalse); // Initially false for mock
   });
 }
