@@ -27,7 +27,12 @@ class LeagueDetailScreen extends ConsumerWidget {
               ElevatedButton(
                 onPressed: () => context.go('/picks/${league.id}/1'),
                 child: const Text('Make Pick (Week 1)'),
-              )
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () => context.go('/picks/${league.id}/1/history'),
+                child: const Text('View Picks History'),
+              ),
             ],
           ),
         ),

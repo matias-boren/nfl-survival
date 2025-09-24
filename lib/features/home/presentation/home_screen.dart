@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../app/providers.dart';
 import '../../../widgets/banner_ad_slot.dart';
+import '../../../widgets/app_scaffold.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -10,9 +11,9 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final premiumAsync = ref.watch(premiumStatusProvider);
     final isPremium = premiumAsync.value ?? false;
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(title: const Text('Home')),
-      body: Column(
+      child: Column(
         children: [
           Expanded(
             child: Center(
