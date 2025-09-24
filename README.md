@@ -1,6 +1,43 @@
-# nfl_survival
+# NFL Survival Pool (Flutter MVP)
 
-A new Flutter project.
+MVP app for an NFL Survival Pool with freemium vs premium, mock data, and swappable repositories.
+
+## Stack
+- Flutter 3.x, Dart 3.x
+- Routing: go_router
+- State: Riverpod (hooks_riverpod)
+- HTTP: Dio + retrofit (stubs)
+- Models: freezed + json_serializable
+- Storage: Hive
+- Env: flutter_dotenv
+- Theming: Material 3
+- Dates/times: intl (UTC store, local render)
+
+## Getting Started
+```bash
+flutter pub get
+dart run build_runner build -d
+flutter run -d macos  # or choose iOS/Android once toolchains are installed
+```
+
+If iOS/Android toolchains are missing, you can develop on macOS/web first.
+
+## Features
+- Sign in anonymously
+- Create/join leagues (mock). Freemium limited to 1 league.
+- Make a weekly pick. Deadline locks 5 minutes before first kickoff.
+- News feed with premium-gated live score widget (mock)
+- Paywall and subscription mock; Ads placeholders for freemium
+
+## Project Structure
+See `lib/` feature-first layout and `lib/data/*` repositories. Models in `lib/data/models`.
+
+## CI
+GitHub Actions runs format, analyze, and tests.
+
+## Notes
+- No NFL trademarks/logos included.
+- Replace mocks with real backends later (Firebase Auth, RevenueCat, AdMob, etc.).
 
 ## Getting Started
 
