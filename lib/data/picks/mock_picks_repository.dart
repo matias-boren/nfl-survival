@@ -1,11 +1,9 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nfl_survival/data/models/pick.dart';
 import 'package:nfl_survival/data/picks/picks_repositories.dart';
-import 'package:uuid/uuid.dart';
 
 class MockPicksRepository implements PicksRepository {
   static const _picksBoxName = 'picksBox';
-  final Uuid _uuid = const Uuid();
 
   Future<Box<String>> _openPicksBox() => Hive.openBox<String>(_picksBoxName);
 
@@ -17,7 +15,7 @@ class MockPicksRepository implements PicksRepository {
     required String teamId,
   }) async {
     final newPick = Pick(
-      id: _uuid.v4(),
+      id: 'pick_${DateTime.now().millisecondsSinceEpoch}',
       leagueId: leagueId,
       userId: userId,
       week: week,
@@ -43,6 +41,10 @@ class MockPicksRepository implements PicksRepository {
   @override
   Future<Pick?> getUserPick(String leagueId, String userId, int week) async {
     final picks = await listPicks(leagueId, week);
-    return picks.firstWhere((pick) => pick.userId == userId, orElse: () => null);
+    try {
+      return picks.firstWhere((pick) => pick.userId == userId);
+    } catch (e) {
+      return null;
+    }
   }
 }

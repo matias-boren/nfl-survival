@@ -1,12 +1,10 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nfl_survival/data/auth/auth_repositories.dart';
 import 'package:nfl_survival/data/models/user.dart';
-import 'package:uuid/uuid.dart';
 
 class MockAuthRepository implements AuthRepository {
   static const _userBoxName = 'userBox';
   static const _currentUserKey = 'currentUser';
-  final Uuid _uuid = const Uuid();
 
   Future<Box<String>> _openUserBox() => Hive.openBox<String>(_userBoxName);
 
@@ -24,7 +22,7 @@ class MockAuthRepository implements AuthRepository {
   @override
   Future<User> signInAnonymously() async {
     final user = User(
-      id: _uuid.v4(),
+      id: 'user_${DateTime.now().millisecondsSinceEpoch}',
       displayName: 'Guest User',
       isPremium: false,
       joinedLeagueIds: [],
@@ -37,7 +35,7 @@ class MockAuthRepository implements AuthRepository {
   @override
   Future<User> signInWithEmail(String email, String password) async {
     final user = User(
-      id: _uuid.v4(),
+      id: 'user_${DateTime.now().millisecondsSinceEpoch}',
       displayName: email.split('@').first,
       email: email,
       isPremium: false,

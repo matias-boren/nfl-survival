@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../app/providers.dart';
-import '../../../data/models/nfl.dart';
-import '../../../core/utils/time.dart';
+import 'package:nfl_survival/app/providers.dart';
+import 'package:nfl_survival/data/models/nfl.dart';
+import 'package:nfl_survival/widgets/app_scaffold.dart';
 
-final weekGamesProvider = FutureProvider.family<List<Game>, ({int season, int week})>((ref, params) async {
-  return ref.read(nflRepositoryProvider).listGames(params.season, params.week);
+final gamesForWeekProvider = FutureProvider.family<List<Game>, int>((ref, week) async {
+  return ref.read(nflDataRepositoryProvider).listGames(2025, week); // Mock season 2025
+});
+
+final pickLockedProvider = FutureProvider.family<bool, int>((ref, week) async {
+  return ref.read(deadlineServiceProvider).isPickLocked(2025, week); // Mock season 2025
 });
 
 class MakePickScreen extends ConsumerWidget {
@@ -15,51 +19,44 @@ class MakePickScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gamesAsync = ref.watch(weekGamesProvider((season: 2025, week: week)));
-    return Scaffold(
-      appBar: AppBar(title: const Text('Make Pick')),
-      body: gamesAsync.when(
+    final gamesAsync = ref.watch(gamesForWeekProvider(week));
+    final pickLockedAsync = ref.watch(pickLockedProvider(week));
+    final currentUserAsync = ref.watch(currentUserProvider);
+
+    return AppScaffold(
+      appBar: AppBar(title: Text('Make Pick - Week $week')),
+      child: gamesAsync.when(
         data: (games) {
-          final starts = games.map((g) => TimeUtils.parseUtc(g.startIso)).toList();
-          return FutureBuilder<DateTime>(
-            future: DeadlineService().weekDeadlineUtc(weekStartTimesUtc: starts),
-            builder: (context, snap) {
-              final deadline = snap.data;
-              final locked = deadline == null ? false : DeadlineService().isLocked(nowUtc: DateTime.now().toUtc(), deadlineUtc: deadline);
-              return Column(
-                children: [
-                  if (deadline != null) Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Deadline: ${TimeUtils.formatLocal(deadline.toIso8601String())}'),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: games.length,
-                      itemBuilder: (context, i) {
-                        final g = games[i];
-                        return ListTile(
-                          title: Text('${g.awayId} @ ${g.homeId}'),
-                          subtitle: Text(TimeUtils.formatLocal(g.startIso)),
-                          trailing: ElevatedButton(
-                            onPressed: locked ? null : () async {
-                              final auth = ref.read(authRepositoryProvider);
-                              final user = await auth.currentUser() ?? await auth.signInAnonymously();
-                              await ref.read(picksRepositoryProvider).submitPick(
-                                leagueId: leagueId,
-                                userId: user.id,
-                                week: week,
-                                teamId: g.homeId,
-                              );
-                              if (!context.mounted) return;
-                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pick submitted')));
-                            },
-                            child: const Text('Pick home'),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+          final isLocked = pickLockedAsync.valueOrNull ?? false;
+          if (isLocked) {
+            return const Center(
+              child: Text('Picks are locked for this week!'),
+            );
+          }
+          return ListView.builder(
+            itemCount: games.length,
+            itemBuilder: (context, index) {
+              final game = games[index];
+              return ListTile(
+                title: Text('${game.homeId} vs ${game.awayId}'),
+                subtitle: Text(ref.read(deadlineServiceProvider).formatUtcToLocal(game.startIso)),
+                trailing: ElevatedButton(
+                  onPressed: () async {
+                    final currentUser = currentUserAsync.value;
+                    if (currentUser != null) {
+                      await ref.read(picksRepositoryProvider).submitPick(
+                            leagueId: leagueId,
+                            userId: currentUser.id,
+                            week: week,
+                            teamId: game.homeId, // Example: always pick home team
+                          );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Pick submitted!')),
+                      );
+                    }
+                  },
+                  child: const Text('Pick Home'),
+                ),
               );
             },
           );
@@ -70,4 +67,3 @@ class MakePickScreen extends ConsumerWidget {
     );
   }
 }
-

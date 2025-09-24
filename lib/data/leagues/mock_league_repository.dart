@@ -3,17 +3,15 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nfl_survival/data/leagues/league_repositories.dart';
 import 'package:nfl_survival/data/models/league.dart';
 import 'package:nfl_survival/data/models/user.dart';
-import 'package:uuid/uuid.dart';
 
 class MockLeagueRepository implements LeagueRepository {
   static const _leagueBoxName = 'leagueBox';
-  final Uuid _uuid = const Uuid();
 
   Future<Box<String>> _openLeagueBox() => Hive.openBox<String>(_leagueBoxName);
 
   @override
   Future<League> createLeague(League draft) async {
-    final newLeague = draft.copyWith(id: _uuid.v4());
+    final newLeague = draft.copyWith(id: 'league_${DateTime.now().millisecondsSinceEpoch}');
     final box = await _openLeagueBox();
     await box.put(newLeague.id, newLeague.toJson().toString());
     return newLeague;
