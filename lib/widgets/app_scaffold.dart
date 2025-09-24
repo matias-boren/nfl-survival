@@ -4,7 +4,14 @@ import 'package:go_router/go_router.dart';
 class AppScaffold extends StatelessWidget {
   final Widget child;
   final PreferredSizeWidget? appBar;
-  const AppScaffold({super.key, required this.child, this.appBar});
+  final FloatingActionButton? floatingActionButton;
+  
+  const AppScaffold({
+    super.key, 
+    required this.child, 
+    this.appBar,
+    this.floatingActionButton,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +20,7 @@ class AppScaffold extends StatelessWidget {
     return Scaffold(
       appBar: appBar,
       body: child,
+      floatingActionButton: floatingActionButton,
       bottomNavigationBar: NavigationBar(
         selectedIndex: _indexForLocation(location),
         onDestinationSelected: (i) => _onTap(i, context),
@@ -50,4 +58,3 @@ void _onTap(int index, BuildContext context) {
       break;
   }
 }
-
