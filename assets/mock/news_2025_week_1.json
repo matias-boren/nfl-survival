@@ -1,0 +1,26 @@
+[
+  {
+    "id": "news_1",
+    "title": "Week 1 Preview: Top Picks for Your Survival Pool",
+    "summary": "Expert analysis of the safest picks for Week 1 of the NFL season.",
+    "content": "With the NFL season kicking off, survival pool participants need to make their first crucial pick. Our experts recommend focusing on home favorites and teams with strong defensive units...",
+    "publishedAt": "2025-09-01T10:00:00Z",
+    "author": "NFL Analysis Team"
+  },
+  {
+    "id": "news_2",
+    "title": "Injury Report: Key Players to Watch",
+    "summary": "Latest injury updates that could impact your survival pool strategy.",
+    "content": "Several key players are questionable for Week 1. Monitor these injury reports closely as they could significantly impact game outcomes...",
+    "publishedAt": "2025-09-02T14:30:00Z",
+    "author": "Injury Report Team"
+  },
+  {
+    "id": "news_3",
+    "title": "Survival Pool Strategy: Week 1 Dos and Don'ts",
+    "summary": "Essential tips for making your first survival pool pick of the season.",
+    "content": "Week 1 presents unique challenges for survival pool participants. Here are the key strategies to maximize your chances of advancing...",
+    "publishedAt": "2025-09-03T09:15:00Z",
+    "author": "Strategy Team"
+  }
+]

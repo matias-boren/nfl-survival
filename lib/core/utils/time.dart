@@ -1,22 +1,26 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-
-class TimeUtils {
-  static DateTime parseUtc(String iso) => DateTime.parse(iso).toUtc();
-  static String formatLocal(String iso) {
-    final dt = parseUtc(iso).toLocal();
-    return DateFormat.yMMMd().add_Hm().format(dt);
-  }
-}
+import 'package:nfl_survival/app/providers.dart';
+import 'package:nfl_survival/data/models/nfl.dart';
 
 class DeadlineService {
-  Future<DateTime> weekDeadlineUtc({required List<DateTime> weekStartTimesUtc}) async {
-    weekStartTimesUtc.sort();
-    final earliest = weekStartTimesUtc.first;
-    return earliest.subtract(const Duration(minutes: 5));
+  // Computes the pick deadline for a given week and season
+  Future<DateTime> getPickDeadline(int season, int week) async {
+    // Mock implementation - in real app, this would fetch from NFL API
+    return DateTime.now().add(const Duration(days: 7));
   }
 
-  bool isLocked({required DateTime nowUtc, required DateTime deadlineUtc}) {
-    return nowUtc.isAfter(deadlineUtc);
+  // Checks if the pick is locked for a given week and season
+  Future<bool> isPickLocked(int season, int week) async {
+    final deadline = await getPickDeadline(season, week);
+    return DateTime.now().toUtc().isAfter(deadline);
+  }
+
+  // Formats a UTC DateTime to local time in a readable format
+  String formatUtcToLocal(String utcIsoString) {
+    final dateTime = DateTime.parse(utcIsoString).toLocal();
+    final formatter = DateFormat('EEE, MMM d, h:mm a', dotenv.env['DEFAULT_LOCALE'] ?? 'en_US');
+    return formatter.format(dateTime);
   }
 }
-
