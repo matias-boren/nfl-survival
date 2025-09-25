@@ -38,7 +38,11 @@ if (process.env.REDIS_URL) {
 app.use(helmet());
 app.use(compression());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: [
+    'https://nfl-survival.netlify.app',
+    'http://localhost:3000',
+    'http://localhost:8080'
+  ],
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
@@ -233,6 +237,9 @@ app.get('/api/live-scores', async (req, res) => {
     const currentWeek = week || espnService.getCurrentWeek();
     const currentSeason = season || 2025;
     
+    console.log(`📊 Live scores request: week=${currentWeek}, season=${currentSeason}`);
+    console.log(`📊 Request from: ${req.get('origin') || 'unknown'}`);
+    
     // Return mock data for now since ESPN API is failing
     console.log(`📊 Returning mock live scores for week ${currentWeek}`);
     const mockScores = [
@@ -247,18 +254,33 @@ app.get('/api/live-scores', async (req, res) => {
         timeRemaining: '0:00',
         isLive: false,
         gameDate: new Date().toISOString()
+      },
+      {
+        gameId: 'mock-2',
+        homeTeam: { abbreviation: 'DAL', name: 'Dallas Cowboys' },
+        awayTeam: { abbreviation: 'PHI', name: 'Philadelphia Eagles' },
+        homeScore: 28,
+        awayScore: 31,
+        status: 'FINAL',
+        quarter: 'F',
+        timeRemaining: '0:00',
+        isLive: false,
+        gameDate: new Date().toISOString()
       }
     ];
     
-    return res.json({
+    const response = {
       scores: mockScores,
       lastUpdate: Date.now(),
       week: currentWeek,
       season: currentSeason,
       source: 'mock'
-    });
+    };
+    
+    console.log(`✅ Sending response with ${mockScores.length} games`);
+    res.json(response);
   } catch (error) {
-    console.error('Error fetching live scores:', error);
+    console.error('❌ Error fetching live scores:', error);
     res.status(500).json({
       error: 'Internal server error',
       message: error.message
