@@ -253,7 +253,7 @@ class HomeScreen extends ConsumerWidget {
                             );
                           }
                           return Column(
-                            children: games.map((game) => _buildGameCard(context, game)).toList(),
+                            children: games.map((game) => _buildGameCard(context, game, isPremium)).toList(),
                           );
                         },
                         loading: () => const Center(child: CircularProgressIndicator()),
@@ -269,7 +269,7 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildGameCard(BuildContext context, Game game) {
+  Widget _buildGameCard(BuildContext context, Game game, bool isPremium) {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
