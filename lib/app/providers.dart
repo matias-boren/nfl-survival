@@ -134,6 +134,7 @@ final liveScoresProvider = StreamProvider<List<LiveScore>>((ref) {
 // Current User Notifier
 class CurrentUserNotifier extends StateNotifier<User?> {
   final AuthRepository _authRepository;
+  bool _isInitialized = false;
   
   CurrentUserNotifier(this._authRepository) : super(null) {
     _init();
@@ -142,8 +143,11 @@ class CurrentUserNotifier extends StateNotifier<User?> {
   void _init() {
     _authRepository.currentUser().listen((user) {
       state = user;
+      _isInitialized = true;
     });
   }
+  
+  bool get isInitialized => _isInitialized;
   
   Future<void> signIn(String email, String password) async {
     final user = await _authRepository.signInWithEmail(email, password);

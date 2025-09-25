@@ -26,10 +26,11 @@ import 'package:nfl_survival/widgets/auth_guard.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/signin',
+    initialLocation: '/loading',
     redirect: (context, state) {
-      final currentUser = ref.read(currentUserProvider);
+      final currentUser = ref.watch(currentUserProvider);
       final isSignInRoute = state.uri.path == '/signin' || state.uri.path == '/sign-in';
+      final isLoadingRoute = state.uri.path == '/loading';
       
       // If user is authenticated and on signin page, redirect to home
       if (currentUser != null && isSignInRoute) {
@@ -37,7 +38,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       }
       
       // If user is not authenticated and not on signin page, redirect to signin
-      if (currentUser == null && !isSignInRoute) {
+      if (currentUser == null && !isSignInRoute && !isLoadingRoute) {
+        return '/signin';
+      }
+      
+      // If user is authenticated and not on loading page, go to home
+      if (currentUser != null && isLoadingRoute) {
+        return '/';
+      }
+      
+      // If user is not authenticated and on loading page, go to signin
+      if (currentUser == null && isLoadingRoute) {
         return '/signin';
       }
       
