@@ -38,14 +38,21 @@ if (process.env.REDIS_URL) {
 app.use(helmet());
 app.use(compression());
 app.use(cors({
-  origin: [
-    'https://nfl-survival.netlify.app',
-    'http://localhost:3000',
-    'http://localhost:8080'
-  ],
-  credentials: true
+  origin: true, // Allow all origins for now
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With']
 }));
 app.use(express.json({ limit: '10mb' }));
+
+// Handle preflight requests
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Origin, X-Requested-With');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.sendStatus(200);
+});
 
 // Rate limiting
 const limiter = rateLimit({
@@ -198,6 +205,13 @@ class ESPNPollingService {
 
 // Initialize ESPN polling service
 const espnService = new ESPNPollingService();
+
+// Add CORS headers to all responses
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
 
 // API Routes
 app.get('/', (req, res) => {
