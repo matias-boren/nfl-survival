@@ -97058,7 +97058,7 @@ return s},
 $S:607}
 A.aMg.prototype={
 $1(a){var s=$.b_9()
-s.d="https://nfl-survival-backend.railway.app/api"
+s.d="https://nfl-survival-production.up.railway.app/api"
 s.f=2025
 s.e=4
 return s},

@@ -5,7 +5,7 @@ class ApiConfig {
   static const bool USE_DIRECT_ESPN = false; // Set to false when using server sync
   
   // Server Configuration (when using server sync)
-  static const String SERVER_BASE_URL = 'https://nfl-survival-backend.railway.app/api';
+  static const String SERVER_BASE_URL = 'https://nfl-survival-production.up.railway.app/api';
   static const String SERVER_LIVE_SCORES_ENDPOINT = '/live-scores';
   
   // ESPN Direct Configuration (when using direct ESPN)
