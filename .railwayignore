@@ -1,0 +1,20 @@
+# Ignore Flutter files
+pubspec.yaml
+pubspec.lock
+lib/
+android/
+ios/
+linux/
+macos/
+windows/
+web/
+test/
+assets/
+.github/
+analysis_options.yaml
+.metadata
+
+# Keep only backend files
+!backend/
+!start.sh
+!railway.toml
