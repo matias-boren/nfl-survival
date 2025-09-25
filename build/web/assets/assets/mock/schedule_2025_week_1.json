@@ -1,0 +1,32 @@
+[
+  {
+    "id": "game_1",
+    "week": 1,
+    "homeId": "KC",
+    "awayId": "BUF",
+    "startIso": "2025-09-05T20:20:00Z",
+    "status": "SCHEDULED",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "game_2", 
+    "week": 1,
+    "homeId": "DAL",
+    "awayId": "PHI",
+    "startIso": "2025-09-07T17:00:00Z",
+    "status": "SCHEDULED",
+    "homeScore": null,
+    "awayScore": null
+  },
+  {
+    "id": "game_3",
+    "week": 1,
+    "homeId": "SF",
+    "awayId": "LAR",
+    "startIso": "2025-09-08T21:15:00Z",
+    "status": "SCHEDULED",
+    "homeScore": null,
+    "awayScore": null
+  }
+]
