@@ -240,45 +240,70 @@ app.get('/api/live-scores', async (req, res) => {
     console.log(`📊 Live scores request: week=${currentWeek}, season=${currentSeason}`);
     console.log(`📊 Request from: ${req.get('origin') || 'unknown'}`);
     
-    // Return mock data for now since ESPN API is failing
-    console.log(`📊 Returning mock live scores for week ${currentWeek}`);
-    const mockScores = [
-      {
-        gameId: 'mock-1',
-        homeTeam: { abbreviation: 'KC', name: 'Kansas City Chiefs' },
-        awayTeam: { abbreviation: 'BUF', name: 'Buffalo Bills' },
-        homeScore: 24,
-        awayScore: 21,
-        status: 'FINAL',
-        quarter: 'F',
-        timeRemaining: '0:00',
-        isLive: false,
-        gameDate: new Date().toISOString()
-      },
-      {
-        gameId: 'mock-2',
-        homeTeam: { abbreviation: 'DAL', name: 'Dallas Cowboys' },
-        awayTeam: { abbreviation: 'PHI', name: 'Philadelphia Eagles' },
-        homeScore: 28,
-        awayScore: 31,
-        status: 'FINAL',
-        quarter: 'F',
-        timeRemaining: '0:00',
-        isLive: false,
-        gameDate: new Date().toISOString()
+    // Try to get from cache first (if Redis is available)
+    const cacheKey = `live-scores:week-${currentWeek}`;
+    let cachedData = null;
+    if (redisClient) {
+      try {
+        cachedData = await redisClient.get(cacheKey);
+      } catch (error) {
+        console.log('Redis cache error:', error.message);
       }
-    ];
+    }
     
-    const response = {
-      scores: mockScores,
-      lastUpdate: Date.now(),
-      week: currentWeek,
-      season: currentSeason,
-      source: 'mock'
-    };
+    if (cachedData) {
+      console.log(`📦 Serving cached live scores for week ${currentWeek}`);
+      const data = JSON.parse(cachedData);
+      return res.json({
+        ...data,
+        cached: true,
+        source: 'cache'
+      });
+    }
     
-    console.log(`✅ Sending response with ${mockScores.length} games`);
-    res.json(response);
+    // If no cache, fetch from ESPN
+    console.log(`🔄 No cache found, fetching from ESPN for week ${currentWeek}`);
+    const response = await axios.get(`${ESPN_API_URL}?week=${currentWeek}&season=${currentSeason}`, {
+      timeout: 10000,
+      headers: {
+        'User-Agent': 'NFL-Survival-App/1.0'
+      }
+    });
+    
+    if (response.status === 200) {
+      const liveScores = espnService.parseESPNData(response.data);
+      
+      // Cache the results (if Redis is available)
+      if (redisClient) {
+        try {
+          await redisClient.setEx(
+            cacheKey,
+            CACHE_DURATION,
+            JSON.stringify({
+              scores: liveScores,
+              lastUpdate: Date.now(),
+              week: currentWeek,
+              season: currentSeason
+            })
+          );
+        } catch (error) {
+          console.log('Redis cache set error:', error.message);
+        }
+      }
+      
+      res.json({
+        scores: liveScores,
+        lastUpdate: Date.now(),
+        week: currentWeek,
+        season: currentSeason,
+        source: 'espn'
+      });
+    } else {
+      res.status(500).json({
+        error: 'Failed to fetch from ESPN API',
+        status: response.status
+      });
+    }
   } catch (error) {
     console.error('❌ Error fetching live scores:', error);
     res.status(500).json({
@@ -307,9 +332,9 @@ try {
     console.log(`🔗 Health check available at: http://0.0.0.0:${PORT}/api/health`);
     console.log(`📊 Redis status: ${redisClient ? 'Connected' : 'Not configured'}`);
     
-    // Start ESPN polling (disabled for now due to API issues)
-    // espnService.startPolling();
-    console.log('ℹ️ ESPN polling disabled - API endpoint returning 500 errors');
+    // Start ESPN polling
+    espnService.startPolling();
+    console.log('✅ ESPN polling enabled - fetching real NFL data');
   });
 } catch (error) {
   console.error('❌ Failed to start server:', error);
