@@ -24,29 +24,12 @@ import 'package:nfl_survival/features/league/join/join_leagues_screen.dart';
 import 'package:nfl_survival/features/picks/league_selection/league_selection_screen.dart';
 import 'package:nfl_survival/widgets/auth_guard.dart';
 
-class GoRouterRefreshStream extends ChangeNotifier {
-  GoRouterRefreshStream(Stream<dynamic> stream) {
-    notifyListeners();
-    _subscription = stream.asBroadcastStream().listen(
-      (dynamic _) => notifyListeners(),
-    );
-  }
-
-  late final StreamSubscription _subscription;
-
-  @override
-  void dispose() {
-    _subscription.cancel();
-    super.dispose();
-  }
-}
-
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: '/signin',
     redirect: (context, state) {
       final currentUser = ref.read(currentUserProvider);
-      final isSignInRoute = state.location == '/signin' || state.location == '/sign-in';
+      final isSignInRoute = state.uri.path == '/signin' || state.uri.path == '/sign-in';
       
       // If user is authenticated and on signin page, redirect to home
       if (currentUser != null && isSignInRoute) {
@@ -61,7 +44,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       // No redirect needed
       return null;
     },
-    refreshListenable: GoRouterRefreshStream(ref.watch(currentUserProvider.stream)),
     routes: [
       GoRoute(
         path: '/loading',
