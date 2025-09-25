@@ -275,9 +275,57 @@ app.get('/api/live-scores', async (req, res) => {
       });
     }
     
-    // For now, return mock data to get the app working
-    // TODO: Fix ESPN API integration later
-    console.log(`📊 Returning mock data for week ${currentWeek} (ESPN integration disabled)`);
+    // Try to fetch from ESPN API with proper headers
+    console.log(`🔄 Attempting to fetch from ESPN API for week ${currentWeek}`);
+    try {
+      const response = await axios.get(`${ESPN_API_URL}?week=${currentWeek}&season=${currentSeason}`, {
+        timeout: 10000,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+          'Accept': 'application/json, text/plain, */*',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Referer': 'https://www.espn.com/',
+          'Origin': 'https://www.espn.com'
+        }
+      });
+      
+      if (response.status === 200) {
+        console.log(`✅ Successfully fetched from ESPN API`);
+        const liveScores = espnService.parseESPNData(response.data);
+        
+        // Cache the results (if Redis is available)
+        if (redisClient) {
+          try {
+            await redisClient.setEx(
+              cacheKey,
+              CACHE_DURATION,
+              JSON.stringify({
+                scores: liveScores,
+                lastUpdate: Date.now(),
+                week: currentWeek,
+                season: currentSeason
+              })
+            );
+          } catch (error) {
+            console.log('Redis cache set error:', error.message);
+          }
+        }
+        
+        return res.json({
+          scores: liveScores,
+          lastUpdate: Date.now(),
+          week: currentWeek,
+          season: currentSeason,
+          source: 'espn'
+        });
+      }
+    } catch (error) {
+      console.log(`⚠️ ESPN API failed: ${error.message}, falling back to mock data`);
+    }
+    
+    // Fallback to mock data
+    console.log(`📊 Returning mock data for week ${currentWeek}`);
     const mockScores = [
       {
         gameId: 'mock-1',

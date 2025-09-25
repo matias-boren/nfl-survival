@@ -98,6 +98,12 @@ final serverSyncServiceProvider = Provider<ServerSyncService>((ref) {
 
 // Real-time live scores stream provider (configurable)
 final liveScoresProvider = StreamProvider<List<LiveScore>>((ref) {
+  // Only load live scores if user is authenticated
+  final currentUser = ref.watch(currentUserProvider);
+  if (currentUser == null) {
+    return Stream.value([]);
+  }
+  
   final currentWeekAsync = ref.watch(currentWeekProvider);
   final currentWeek = currentWeekAsync.valueOrNull ?? 4;
   

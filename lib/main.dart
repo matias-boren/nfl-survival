@@ -32,10 +32,17 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final goRouter = ref.watch(appRouterProvider);
     
-    // Initialize automated result processing
+    // Check for existing session on app start
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Initialize automated result processing
       final processor = ref.read(automatedResultProcessorProvider);
       processor.startProcessing();
+      
+      // Check for existing session
+      final currentUser = ref.read(currentUserProvider);
+      if (currentUser != null) {
+        print('User already signed in: ${currentUser.displayName}');
+      }
     });
     
     return MaterialApp.router(

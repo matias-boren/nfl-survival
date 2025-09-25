@@ -17,11 +17,15 @@ class AppScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final uri = GoRouter.of(context).routeInformationProvider.value.uri;
     final location = uri.toString();
+    
+    // Hide navigation bar on sign-in screen
+    final shouldShowNavigation = !location.contains('/signin') && !location.contains('/sign-in');
+    
     return Scaffold(
       appBar: appBar,
       body: child,
       floatingActionButton: floatingActionButton,
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: shouldShowNavigation ? NavigationBar(
         selectedIndex: _indexForLocation(location),
         onDestinationSelected: (i) => _onTap(i, context),
         destinations: const [
@@ -30,7 +34,7 @@ class AppScaffold extends StatelessWidget {
           NavigationDestination(icon: Icon(Icons.newspaper_outlined), selectedIcon: Icon(Icons.newspaper), label: 'News'),
           NavigationDestination(icon: Icon(Icons.settings_outlined), selectedIcon: Icon(Icons.settings), label: 'Settings'),
         ],
-      ),
+      ) : null,
     );
   }
 
