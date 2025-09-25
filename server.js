@@ -200,14 +200,20 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/health', (req, res) => {
+  console.log('🏥 Health check requested');
   try {
-    res.json({
+    const healthData = {
       status: 'healthy',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
-      port: PORT
-    });
+      port: PORT,
+      memory: process.memoryUsage(),
+      nodeVersion: process.version
+    };
+    console.log('✅ Health check passed:', healthData);
+    res.json(healthData);
   } catch (error) {
+    console.error('❌ Health check failed:', error);
     res.status(500).json({
       status: 'unhealthy',
       error: error.message
@@ -292,14 +298,31 @@ app.get('/api/live-scores', async (req, res) => {
   }
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
-  
-  // Start ESPN polling
-  espnService.startPolling();
+// Global error handler
+process.on('uncaughtException', (error) => {
+  console.error('❌ Uncaught Exception:', error);
+  process.exit(1);
 });
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
+
+// Start the server
+try {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🔗 Health check available at: http://0.0.0.0:${PORT}/api/health`);
+    
+    // Start ESPN polling
+    espnService.startPolling();
+  });
+} catch (error) {
+  console.error('❌ Failed to start server:', error);
+  process.exit(1);
+}
 
 // Graceful shutdown
 process.on('SIGINT', () => {

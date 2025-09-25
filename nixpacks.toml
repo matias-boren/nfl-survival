@@ -5,7 +5,7 @@ nixPkgs = ['nodejs_18', 'npm']
 cmds = ['npm install --only=production']
 
 [phases.build]
-cmds = ['chmod +x start.sh']
+cmds = ['echo "Build completed"']
 
 [phases.start]
-cmd = './start.sh'
+cmd = 'npm start'
