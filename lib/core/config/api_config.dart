@@ -1,8 +1,8 @@
 /// Configuration for API usage patterns
 class ApiConfig {
   // API Usage Modes
-  static const bool USE_SERVER_SYNC = false;  // Set to false to use direct ESPN (for now)
-  static const bool USE_DIRECT_ESPN = true; // Set to true to use direct ESPN
+  static const bool USE_SERVER_SYNC = true;  // Set to true to use server sync (PRODUCTION)
+  static const bool USE_DIRECT_ESPN = false; // Set to false when using server sync
   
   // Server Configuration (when using server sync)
   static const String SERVER_BASE_URL = 'https://nfl-survival-production.up.railway.app/api';

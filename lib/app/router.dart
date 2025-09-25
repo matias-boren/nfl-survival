@@ -24,14 +24,22 @@ import 'package:nfl_survival/features/picks/league_selection/league_selection_sc
 import 'package:nfl_survival/widgets/auth_guard.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
-  final currentUser = ref.watch(currentUserProvider);
-  
   return GoRouter(
-    initialLocation: currentUser != null ? '/' : '/signin',
+    initialLocation: '/signin',
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) {
+          final currentUser = ref.read(currentUserProvider);
+          if (currentUser == null) {
+            // Redirect unauthenticated users to signin
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.go('/signin');
+            });
+            return const SignInScreen();
+          }
+          return const HomeScreen();
+        },
       ),
       GoRoute(
         path: '/signin', 

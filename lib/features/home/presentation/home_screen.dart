@@ -314,10 +314,26 @@ class HomeScreen extends ConsumerWidget {
                     style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
-                if (game.awayScore != null && game.homeScore != null)
+                if (game.awayScore != null && game.homeScore != null && isPremium)
                   Text(
                     '${game.awayScore} - ${game.homeScore}',
                     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                if (!isPremium && (game.awayScore != null || game.homeScore != null))
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.orange.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Text(
+                      'Premium Feature',
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
               ],
             ),

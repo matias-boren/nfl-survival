@@ -206,6 +206,45 @@ class ESPNPollingService {
 // Initialize ESPN polling service
 const espnService = new ESPNPollingService();
 
+// Parse ESPN API data
+function parseESPNData(data) {
+  const scores = [];
+  
+  if (data.events) {
+    for (const event of data.events) {
+      const competition = event.competitions[0];
+      if (competition && competition.competitors) {
+        const homeTeam = competition.competitors.find(c => c.homeAway === 'home');
+        const awayTeam = competition.competitors.find(c => c.homeAway === 'away');
+        
+        if (homeTeam && awayTeam) {
+          scores.push({
+            gameId: event.id,
+            homeTeam: {
+              abbreviation: homeTeam.team.abbreviation,
+              name: homeTeam.team.displayName
+            },
+            awayTeam: {
+              abbreviation: awayTeam.team.abbreviation,
+              name: awayTeam.team.displayName
+            },
+            homeScore: parseInt(homeTeam.score) || 0,
+            awayScore: parseInt(awayTeam.score) || 0,
+            status: event.status.type.name === 'STATUS_FINAL' ? 'FINAL' : 
+                   event.status.type.name === 'STATUS_IN_PROGRESS' ? 'IN_PROGRESS' : 'SCHEDULED',
+            quarter: event.status.period || '1',
+            timeRemaining: event.status.displayClock || '15:00',
+            isLive: event.status.type.name === 'STATUS_IN_PROGRESS',
+            gameDate: event.date
+          });
+        }
+      }
+    }
+  }
+  
+  return scores;
+}
+
 // Add CORS headers to all responses
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
@@ -278,7 +317,7 @@ app.get('/api/live-scores', async (req, res) => {
     // Try to fetch from ESPN API with proper headers
     console.log(`🔄 Attempting to fetch from ESPN API for week ${currentWeek}`);
     try {
-      const response = await axios.get(`${ESPN_API_URL}?week=${currentWeek}&season=${currentSeason}`, {
+      const response = await axios.get(`${ESPN_API_URL}`, {
         timeout: 10000,
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
@@ -292,7 +331,7 @@ app.get('/api/live-scores', async (req, res) => {
       
       if (response.status === 200) {
         console.log(`✅ Successfully fetched from ESPN API`);
-        const liveScores = espnService.parseESPNData(response.data);
+        const liveScores = parseESPNData(response.data);
         
         // Cache the results (if Redis is available)
         if (redisClient) {
