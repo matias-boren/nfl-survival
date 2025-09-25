@@ -14,21 +14,25 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Redis client
+// Redis client (optional)
 let redisClient;
-if (process.env.REDIS_URL) {
-  redisClient = redis.createClient({
-    url: process.env.REDIS_URL
-  });
-} else {
-  redisClient = redis.createClient({
-    host: process.env.REDIS_HOST || 'localhost',
-    port: process.env.REDIS_PORT || 6379
-  });
+try {
+  if (process.env.REDIS_URL) {
+    redisClient = redis.createClient({
+      url: process.env.REDIS_URL
+    });
+  } else {
+    redisClient = redis.createClient({
+      host: process.env.REDIS_HOST || 'localhost',
+      port: process.env.REDIS_PORT || 6379
+    });
+  }
+  redisClient.on('error', (err) => console.log('Redis Client Error', err));
+  redisClient.connect();
+} catch (error) {
+  console.log('Redis not available, running without cache:', error.message);
+  redisClient = null;
 }
-
-redisClient.on('error', (err) => console.log('Redis Client Error', err));
-redisClient.connect();
 
 // Middleware
 app.use(helmet());
@@ -187,15 +191,21 @@ class ESPNPollingService {
 const espnService = new ESPNPollingService();
 
 // API Routes
-app.get('/api/health', async (req, res) => {
+app.get('/', (req, res) => {
+  res.json({
+    message: 'NFL Survival Backend API',
+    status: 'running',
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.get('/api/health', (req, res) => {
   try {
-    const cacheStatus = await redisClient.ping();
     res.json({
       status: 'healthy',
       timestamp: new Date().toISOString(),
-      polling: espnService.isPolling,
-      redis: cacheStatus === 'PONG' ? 'connected' : 'disconnected',
-      uptime: process.uptime()
+      uptime: process.uptime(),
+      port: PORT
     });
   } catch (error) {
     res.status(500).json({
@@ -211,9 +221,16 @@ app.get('/api/live-scores', async (req, res) => {
     const currentWeek = week || espnService.getCurrentWeek();
     const currentSeason = season || 2025;
     
-    // Try to get from cache first
+    // Try to get from cache first (if Redis is available)
     const cacheKey = `live-scores:week-${currentWeek}`;
-    const cachedData = await redisClient.get(cacheKey);
+    let cachedData = null;
+    if (redisClient) {
+      try {
+        cachedData = await redisClient.get(cacheKey);
+      } catch (error) {
+        console.log('Redis cache error:', error.message);
+      }
+    }
     
     if (cachedData) {
       console.log(`📦 Serving cached live scores for week ${currentWeek}`);
@@ -234,17 +251,23 @@ app.get('/api/live-scores', async (req, res) => {
     if (response.status === 200) {
       const liveScores = espnService.parseESPNData(response.data);
       
-      // Cache the results
-      await redisClient.setEx(
-        cacheKey,
-        CACHE_DURATION,
-        JSON.stringify({
-          scores: liveScores,
-          lastUpdate: Date.now(),
-          week: currentWeek,
-          season: currentSeason
-        })
-      );
+      // Cache the results (if Redis is available)
+      if (redisClient) {
+        try {
+          await redisClient.setEx(
+            cacheKey,
+            CACHE_DURATION,
+            JSON.stringify({
+              scores: liveScores,
+              lastUpdate: Date.now(),
+              week: currentWeek,
+              season: currentSeason
+            })
+          );
+        } catch (error) {
+          console.log('Redis cache set error:', error.message);
+        }
+      }
       
       res.json({
         scores: liveScores,
@@ -282,14 +305,18 @@ app.listen(PORT, () => {
 process.on('SIGINT', () => {
   console.log('🛑 Shutting down server...');
   espnService.stopPolling();
-  redisClient.quit();
+  if (redisClient) {
+    redisClient.quit();
+  }
   process.exit(0);
 });
 
 process.on('SIGTERM', () => {
   console.log('🛑 Shutting down server...');
   espnService.stopPolling();
-  redisClient.quit();
+  if (redisClient) {
+    redisClient.quit();
+  }
   process.exit(0);
 });
 
