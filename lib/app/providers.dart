@@ -9,10 +9,12 @@ import 'package:nfl_survival/data/ads/ads_service.dart';
 import 'package:nfl_survival/data/ads/mock_ads_service.dart';
 import 'package:nfl_survival/data/auth/auth_repositories.dart';
 import 'package:nfl_survival/data/auth/mock_auth_repository.dart';
+import 'package:nfl_survival/data/auth/supabase_auth_repository.dart';
 import 'package:nfl_survival/data/billing/billing_repositories.dart';
 import 'package:nfl_survival/data/billing/mock_billing_repository.dart';
 import 'package:nfl_survival/data/leagues/league_repositories.dart';
 import 'package:nfl_survival/data/leagues/mock_league_repository.dart';
+import 'package:nfl_survival/data/leagues/supabase_league_repository.dart';
 import 'package:nfl_survival/data/nfl/mock_nfl_repository.dart';
 import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
 import 'package:nfl_survival/data/nfl/hybrid_nfl_repository.dart';
@@ -36,11 +38,11 @@ import 'package:nfl_survival/features/league/table/league_list_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Repositories
-final authRepositoryProvider = Provider<AuthRepository>((ref) => MockAuthRepository());
+final authRepositoryProvider = Provider<AuthRepository>((ref) => SupabaseAuthRepository());
 final billingRepositoryProvider = Provider<BillingRepository>((ref) => MockBillingRepository());
 final adsServiceProvider = Provider<AdsService>((ref) => MockAdsService());
 final nflRepositoryProvider = Provider<NflRepository>((ref) => HybridNflRepository());
-final leagueRepositoryProvider = Provider<LeagueRepository>((ref) => MockLeagueRepository());
+final leagueRepositoryProvider = Provider<LeagueRepository>((ref) => SupabaseLeagueRepository());
 final picksRepositoryProvider = Provider<PicksRepository>((ref) => MockPicksRepository());
 final newsRepositoryProvider = Provider<NewsRepository>((ref) => MockNewsRepository());
 final scoresRepositoryProvider = Provider<ScoresRepository>((ref) => MockScoresRepository());

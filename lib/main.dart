@@ -30,20 +30,28 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final goRouter = ref.watch(appRouterProvider);
+    final currentUser = ref.watch(currentUserProvider);
     
-    // Check for existing session on app start
+    // Initialize automated result processing
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Initialize automated result processing
       final processor = ref.read(automatedResultProcessorProvider);
       processor.startProcessing();
-      
-      // Check for existing session
-      final currentUser = ref.read(currentUserProvider);
-      if (currentUser != null) {
-        print('User already signed in: ${currentUser.displayName}');
-      }
     });
+    
+    // Show loading while checking authentication
+    if (currentUser == null) {
+      // Check if we're already on signin page to avoid redirect loop
+      final currentPath = GoRouterState.of(context).uri.path;
+      if (currentPath != '/signin' && currentPath != '/sign-in') {
+        return MaterialApp(
+          home: const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          ),
+        );
+      }
+    }
+    
+    final goRouter = ref.watch(appRouterProvider);
     
     return MaterialApp.router(
       title: 'NFL Survival',
