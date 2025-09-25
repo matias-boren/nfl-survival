@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -23,49 +24,62 @@ import 'package:nfl_survival/features/league/join/join_leagues_screen.dart';
 import 'package:nfl_survival/features/picks/league_selection/league_selection_screen.dart';
 import 'package:nfl_survival/widgets/auth_guard.dart';
 
+class GoRouterRefreshStream extends ChangeNotifier {
+  GoRouterRefreshStream(Stream<dynamic> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen(
+      (dynamic _) => notifyListeners(),
+    );
+  }
+
+  late final StreamSubscription _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}
+
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: '/signin',
+    redirect: (context, state) {
+      final currentUser = ref.read(currentUserProvider);
+      final isSignInRoute = state.location == '/signin' || state.location == '/sign-in';
+      
+      // If user is authenticated and on signin page, redirect to home
+      if (currentUser != null && isSignInRoute) {
+        return '/';
+      }
+      
+      // If user is not authenticated and not on signin page, redirect to signin
+      if (currentUser == null && !isSignInRoute) {
+        return '/signin';
+      }
+      
+      // No redirect needed
+      return null;
+    },
+    refreshListenable: GoRouterRefreshStream(ref.watch(currentUserProvider.stream)),
     routes: [
       GoRoute(
+        path: '/loading',
+        builder: (context, state) => const Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        ),
+      ),
+      GoRoute(
         path: '/',
-        builder: (context, state) {
-          final currentUser = ref.read(currentUserProvider);
-          if (currentUser == null) {
-            // Redirect unauthenticated users to signin
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.go('/signin');
-            });
-            return const SignInScreen();
-          }
-          return const HomeScreen();
-        },
+        builder: (context, state) => const HomeScreen(),
       ),
       GoRoute(
         path: '/signin', 
-        builder: (context, state) {
-          final currentUser = ref.read(currentUserProvider);
-          if (currentUser != null) {
-            // Redirect authenticated users to home
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.go('/');
-            });
-          }
-          return const SignInScreen();
-        }
+        builder: (context, state) => const SignInScreen(),
       ),
       GoRoute(
         path: '/sign-in', 
-        builder: (context, state) {
-          final currentUser = ref.read(currentUserProvider);
-          if (currentUser != null) {
-            // Redirect authenticated users to home
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.go('/');
-            });
-          }
-          return const SignInScreen();
-        }
+        builder: (context, state) => const SignInScreen(),
       ),
       GoRoute(
         path: '/leagues', 
