@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$User {
 
- String get id; String get displayName; String? get email; String? get avatarUrl; bool get isPremium; List<String> get joinedLeagueIds;
+ String get id; String get displayName; String? get email; String? get avatarUrl; bool get isPremium; List<String> get joinedLeagueIds; String? get favoriteTeam;
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserCopyWith<User> get copyWith => _$UserCopyWithImpl<User>(this as User, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isPremium, isPremium) || other.isPremium == isPremium)&&const DeepCollectionEquality().equals(other.joinedLeagueIds, joinedLeagueIds));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isPremium, isPremium) || other.isPremium == isPremium)&&const DeepCollectionEquality().equals(other.joinedLeagueIds, joinedLeagueIds)&&(identical(other.favoriteTeam, favoriteTeam) || other.favoriteTeam == favoriteTeam));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,displayName,email,avatarUrl,isPremium,const DeepCollectionEquality().hash(joinedLeagueIds));
+int get hashCode => Object.hash(runtimeType,id,displayName,email,avatarUrl,isPremium,const DeepCollectionEquality().hash(joinedLeagueIds),favoriteTeam);
 
 @override
 String toString() {
-  return 'User(id: $id, displayName: $displayName, email: $email, avatarUrl: $avatarUrl, isPremium: $isPremium, joinedLeagueIds: $joinedLeagueIds)';
+  return 'User(id: $id, displayName: $displayName, email: $email, avatarUrl: $avatarUrl, isPremium: $isPremium, joinedLeagueIds: $joinedLeagueIds, favoriteTeam: $favoriteTeam)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserCopyWith<$Res>  {
   factory $UserCopyWith(User value, $Res Function(User) _then) = _$UserCopyWithImpl;
 @useResult
 $Res call({
- String id, String displayName, String? email, String? avatarUrl, bool isPremium, List<String> joinedLeagueIds
+ String id, String displayName, String? email, String? avatarUrl, bool isPremium, List<String> joinedLeagueIds, String? favoriteTeam
 });
 
 
@@ -65,7 +65,7 @@ class _$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? displayName = null,Object? email = freezed,Object? avatarUrl = freezed,Object? isPremium = null,Object? joinedLeagueIds = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? displayName = null,Object? email = freezed,Object? avatarUrl = freezed,Object? isPremium = null,Object? joinedLeagueIds = null,Object? favoriteTeam = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
@@ -73,7 +73,8 @@ as String,email: freezed == email ? _self.email : email // ignore: cast_nullable
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,isPremium: null == isPremium ? _self.isPremium : isPremium // ignore: cast_nullable_to_non_nullable
 as bool,joinedLeagueIds: null == joinedLeagueIds ? _self.joinedLeagueIds : joinedLeagueIds // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as List<String>,favoriteTeam: freezed == favoriteTeam ? _self.favoriteTeam : favoriteTeam // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -158,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String displayName,  String? email,  String? avatarUrl,  bool isPremium,  List<String> joinedLeagueIds)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String displayName,  String? email,  String? avatarUrl,  bool isPremium,  List<String> joinedLeagueIds,  String? favoriteTeam)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.id,_that.displayName,_that.email,_that.avatarUrl,_that.isPremium,_that.joinedLeagueIds);case _:
+return $default(_that.id,_that.displayName,_that.email,_that.avatarUrl,_that.isPremium,_that.joinedLeagueIds,_that.favoriteTeam);case _:
   return orElse();
 
 }
@@ -179,10 +180,10 @@ return $default(_that.id,_that.displayName,_that.email,_that.avatarUrl,_that.isP
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String displayName,  String? email,  String? avatarUrl,  bool isPremium,  List<String> joinedLeagueIds)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String displayName,  String? email,  String? avatarUrl,  bool isPremium,  List<String> joinedLeagueIds,  String? favoriteTeam)  $default,) {final _that = this;
 switch (_that) {
 case _User():
-return $default(_that.id,_that.displayName,_that.email,_that.avatarUrl,_that.isPremium,_that.joinedLeagueIds);case _:
+return $default(_that.id,_that.displayName,_that.email,_that.avatarUrl,_that.isPremium,_that.joinedLeagueIds,_that.favoriteTeam);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +200,10 @@ return $default(_that.id,_that.displayName,_that.email,_that.avatarUrl,_that.isP
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String displayName,  String? email,  String? avatarUrl,  bool isPremium,  List<String> joinedLeagueIds)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String displayName,  String? email,  String? avatarUrl,  bool isPremium,  List<String> joinedLeagueIds,  String? favoriteTeam)?  $default,) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.id,_that.displayName,_that.email,_that.avatarUrl,_that.isPremium,_that.joinedLeagueIds);case _:
+return $default(_that.id,_that.displayName,_that.email,_that.avatarUrl,_that.isPremium,_that.joinedLeagueIds,_that.favoriteTeam);case _:
   return null;
 
 }
@@ -214,7 +215,7 @@ return $default(_that.id,_that.displayName,_that.email,_that.avatarUrl,_that.isP
 @JsonSerializable()
 
 class _User implements User {
-  const _User({required this.id, required this.displayName, this.email, this.avatarUrl, required this.isPremium, required final  List<String> joinedLeagueIds}): _joinedLeagueIds = joinedLeagueIds;
+  const _User({required this.id, required this.displayName, this.email, this.avatarUrl, required this.isPremium, required final  List<String> joinedLeagueIds, this.favoriteTeam}): _joinedLeagueIds = joinedLeagueIds;
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
 @override final  String id;
@@ -229,6 +230,7 @@ class _User implements User {
   return EqualUnmodifiableListView(_joinedLeagueIds);
 }
 
+@override final  String? favoriteTeam;
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
@@ -243,16 +245,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isPremium, isPremium) || other.isPremium == isPremium)&&const DeepCollectionEquality().equals(other._joinedLeagueIds, _joinedLeagueIds));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isPremium, isPremium) || other.isPremium == isPremium)&&const DeepCollectionEquality().equals(other._joinedLeagueIds, _joinedLeagueIds)&&(identical(other.favoriteTeam, favoriteTeam) || other.favoriteTeam == favoriteTeam));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,displayName,email,avatarUrl,isPremium,const DeepCollectionEquality().hash(_joinedLeagueIds));
+int get hashCode => Object.hash(runtimeType,id,displayName,email,avatarUrl,isPremium,const DeepCollectionEquality().hash(_joinedLeagueIds),favoriteTeam);
 
 @override
 String toString() {
-  return 'User(id: $id, displayName: $displayName, email: $email, avatarUrl: $avatarUrl, isPremium: $isPremium, joinedLeagueIds: $joinedLeagueIds)';
+  return 'User(id: $id, displayName: $displayName, email: $email, avatarUrl: $avatarUrl, isPremium: $isPremium, joinedLeagueIds: $joinedLeagueIds, favoriteTeam: $favoriteTeam)';
 }
 
 
@@ -263,7 +265,7 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) _then) = __$UserCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String displayName, String? email, String? avatarUrl, bool isPremium, List<String> joinedLeagueIds
+ String id, String displayName, String? email, String? avatarUrl, bool isPremium, List<String> joinedLeagueIds, String? favoriteTeam
 });
 
 
@@ -280,7 +282,7 @@ class __$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? displayName = null,Object? email = freezed,Object? avatarUrl = freezed,Object? isPremium = null,Object? joinedLeagueIds = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? displayName = null,Object? email = freezed,Object? avatarUrl = freezed,Object? isPremium = null,Object? joinedLeagueIds = null,Object? favoriteTeam = freezed,}) {
   return _then(_User(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
@@ -288,7 +290,8 @@ as String,email: freezed == email ? _self.email : email // ignore: cast_nullable
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,isPremium: null == isPremium ? _self.isPremium : isPremium // ignore: cast_nullable_to_non_nullable
 as bool,joinedLeagueIds: null == joinedLeagueIds ? _self._joinedLeagueIds : joinedLeagueIds // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as List<String>,favoriteTeam: freezed == favoriteTeam ? _self.favoriteTeam : favoriteTeam // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

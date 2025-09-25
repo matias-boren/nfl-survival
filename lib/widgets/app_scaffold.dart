@@ -5,10 +5,10 @@ class AppScaffold extends StatelessWidget {
   final Widget child;
   final PreferredSizeWidget? appBar;
   final FloatingActionButton? floatingActionButton;
-  
+
   const AppScaffold({
-    super.key, 
-    required this.child, 
+    super.key,
+    required this.child,
     this.appBar,
     this.floatingActionButton,
   });
@@ -33,28 +33,28 @@ class AppScaffold extends StatelessWidget {
       ),
     );
   }
-}
 
-int _indexForLocation(String loc) {
-  if (loc.startsWith('/leagues')) return 1;
-  if (loc.startsWith('/news')) return 2;
-  if (loc.startsWith('/settings')) return 3;
-  return 0;
-}
+  int _indexForLocation(String location) {
+    if (location.startsWith('/leagues') || location.contains('/league/')) return 1;
+    if (location.startsWith('/news')) return 2;
+    if (location.startsWith('/settings')) return 3;
+    return 0; // Home
+  }
 
-void _onTap(int index, BuildContext context) {
-  switch (index) {
-    case 0:
-      context.go('/');
-      break;
-    case 1:
-      context.go('/leagues');
-      break;
-    case 2:
-      context.go('/news');
-      break;
-    case 3:
-      context.go('/settings');
-      break;
+  void _onTap(int index, BuildContext context) {
+    switch (index) {
+      case 0:
+        context.go('/');
+        break;
+      case 1:
+        context.go('/leagues');
+        break;
+      case 2:
+        context.go('/news');
+        break;
+      case 3:
+        context.go('/settings');
+        break;
+    }
   }
 }

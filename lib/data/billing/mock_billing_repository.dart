@@ -26,4 +26,16 @@ class MockBillingRepository implements BillingRepository {
     _premiumStatusController.add(_isPremium);
     return _isPremium;
   }
+
+  // Testing method to toggle premium status
+  void togglePremiumStatus() {
+    _isPremium = !_isPremium;
+    _premiumStatusController.add(_isPremium);
+  }
+
+  // Testing method to set specific premium status
+  void setPremiumStatus(bool isPremium) {
+    _isPremium = isPremium;
+    _premiumStatusController.add(_isPremium);
+  }
 }

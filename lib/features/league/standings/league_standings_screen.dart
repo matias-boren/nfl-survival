@@ -202,8 +202,6 @@ class LeagueStandingsScreen extends ConsumerWidget {
         return Colors.green;
       case PickResult.LOSE:
         return Colors.red;
-      case PickResult.PUSH:
-        return Colors.orange;
       default:
         return Colors.grey;
     }

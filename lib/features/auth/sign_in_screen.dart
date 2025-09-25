@@ -15,15 +15,54 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _displayNameController = TextEditingController();
+  final _favoriteTeamController = TextEditingController();
   bool _isLoading = false;
   bool _isPasswordVisible = false;
   bool _isSignUp = false;
+  String? _selectedFavoriteTeam;
+
+  // NFL Teams list
+  static const List<String> _nflTeams = [
+    'Arizona Cardinals',
+    'Atlanta Falcons',
+    'Baltimore Ravens',
+    'Buffalo Bills',
+    'Carolina Panthers',
+    'Chicago Bears',
+    'Cincinnati Bengals',
+    'Cleveland Browns',
+    'Dallas Cowboys',
+    'Denver Broncos',
+    'Detroit Lions',
+    'Green Bay Packers',
+    'Houston Texans',
+    'Indianapolis Colts',
+    'Jacksonville Jaguars',
+    'Kansas City Chiefs',
+    'Las Vegas Raiders',
+    'Los Angeles Chargers',
+    'Los Angeles Rams',
+    'Miami Dolphins',
+    'Minnesota Vikings',
+    'New England Patriots',
+    'New Orleans Saints',
+    'New York Giants',
+    'New York Jets',
+    'Philadelphia Eagles',
+    'Pittsburgh Steelers',
+    'San Francisco 49ers',
+    'Seattle Seahawks',
+    'Tampa Bay Buccaneers',
+    'Tennessee Titans',
+    'Washington Commanders',
+  ];
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     _displayNameController.dispose();
+    _favoriteTeamController.dispose();
     super.dispose();
   }
 
@@ -34,11 +73,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         title: Text(_isSignUp ? 'Create Account' : 'Sign In'),
         centerTitle: true,
       ),
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(height: 40),
             // App Logo/Title
             Icon(
               Icons.sports_football,
@@ -62,6 +102,16 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               ),
               textAlign: TextAlign.center,
             ),
+            if (_isSignUp) ...[
+              const SizedBox(height: 8),
+              Text(
+                'All fields marked with * are required',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.grey[500],
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
             const SizedBox(height: 48),
 
             // Google Sign In Button
@@ -109,10 +159,42 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               TextField(
                 controller: _displayNameController,
                 decoration: const InputDecoration(
-                  labelText: 'Display Name',
+                  labelText: 'Display Name *',
                   prefixIcon: Icon(Icons.person),
                   border: OutlineInputBorder(),
+                  hintText: 'How others will see your name',
                 ),
+              ),
+              const SizedBox(height: 16),
+            ],
+
+            // Favorite Team Field (only for sign up)
+            if (_isSignUp) ...[
+              DropdownButtonFormField<String>(
+                value: _selectedFavoriteTeam,
+                decoration: const InputDecoration(
+                  labelText: 'Favorite NFL Team *',
+                  prefixIcon: Icon(Icons.sports),
+                  border: OutlineInputBorder(),
+                ),
+                items: _nflTeams.map((team) {
+                  return DropdownMenuItem<String>(
+                    value: team,
+                    child: Text(team),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedFavoriteTeam = value;
+                    _favoriteTeamController.text = value ?? '';
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select your favorite NFL team';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
             ],
@@ -192,6 +274,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 onPressed: _isLoading ? null : _showForgotPasswordDialog,
                 child: const Text('Forgot Password?'),
               ),
+            const SizedBox(height: 40), // Extra padding at bottom
           ],
         ),
       ),
@@ -201,17 +284,15 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   Future<void> _signInWithGoogle() async {
     setState(() => _isLoading = true);
     try {
-      // TODO: Implement Google Sign In with Supabase
-      await Future.delayed(const Duration(seconds: 1)); // Mock delay
+      final user = await ref.read(authRepositoryProvider).signInWithGoogle();
+      ref.read(currentUserProvider.notifier).state = user;
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Google Sign In coming soon!')),
-        );
+        context.go('/');
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text('Google Sign In Error: $e')),
         );
       }
     } finally {
@@ -222,18 +303,81 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   }
 
   Future<void> _handleEmailAuth() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+    // Validate email and password
+    if (_emailController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter email and password')),
+        const SnackBar(
+          content: Text('Please enter your email address'),
+          backgroundColor: Colors.red,
+        ),
       );
       return;
     }
 
-    if (_isSignUp && _displayNameController.text.isEmpty) {
+    if (_passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your display name')),
+        const SnackBar(
+          content: Text('Please enter your password'),
+          backgroundColor: Colors.red,
+        ),
       );
       return;
+    }
+
+    // Validate email format
+    if (!_emailController.text.contains('@') || !_emailController.text.contains('.')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter a valid email address'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // Validate password length
+    if (_passwordController.text.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password must be at least 6 characters long'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // Validate sign-up specific fields
+    if (_isSignUp) {
+      if (_displayNameController.text.trim().isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please enter your display name'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      if (_selectedFavoriteTeam == null || _selectedFavoriteTeam!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please select your favorite NFL team'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      // Validate display name length
+      if (_displayNameController.text.trim().length < 2) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Display name must be at least 2 characters long'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
     }
 
     setState(() => _isLoading = true);
@@ -243,6 +387,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               _emailController.text,
               _passwordController.text,
               _displayNameController.text,
+              _selectedFavoriteTeam ?? '',
             );
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -250,7 +395,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           );
         }
       } else {
-        await ref.read(authRepositoryProvider).signInWithEmail(
+        await ref.read(currentUserProvider.notifier).signIn(
               _emailController.text,
               _passwordController.text,
             );

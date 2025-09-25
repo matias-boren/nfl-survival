@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Team {
 
- String get id; String get name; String get abbr;
+ String get id; String get name; String get abbreviation; String get city; String? get logoUrl; String? get color; String? get alternateColor;
 /// Create a copy of Team
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $TeamCopyWith<Team> get copyWith => _$TeamCopyWithImpl<Team>(this as Team, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Team&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.abbr, abbr) || other.abbr == abbr));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Team&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.abbreviation, abbreviation) || other.abbreviation == abbreviation)&&(identical(other.city, city) || other.city == city)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl)&&(identical(other.color, color) || other.color == color)&&(identical(other.alternateColor, alternateColor) || other.alternateColor == alternateColor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,abbr);
+int get hashCode => Object.hash(runtimeType,id,name,abbreviation,city,logoUrl,color,alternateColor);
 
 @override
 String toString() {
-  return 'Team(id: $id, name: $name, abbr: $abbr)';
+  return 'Team(id: $id, name: $name, abbreviation: $abbreviation, city: $city, logoUrl: $logoUrl, color: $color, alternateColor: $alternateColor)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $TeamCopyWith<$Res>  {
   factory $TeamCopyWith(Team value, $Res Function(Team) _then) = _$TeamCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String abbr
+ String id, String name, String abbreviation, String city, String? logoUrl, String? color, String? alternateColor
 });
 
 
@@ -65,12 +65,16 @@ class _$TeamCopyWithImpl<$Res>
 
 /// Create a copy of Team
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? abbr = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? abbreviation = null,Object? city = null,Object? logoUrl = freezed,Object? color = freezed,Object? alternateColor = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,abbr: null == abbr ? _self.abbr : abbr // ignore: cast_nullable_to_non_nullable
-as String,
+as String,abbreviation: null == abbreviation ? _self.abbreviation : abbreviation // ignore: cast_nullable_to_non_nullable
+as String,city: null == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
+as String,logoUrl: freezed == logoUrl ? _self.logoUrl : logoUrl // ignore: cast_nullable_to_non_nullable
+as String?,color: freezed == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
+as String?,alternateColor: freezed == alternateColor ? _self.alternateColor : alternateColor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -155,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String abbr)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String abbreviation,  String city,  String? logoUrl,  String? color,  String? alternateColor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Team() when $default != null:
-return $default(_that.id,_that.name,_that.abbr);case _:
+return $default(_that.id,_that.name,_that.abbreviation,_that.city,_that.logoUrl,_that.color,_that.alternateColor);case _:
   return orElse();
 
 }
@@ -176,10 +180,10 @@ return $default(_that.id,_that.name,_that.abbr);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String abbr)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String abbreviation,  String city,  String? logoUrl,  String? color,  String? alternateColor)  $default,) {final _that = this;
 switch (_that) {
 case _Team():
-return $default(_that.id,_that.name,_that.abbr);case _:
+return $default(_that.id,_that.name,_that.abbreviation,_that.city,_that.logoUrl,_that.color,_that.alternateColor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +200,10 @@ return $default(_that.id,_that.name,_that.abbr);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String abbr)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String abbreviation,  String city,  String? logoUrl,  String? color,  String? alternateColor)?  $default,) {final _that = this;
 switch (_that) {
 case _Team() when $default != null:
-return $default(_that.id,_that.name,_that.abbr);case _:
+return $default(_that.id,_that.name,_that.abbreviation,_that.city,_that.logoUrl,_that.color,_that.alternateColor);case _:
   return null;
 
 }
@@ -211,12 +215,16 @@ return $default(_that.id,_that.name,_that.abbr);case _:
 @JsonSerializable()
 
 class _Team implements Team {
-  const _Team({required this.id, required this.name, required this.abbr});
+  const _Team({required this.id, required this.name, required this.abbreviation, required this.city, this.logoUrl, this.color, this.alternateColor});
   factory _Team.fromJson(Map<String, dynamic> json) => _$TeamFromJson(json);
 
 @override final  String id;
 @override final  String name;
-@override final  String abbr;
+@override final  String abbreviation;
+@override final  String city;
+@override final  String? logoUrl;
+@override final  String? color;
+@override final  String? alternateColor;
 
 /// Create a copy of Team
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +239,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Team&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.abbr, abbr) || other.abbr == abbr));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Team&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.abbreviation, abbreviation) || other.abbreviation == abbreviation)&&(identical(other.city, city) || other.city == city)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl)&&(identical(other.color, color) || other.color == color)&&(identical(other.alternateColor, alternateColor) || other.alternateColor == alternateColor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,abbr);
+int get hashCode => Object.hash(runtimeType,id,name,abbreviation,city,logoUrl,color,alternateColor);
 
 @override
 String toString() {
-  return 'Team(id: $id, name: $name, abbr: $abbr)';
+  return 'Team(id: $id, name: $name, abbreviation: $abbreviation, city: $city, logoUrl: $logoUrl, color: $color, alternateColor: $alternateColor)';
 }
 
 
@@ -251,7 +259,7 @@ abstract mixin class _$TeamCopyWith<$Res> implements $TeamCopyWith<$Res> {
   factory _$TeamCopyWith(_Team value, $Res Function(_Team) _then) = __$TeamCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String abbr
+ String id, String name, String abbreviation, String city, String? logoUrl, String? color, String? alternateColor
 });
 
 
@@ -268,12 +276,16 @@ class __$TeamCopyWithImpl<$Res>
 
 /// Create a copy of Team
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? abbr = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? abbreviation = null,Object? city = null,Object? logoUrl = freezed,Object? color = freezed,Object? alternateColor = freezed,}) {
   return _then(_Team(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,abbr: null == abbr ? _self.abbr : abbr // ignore: cast_nullable_to_non_nullable
-as String,
+as String,abbreviation: null == abbreviation ? _self.abbreviation : abbreviation // ignore: cast_nullable_to_non_nullable
+as String,city: null == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
+as String,logoUrl: freezed == logoUrl ? _self.logoUrl : logoUrl // ignore: cast_nullable_to_non_nullable
+as String?,color: freezed == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
+as String?,alternateColor: freezed == alternateColor ? _self.alternateColor : alternateColor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -284,7 +296,7 @@ as String,
 /// @nodoc
 mixin _$Game {
 
- String get id; int get week; String get homeId; String get awayId; String get startIso; GameStatus get status; int? get homeScore; int? get awayScore;
+ String get id; Team get homeTeam; Team get awayTeam; int get homeScore; int get awayScore; GameStatus get status; int get quarter; String get timeRemaining; DateTime get date; int get week; int get season;
 /// Create a copy of Game
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -297,16 +309,16 @@ $GameCopyWith<Game> get copyWith => _$GameCopyWithImpl<Game>(this as Game, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Game&&(identical(other.id, id) || other.id == id)&&(identical(other.week, week) || other.week == week)&&(identical(other.homeId, homeId) || other.homeId == homeId)&&(identical(other.awayId, awayId) || other.awayId == awayId)&&(identical(other.startIso, startIso) || other.startIso == startIso)&&(identical(other.status, status) || other.status == status)&&(identical(other.homeScore, homeScore) || other.homeScore == homeScore)&&(identical(other.awayScore, awayScore) || other.awayScore == awayScore));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Game&&(identical(other.id, id) || other.id == id)&&(identical(other.homeTeam, homeTeam) || other.homeTeam == homeTeam)&&(identical(other.awayTeam, awayTeam) || other.awayTeam == awayTeam)&&(identical(other.homeScore, homeScore) || other.homeScore == homeScore)&&(identical(other.awayScore, awayScore) || other.awayScore == awayScore)&&(identical(other.status, status) || other.status == status)&&(identical(other.quarter, quarter) || other.quarter == quarter)&&(identical(other.timeRemaining, timeRemaining) || other.timeRemaining == timeRemaining)&&(identical(other.date, date) || other.date == date)&&(identical(other.week, week) || other.week == week)&&(identical(other.season, season) || other.season == season));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,week,homeId,awayId,startIso,status,homeScore,awayScore);
+int get hashCode => Object.hash(runtimeType,id,homeTeam,awayTeam,homeScore,awayScore,status,quarter,timeRemaining,date,week,season);
 
 @override
 String toString() {
-  return 'Game(id: $id, week: $week, homeId: $homeId, awayId: $awayId, startIso: $startIso, status: $status, homeScore: $homeScore, awayScore: $awayScore)';
+  return 'Game(id: $id, homeTeam: $homeTeam, awayTeam: $awayTeam, homeScore: $homeScore, awayScore: $awayScore, status: $status, quarter: $quarter, timeRemaining: $timeRemaining, date: $date, week: $week, season: $season)';
 }
 
 
@@ -317,11 +329,11 @@ abstract mixin class $GameCopyWith<$Res>  {
   factory $GameCopyWith(Game value, $Res Function(Game) _then) = _$GameCopyWithImpl;
 @useResult
 $Res call({
- String id, int week, String homeId, String awayId, String startIso, GameStatus status, int? homeScore, int? awayScore
+ String id, Team homeTeam, Team awayTeam, int homeScore, int awayScore, GameStatus status, int quarter, String timeRemaining, DateTime date, int week, int season
 });
 
 
-
+$TeamCopyWith<$Res> get homeTeam;$TeamCopyWith<$Res> get awayTeam;
 
 }
 /// @nodoc
@@ -334,20 +346,41 @@ class _$GameCopyWithImpl<$Res>
 
 /// Create a copy of Game
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? week = null,Object? homeId = null,Object? awayId = null,Object? startIso = null,Object? status = null,Object? homeScore = freezed,Object? awayScore = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? homeTeam = null,Object? awayTeam = null,Object? homeScore = null,Object? awayScore = null,Object? status = null,Object? quarter = null,Object? timeRemaining = null,Object? date = null,Object? week = null,Object? season = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,week: null == week ? _self.week : week // ignore: cast_nullable_to_non_nullable
-as int,homeId: null == homeId ? _self.homeId : homeId // ignore: cast_nullable_to_non_nullable
-as String,awayId: null == awayId ? _self.awayId : awayId // ignore: cast_nullable_to_non_nullable
-as String,startIso: null == startIso ? _self.startIso : startIso // ignore: cast_nullable_to_non_nullable
-as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as GameStatus,homeScore: freezed == homeScore ? _self.homeScore : homeScore // ignore: cast_nullable_to_non_nullable
-as int?,awayScore: freezed == awayScore ? _self.awayScore : awayScore // ignore: cast_nullable_to_non_nullable
-as int?,
+as String,homeTeam: null == homeTeam ? _self.homeTeam : homeTeam // ignore: cast_nullable_to_non_nullable
+as Team,awayTeam: null == awayTeam ? _self.awayTeam : awayTeam // ignore: cast_nullable_to_non_nullable
+as Team,homeScore: null == homeScore ? _self.homeScore : homeScore // ignore: cast_nullable_to_non_nullable
+as int,awayScore: null == awayScore ? _self.awayScore : awayScore // ignore: cast_nullable_to_non_nullable
+as int,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as GameStatus,quarter: null == quarter ? _self.quarter : quarter // ignore: cast_nullable_to_non_nullable
+as int,timeRemaining: null == timeRemaining ? _self.timeRemaining : timeRemaining // ignore: cast_nullable_to_non_nullable
+as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as DateTime,week: null == week ? _self.week : week // ignore: cast_nullable_to_non_nullable
+as int,season: null == season ? _self.season : season // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
-
+/// Create a copy of Game
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TeamCopyWith<$Res> get homeTeam {
+  
+  return $TeamCopyWith<$Res>(_self.homeTeam, (value) {
+    return _then(_self.copyWith(homeTeam: value));
+  });
+}/// Create a copy of Game
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TeamCopyWith<$Res> get awayTeam {
+  
+  return $TeamCopyWith<$Res>(_self.awayTeam, (value) {
+    return _then(_self.copyWith(awayTeam: value));
+  });
+}
 }
 
 
@@ -429,10 +462,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int week,  String homeId,  String awayId,  String startIso,  GameStatus status,  int? homeScore,  int? awayScore)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  Team homeTeam,  Team awayTeam,  int homeScore,  int awayScore,  GameStatus status,  int quarter,  String timeRemaining,  DateTime date,  int week,  int season)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Game() when $default != null:
-return $default(_that.id,_that.week,_that.homeId,_that.awayId,_that.startIso,_that.status,_that.homeScore,_that.awayScore);case _:
+return $default(_that.id,_that.homeTeam,_that.awayTeam,_that.homeScore,_that.awayScore,_that.status,_that.quarter,_that.timeRemaining,_that.date,_that.week,_that.season);case _:
   return orElse();
 
 }
@@ -450,10 +483,10 @@ return $default(_that.id,_that.week,_that.homeId,_that.awayId,_that.startIso,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int week,  String homeId,  String awayId,  String startIso,  GameStatus status,  int? homeScore,  int? awayScore)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  Team homeTeam,  Team awayTeam,  int homeScore,  int awayScore,  GameStatus status,  int quarter,  String timeRemaining,  DateTime date,  int week,  int season)  $default,) {final _that = this;
 switch (_that) {
 case _Game():
-return $default(_that.id,_that.week,_that.homeId,_that.awayId,_that.startIso,_that.status,_that.homeScore,_that.awayScore);case _:
+return $default(_that.id,_that.homeTeam,_that.awayTeam,_that.homeScore,_that.awayScore,_that.status,_that.quarter,_that.timeRemaining,_that.date,_that.week,_that.season);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -470,10 +503,10 @@ return $default(_that.id,_that.week,_that.homeId,_that.awayId,_that.startIso,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int week,  String homeId,  String awayId,  String startIso,  GameStatus status,  int? homeScore,  int? awayScore)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  Team homeTeam,  Team awayTeam,  int homeScore,  int awayScore,  GameStatus status,  int quarter,  String timeRemaining,  DateTime date,  int week,  int season)?  $default,) {final _that = this;
 switch (_that) {
 case _Game() when $default != null:
-return $default(_that.id,_that.week,_that.homeId,_that.awayId,_that.startIso,_that.status,_that.homeScore,_that.awayScore);case _:
+return $default(_that.id,_that.homeTeam,_that.awayTeam,_that.homeScore,_that.awayScore,_that.status,_that.quarter,_that.timeRemaining,_that.date,_that.week,_that.season);case _:
   return null;
 
 }
@@ -485,17 +518,20 @@ return $default(_that.id,_that.week,_that.homeId,_that.awayId,_that.startIso,_th
 @JsonSerializable()
 
 class _Game implements Game {
-  const _Game({required this.id, required this.week, required this.homeId, required this.awayId, required this.startIso, required this.status, this.homeScore, this.awayScore});
+  const _Game({required this.id, required this.homeTeam, required this.awayTeam, required this.homeScore, required this.awayScore, required this.status, required this.quarter, required this.timeRemaining, required this.date, required this.week, required this.season});
   factory _Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
 
 @override final  String id;
-@override final  int week;
-@override final  String homeId;
-@override final  String awayId;
-@override final  String startIso;
+@override final  Team homeTeam;
+@override final  Team awayTeam;
+@override final  int homeScore;
+@override final  int awayScore;
 @override final  GameStatus status;
-@override final  int? homeScore;
-@override final  int? awayScore;
+@override final  int quarter;
+@override final  String timeRemaining;
+@override final  DateTime date;
+@override final  int week;
+@override final  int season;
 
 /// Create a copy of Game
 /// with the given fields replaced by the non-null parameter values.
@@ -510,16 +546,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Game&&(identical(other.id, id) || other.id == id)&&(identical(other.week, week) || other.week == week)&&(identical(other.homeId, homeId) || other.homeId == homeId)&&(identical(other.awayId, awayId) || other.awayId == awayId)&&(identical(other.startIso, startIso) || other.startIso == startIso)&&(identical(other.status, status) || other.status == status)&&(identical(other.homeScore, homeScore) || other.homeScore == homeScore)&&(identical(other.awayScore, awayScore) || other.awayScore == awayScore));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Game&&(identical(other.id, id) || other.id == id)&&(identical(other.homeTeam, homeTeam) || other.homeTeam == homeTeam)&&(identical(other.awayTeam, awayTeam) || other.awayTeam == awayTeam)&&(identical(other.homeScore, homeScore) || other.homeScore == homeScore)&&(identical(other.awayScore, awayScore) || other.awayScore == awayScore)&&(identical(other.status, status) || other.status == status)&&(identical(other.quarter, quarter) || other.quarter == quarter)&&(identical(other.timeRemaining, timeRemaining) || other.timeRemaining == timeRemaining)&&(identical(other.date, date) || other.date == date)&&(identical(other.week, week) || other.week == week)&&(identical(other.season, season) || other.season == season));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,week,homeId,awayId,startIso,status,homeScore,awayScore);
+int get hashCode => Object.hash(runtimeType,id,homeTeam,awayTeam,homeScore,awayScore,status,quarter,timeRemaining,date,week,season);
 
 @override
 String toString() {
-  return 'Game(id: $id, week: $week, homeId: $homeId, awayId: $awayId, startIso: $startIso, status: $status, homeScore: $homeScore, awayScore: $awayScore)';
+  return 'Game(id: $id, homeTeam: $homeTeam, awayTeam: $awayTeam, homeScore: $homeScore, awayScore: $awayScore, status: $status, quarter: $quarter, timeRemaining: $timeRemaining, date: $date, week: $week, season: $season)';
 }
 
 
@@ -530,11 +566,11 @@ abstract mixin class _$GameCopyWith<$Res> implements $GameCopyWith<$Res> {
   factory _$GameCopyWith(_Game value, $Res Function(_Game) _then) = __$GameCopyWithImpl;
 @override @useResult
 $Res call({
- String id, int week, String homeId, String awayId, String startIso, GameStatus status, int? homeScore, int? awayScore
+ String id, Team homeTeam, Team awayTeam, int homeScore, int awayScore, GameStatus status, int quarter, String timeRemaining, DateTime date, int week, int season
 });
 
 
-
+@override $TeamCopyWith<$Res> get homeTeam;@override $TeamCopyWith<$Res> get awayTeam;
 
 }
 /// @nodoc
@@ -547,21 +583,368 @@ class __$GameCopyWithImpl<$Res>
 
 /// Create a copy of Game
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? week = null,Object? homeId = null,Object? awayId = null,Object? startIso = null,Object? status = null,Object? homeScore = freezed,Object? awayScore = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? homeTeam = null,Object? awayTeam = null,Object? homeScore = null,Object? awayScore = null,Object? status = null,Object? quarter = null,Object? timeRemaining = null,Object? date = null,Object? week = null,Object? season = null,}) {
   return _then(_Game(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,week: null == week ? _self.week : week // ignore: cast_nullable_to_non_nullable
-as int,homeId: null == homeId ? _self.homeId : homeId // ignore: cast_nullable_to_non_nullable
-as String,awayId: null == awayId ? _self.awayId : awayId // ignore: cast_nullable_to_non_nullable
-as String,startIso: null == startIso ? _self.startIso : startIso // ignore: cast_nullable_to_non_nullable
-as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as GameStatus,homeScore: freezed == homeScore ? _self.homeScore : homeScore // ignore: cast_nullable_to_non_nullable
-as int?,awayScore: freezed == awayScore ? _self.awayScore : awayScore // ignore: cast_nullable_to_non_nullable
-as int?,
+as String,homeTeam: null == homeTeam ? _self.homeTeam : homeTeam // ignore: cast_nullable_to_non_nullable
+as Team,awayTeam: null == awayTeam ? _self.awayTeam : awayTeam // ignore: cast_nullable_to_non_nullable
+as Team,homeScore: null == homeScore ? _self.homeScore : homeScore // ignore: cast_nullable_to_non_nullable
+as int,awayScore: null == awayScore ? _self.awayScore : awayScore // ignore: cast_nullable_to_non_nullable
+as int,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as GameStatus,quarter: null == quarter ? _self.quarter : quarter // ignore: cast_nullable_to_non_nullable
+as int,timeRemaining: null == timeRemaining ? _self.timeRemaining : timeRemaining // ignore: cast_nullable_to_non_nullable
+as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as DateTime,week: null == week ? _self.week : week // ignore: cast_nullable_to_non_nullable
+as int,season: null == season ? _self.season : season // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
+/// Create a copy of Game
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TeamCopyWith<$Res> get homeTeam {
+  
+  return $TeamCopyWith<$Res>(_self.homeTeam, (value) {
+    return _then(_self.copyWith(homeTeam: value));
+  });
+}/// Create a copy of Game
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TeamCopyWith<$Res> get awayTeam {
+  
+  return $TeamCopyWith<$Res>(_self.awayTeam, (value) {
+    return _then(_self.copyWith(awayTeam: value));
+  });
+}
+}
 
+
+/// @nodoc
+mixin _$LiveScore {
+
+ String get gameId; Team get homeTeam; Team get awayTeam; int get homeScore; int get awayScore; String get status; int get quarter; String get timeRemaining; bool get isLive; DateTime? get gameDate;
+/// Create a copy of LiveScore
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$LiveScoreCopyWith<LiveScore> get copyWith => _$LiveScoreCopyWithImpl<LiveScore>(this as LiveScore, _$identity);
+
+  /// Serializes this LiveScore to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LiveScore&&(identical(other.gameId, gameId) || other.gameId == gameId)&&(identical(other.homeTeam, homeTeam) || other.homeTeam == homeTeam)&&(identical(other.awayTeam, awayTeam) || other.awayTeam == awayTeam)&&(identical(other.homeScore, homeScore) || other.homeScore == homeScore)&&(identical(other.awayScore, awayScore) || other.awayScore == awayScore)&&(identical(other.status, status) || other.status == status)&&(identical(other.quarter, quarter) || other.quarter == quarter)&&(identical(other.timeRemaining, timeRemaining) || other.timeRemaining == timeRemaining)&&(identical(other.isLive, isLive) || other.isLive == isLive)&&(identical(other.gameDate, gameDate) || other.gameDate == gameDate));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,gameId,homeTeam,awayTeam,homeScore,awayScore,status,quarter,timeRemaining,isLive,gameDate);
+
+@override
+String toString() {
+  return 'LiveScore(gameId: $gameId, homeTeam: $homeTeam, awayTeam: $awayTeam, homeScore: $homeScore, awayScore: $awayScore, status: $status, quarter: $quarter, timeRemaining: $timeRemaining, isLive: $isLive, gameDate: $gameDate)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $LiveScoreCopyWith<$Res>  {
+  factory $LiveScoreCopyWith(LiveScore value, $Res Function(LiveScore) _then) = _$LiveScoreCopyWithImpl;
+@useResult
+$Res call({
+ String gameId, Team homeTeam, Team awayTeam, int homeScore, int awayScore, String status, int quarter, String timeRemaining, bool isLive, DateTime? gameDate
+});
+
+
+$TeamCopyWith<$Res> get homeTeam;$TeamCopyWith<$Res> get awayTeam;
+
+}
+/// @nodoc
+class _$LiveScoreCopyWithImpl<$Res>
+    implements $LiveScoreCopyWith<$Res> {
+  _$LiveScoreCopyWithImpl(this._self, this._then);
+
+  final LiveScore _self;
+  final $Res Function(LiveScore) _then;
+
+/// Create a copy of LiveScore
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? gameId = null,Object? homeTeam = null,Object? awayTeam = null,Object? homeScore = null,Object? awayScore = null,Object? status = null,Object? quarter = null,Object? timeRemaining = null,Object? isLive = null,Object? gameDate = freezed,}) {
+  return _then(_self.copyWith(
+gameId: null == gameId ? _self.gameId : gameId // ignore: cast_nullable_to_non_nullable
+as String,homeTeam: null == homeTeam ? _self.homeTeam : homeTeam // ignore: cast_nullable_to_non_nullable
+as Team,awayTeam: null == awayTeam ? _self.awayTeam : awayTeam // ignore: cast_nullable_to_non_nullable
+as Team,homeScore: null == homeScore ? _self.homeScore : homeScore // ignore: cast_nullable_to_non_nullable
+as int,awayScore: null == awayScore ? _self.awayScore : awayScore // ignore: cast_nullable_to_non_nullable
+as int,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,quarter: null == quarter ? _self.quarter : quarter // ignore: cast_nullable_to_non_nullable
+as int,timeRemaining: null == timeRemaining ? _self.timeRemaining : timeRemaining // ignore: cast_nullable_to_non_nullable
+as String,isLive: null == isLive ? _self.isLive : isLive // ignore: cast_nullable_to_non_nullable
+as bool,gameDate: freezed == gameDate ? _self.gameDate : gameDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,
+  ));
+}
+/// Create a copy of LiveScore
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TeamCopyWith<$Res> get homeTeam {
+  
+  return $TeamCopyWith<$Res>(_self.homeTeam, (value) {
+    return _then(_self.copyWith(homeTeam: value));
+  });
+}/// Create a copy of LiveScore
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TeamCopyWith<$Res> get awayTeam {
+  
+  return $TeamCopyWith<$Res>(_self.awayTeam, (value) {
+    return _then(_self.copyWith(awayTeam: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [LiveScore].
+extension LiveScorePatterns on LiveScore {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _LiveScore value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _LiveScore() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _LiveScore value)  $default,){
+final _that = this;
+switch (_that) {
+case _LiveScore():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _LiveScore value)?  $default,){
+final _that = this;
+switch (_that) {
+case _LiveScore() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String gameId,  Team homeTeam,  Team awayTeam,  int homeScore,  int awayScore,  String status,  int quarter,  String timeRemaining,  bool isLive,  DateTime? gameDate)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _LiveScore() when $default != null:
+return $default(_that.gameId,_that.homeTeam,_that.awayTeam,_that.homeScore,_that.awayScore,_that.status,_that.quarter,_that.timeRemaining,_that.isLive,_that.gameDate);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String gameId,  Team homeTeam,  Team awayTeam,  int homeScore,  int awayScore,  String status,  int quarter,  String timeRemaining,  bool isLive,  DateTime? gameDate)  $default,) {final _that = this;
+switch (_that) {
+case _LiveScore():
+return $default(_that.gameId,_that.homeTeam,_that.awayTeam,_that.homeScore,_that.awayScore,_that.status,_that.quarter,_that.timeRemaining,_that.isLive,_that.gameDate);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String gameId,  Team homeTeam,  Team awayTeam,  int homeScore,  int awayScore,  String status,  int quarter,  String timeRemaining,  bool isLive,  DateTime? gameDate)?  $default,) {final _that = this;
+switch (_that) {
+case _LiveScore() when $default != null:
+return $default(_that.gameId,_that.homeTeam,_that.awayTeam,_that.homeScore,_that.awayScore,_that.status,_that.quarter,_that.timeRemaining,_that.isLive,_that.gameDate);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _LiveScore implements LiveScore {
+  const _LiveScore({required this.gameId, required this.homeTeam, required this.awayTeam, required this.homeScore, required this.awayScore, required this.status, required this.quarter, required this.timeRemaining, required this.isLive, this.gameDate});
+  factory _LiveScore.fromJson(Map<String, dynamic> json) => _$LiveScoreFromJson(json);
+
+@override final  String gameId;
+@override final  Team homeTeam;
+@override final  Team awayTeam;
+@override final  int homeScore;
+@override final  int awayScore;
+@override final  String status;
+@override final  int quarter;
+@override final  String timeRemaining;
+@override final  bool isLive;
+@override final  DateTime? gameDate;
+
+/// Create a copy of LiveScore
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$LiveScoreCopyWith<_LiveScore> get copyWith => __$LiveScoreCopyWithImpl<_LiveScore>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$LiveScoreToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LiveScore&&(identical(other.gameId, gameId) || other.gameId == gameId)&&(identical(other.homeTeam, homeTeam) || other.homeTeam == homeTeam)&&(identical(other.awayTeam, awayTeam) || other.awayTeam == awayTeam)&&(identical(other.homeScore, homeScore) || other.homeScore == homeScore)&&(identical(other.awayScore, awayScore) || other.awayScore == awayScore)&&(identical(other.status, status) || other.status == status)&&(identical(other.quarter, quarter) || other.quarter == quarter)&&(identical(other.timeRemaining, timeRemaining) || other.timeRemaining == timeRemaining)&&(identical(other.isLive, isLive) || other.isLive == isLive)&&(identical(other.gameDate, gameDate) || other.gameDate == gameDate));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,gameId,homeTeam,awayTeam,homeScore,awayScore,status,quarter,timeRemaining,isLive,gameDate);
+
+@override
+String toString() {
+  return 'LiveScore(gameId: $gameId, homeTeam: $homeTeam, awayTeam: $awayTeam, homeScore: $homeScore, awayScore: $awayScore, status: $status, quarter: $quarter, timeRemaining: $timeRemaining, isLive: $isLive, gameDate: $gameDate)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$LiveScoreCopyWith<$Res> implements $LiveScoreCopyWith<$Res> {
+  factory _$LiveScoreCopyWith(_LiveScore value, $Res Function(_LiveScore) _then) = __$LiveScoreCopyWithImpl;
+@override @useResult
+$Res call({
+ String gameId, Team homeTeam, Team awayTeam, int homeScore, int awayScore, String status, int quarter, String timeRemaining, bool isLive, DateTime? gameDate
+});
+
+
+@override $TeamCopyWith<$Res> get homeTeam;@override $TeamCopyWith<$Res> get awayTeam;
+
+}
+/// @nodoc
+class __$LiveScoreCopyWithImpl<$Res>
+    implements _$LiveScoreCopyWith<$Res> {
+  __$LiveScoreCopyWithImpl(this._self, this._then);
+
+  final _LiveScore _self;
+  final $Res Function(_LiveScore) _then;
+
+/// Create a copy of LiveScore
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? gameId = null,Object? homeTeam = null,Object? awayTeam = null,Object? homeScore = null,Object? awayScore = null,Object? status = null,Object? quarter = null,Object? timeRemaining = null,Object? isLive = null,Object? gameDate = freezed,}) {
+  return _then(_LiveScore(
+gameId: null == gameId ? _self.gameId : gameId // ignore: cast_nullable_to_non_nullable
+as String,homeTeam: null == homeTeam ? _self.homeTeam : homeTeam // ignore: cast_nullable_to_non_nullable
+as Team,awayTeam: null == awayTeam ? _self.awayTeam : awayTeam // ignore: cast_nullable_to_non_nullable
+as Team,homeScore: null == homeScore ? _self.homeScore : homeScore // ignore: cast_nullable_to_non_nullable
+as int,awayScore: null == awayScore ? _self.awayScore : awayScore // ignore: cast_nullable_to_non_nullable
+as int,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,quarter: null == quarter ? _self.quarter : quarter // ignore: cast_nullable_to_non_nullable
+as int,timeRemaining: null == timeRemaining ? _self.timeRemaining : timeRemaining // ignore: cast_nullable_to_non_nullable
+as String,isLive: null == isLive ? _self.isLive : isLive // ignore: cast_nullable_to_non_nullable
+as bool,gameDate: freezed == gameDate ? _self.gameDate : gameDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,
+  ));
+}
+
+/// Create a copy of LiveScore
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TeamCopyWith<$Res> get homeTeam {
+  
+  return $TeamCopyWith<$Res>(_self.homeTeam, (value) {
+    return _then(_self.copyWith(homeTeam: value));
+  });
+}/// Create a copy of LiveScore
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TeamCopyWith<$Res> get awayTeam {
+  
+  return $TeamCopyWith<$Res>(_self.awayTeam, (value) {
+    return _then(_self.copyWith(awayTeam: value));
+  });
+}
 }
 
 // dart format on

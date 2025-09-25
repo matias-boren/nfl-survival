@@ -7,5 +7,9 @@ abstract class LeagueRepository {
   Future<League> getLeague(String leagueId);
   Future<void> joinLeagueByCode(String inviteCode);
   Future<void> joinPublicLeague(String leagueId);
+  Future<void> joinLeague(String leagueId, String userId);
+  Future<void> leaveLeague(String leagueId, String userId);
+  Future<List<League>> getPublicLeagues();
+  Future<List<League>> listLeagues();
   Stream<List<User>> leagueMembers(String leagueId);
 }

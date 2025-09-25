@@ -1,16 +1,16 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:nfl_survival/data/auth/auth_repositories.dart';
-import 'package:nfl_survival/data/models/user.dart';
+import 'package:nfl_survival/data/models/user.dart' as app_user;
 
 class SupabaseAuthRepository implements AuthRepository {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   @override
-  Stream<User?> currentUser() async* {
+  Stream<app_user.User?> currentUser() async* {
     await for (final session in _supabase.auth.onAuthStateChange) {
       if (session.session?.user != null) {
         final supabaseUser = session.session!.user;
-        yield User(
+        yield app_user.User(
           id: supabaseUser.id,
           displayName: supabaseUser.userMetadata?['full_name'] ?? 
                       supabaseUser.email?.split('@').first ?? 'User',
@@ -26,12 +26,7 @@ class SupabaseAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<User> signInAnonymously() async {
-    throw UnsupportedError('Anonymous sign-in is not allowed');
-  }
-
-  @override
-  Future<User> signInWithEmail(String email, String password) async {
+  Future<app_user.User> signInWithEmail(String email, String password) async {
     final response = await _supabase.auth.signInWithPassword(
       email: email,
       password: password,
@@ -44,7 +39,8 @@ class SupabaseAuthRepository implements AuthRepository {
     return _userFromSupabaseUser(response.user!);
   }
 
-  Future<User> signUpWithEmail(String email, String password, String displayName) async {
+  @override
+  Future<app_user.User> signUpWithEmail(String email, String password, String displayName) async {
     final response = await _supabase.auth.signUp(
       email: email,
       password: password,
@@ -60,19 +56,19 @@ class SupabaseAuthRepository implements AuthRepository {
     return _userFromSupabaseUser(response.user!);
   }
 
-  Future<User> signInWithGoogle() async {
+  @override
+  Future<app_user.User> signInWithGoogle() async {
     final response = await _supabase.auth.signInWithOAuth(
-      Provider.google,
+      OAuthProvider.google,
       redirectTo: 'io.supabase.flutterquickstart://login-callback/',
     );
     
-    if (response.user == null) {
-      throw Exception('Google sign in failed');
-    }
-    
-    return _userFromSupabaseUser(response.user!);
+    // For OAuth, we need to wait for the auth state change
+    // This is a simplified implementation
+    throw Exception('Google sign in not yet implemented - please use email/password for now');
   }
 
+  @override
   Future<void> resetPassword(String email) async {
     await _supabase.auth.resetPasswordForEmail(email);
   }
@@ -82,8 +78,8 @@ class SupabaseAuthRepository implements AuthRepository {
     await _supabase.auth.signOut();
   }
 
-  User _userFromSupabaseUser(User supabaseUser) {
-    return User(
+  app_user.User _userFromSupabaseUser(User supabaseUser) {
+    return app_user.User(
       id: supabaseUser.id,
       displayName: supabaseUser.userMetadata?['full_name'] ?? 
                   supabaseUser.email?.split('@').first ?? 'User',

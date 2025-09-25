@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:nfl_survival/app/router.dart';
 import 'package:nfl_survival/app/theme/theme.dart';
+import 'package:nfl_survival/app/providers.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,9 +31,16 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final goRouter = ref.watch(appRouterProvider);
+    
+    // Initialize automated result processing
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final processor = ref.read(automatedResultProcessorProvider);
+      processor.startProcessing();
+    });
+    
     return MaterialApp.router(
       title: 'NFL Survival',
-      theme: AppTheme.lightTheme,
+      theme: buildAppTheme(),
       routerConfig: goRouter,
     );
   }

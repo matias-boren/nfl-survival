@@ -40,22 +40,26 @@ class PremiumGate extends ConsumerWidget {
         // Premium CTA overlay
         Positioned.fill(
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.lock, size: 48, color: Colors.white),
-                SizedBox(height: 16),
-                Text(
-                  'Unlock $featureName with Premium!',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white),
-                ),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () => context.go('/paywall'),
-                  child: const Text('Go Premium'),
-                ),
-              ],
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.lock, size: 48, color: Colors.white),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Unlock $featureName with Premium!',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => context.go('/paywall'),
+                    child: const Text('Go Premium'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

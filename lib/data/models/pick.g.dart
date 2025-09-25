@@ -32,5 +32,4 @@ const _$PickResultEnumMap = {
   PickResult.PENDING: 'PENDING',
   PickResult.WIN: 'WIN',
   PickResult.LOSE: 'LOSE',
-  PickResult.PUSH: 'PUSH',
 };

@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'pick.freezed.dart';
 part 'pick.g.dart';
 
-enum PickResult { PENDING, WIN, LOSE, PUSH }
+enum PickResult { PENDING, WIN, LOSE }
 
 @freezed
 abstract class Pick with _$Pick {
