@@ -15,23 +15,23 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Redis client (optional)
-let redisClient;
-try {
-  if (process.env.REDIS_URL) {
+let redisClient = null;
+
+// Only try to connect to Redis if REDIS_URL is provided
+if (process.env.REDIS_URL) {
+  try {
     redisClient = redis.createClient({
       url: process.env.REDIS_URL
     });
-  } else {
-    redisClient = redis.createClient({
-      host: process.env.REDIS_HOST || 'localhost',
-      port: process.env.REDIS_PORT || 6379
-    });
+    redisClient.on('error', (err) => console.log('Redis Client Error:', err.message));
+    redisClient.on('connect', () => console.log('✅ Redis connected'));
+    redisClient.connect();
+  } catch (error) {
+    console.log('❌ Redis connection failed:', error.message);
+    redisClient = null;
   }
-  redisClient.on('error', (err) => console.log('Redis Client Error', err));
-  redisClient.connect();
-} catch (error) {
-  console.log('Redis not available, running without cache:', error.message);
-  redisClient = null;
+} else {
+  console.log('ℹ️ No Redis URL provided, running without cache');
 }
 
 // Middleware
@@ -208,7 +208,8 @@ app.get('/api/health', (req, res) => {
       uptime: process.uptime(),
       port: PORT,
       memory: process.memoryUsage(),
-      nodeVersion: process.version
+      nodeVersion: process.version,
+      redis: redisClient ? 'available' : 'not configured'
     };
     console.log('✅ Health check passed:', healthData);
     res.json(healthData);
@@ -315,6 +316,7 @@ try {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`🔗 Health check available at: http://0.0.0.0:${PORT}/api/health`);
+    console.log(`📊 Redis status: ${redisClient ? 'Connected' : 'Not configured'}`);
     
     // Start ESPN polling
     espnService.startPolling();
