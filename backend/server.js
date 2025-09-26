@@ -7,6 +7,7 @@ const { body, validationResult } = require('express-validator');
 const cron = require('node-cron');
 const axios = require('axios');
 const redis = require('redis');
+const { generateNews } = require('./ai_news_generator');
 
 // Load environment variables
 require('dotenv').config();
@@ -205,6 +206,25 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
+// API endpoint to manually trigger news generation (admin only)
+app.post('/api/admin/generate-news', async (req, res) => {
+  try {
+    console.log('🤖 Manual news generation triggered');
+    await generateNews();
+    res.json({ 
+      success: true, 
+      message: 'News generation completed',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Error in manual news generation:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: error.message 
+    });
+  }
+});
+
 app.get('/api/live-scores', async (req, res) => {
   try {
     const { week, season } = req.query;
@@ -276,6 +296,16 @@ app.listen(PORT, () => {
   
   // Start ESPN polling
   espnService.startPolling();
+  
+  // Schedule AI news generation every 6 hours
+  cron.schedule('0 */6 * * *', () => {
+    console.log('🤖 Starting scheduled AI news generation...');
+    generateNews()
+      .then(() => console.log('✅ Scheduled news generation completed'))
+      .catch((error) => console.error('❌ Scheduled news generation failed:', error));
+  });
+  
+  console.log('📰 AI news generation scheduled every 6 hours');
 });
 
 // Graceful shutdown
