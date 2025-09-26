@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nfl_survival/app/providers.dart';
 import 'package:nfl_survival/data/billing/mock_billing_repository.dart';
+import 'package:nfl_survival/data/auth/supabase_auth_repository.dart';
 import 'package:nfl_survival/widgets/app_scaffold.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -12,7 +13,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authRepo = ref.read(authRepositoryProvider);
     final billingRepo = ref.read(billingRepositoryProvider);
-    final isPremium = ref.watch(premiumStatusProvider).valueOrNull ?? false;
+    final isPremium = ref.watch(premiumStatusProvider);
     final currentUser = ref.watch(currentUserProvider);
 
     return AppScaffold(
@@ -44,6 +45,21 @@ class SettingsScreen extends ConsumerWidget {
             ),
           ),
           ListTile(
+            title: const Text('Refresh User Data'),
+            subtitle: const Text('Reload premium status and profile data'),
+            leading: const Icon(Icons.refresh),
+            onTap: () async {
+              if (authRepo is SupabaseAuthRepository) {
+                await authRepo.refreshCurrentUser();
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('User data refreshed!')),
+                  );
+                }
+              }
+            },
+          ),
+          ListTile(
             title: const Text('Sign Out'),
             leading: const Icon(Icons.logout),
             onTap: () async {
@@ -67,41 +83,6 @@ class SettingsScreen extends ConsumerWidget {
               onTap: () => context.go('/paywall'),
             ),
           
-          // Testing controls (only in debug mode)
-          const Divider(),
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              'Testing Controls',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-            ),
-          ),
-          ListTile(
-            title: Text(isPremium ? 'Disable Premium (Testing)' : 'Enable Premium (Testing)'),
-            subtitle: const Text('Toggle premium status for testing'),
-            leading: Icon(isPremium ? Icons.star : Icons.star_border),
-            onTap: () {
-              final mockBilling = billingRepo as MockBillingRepository;
-              mockBilling.togglePremiumStatus();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(isPremium ? 'Premium disabled' : 'Premium enabled'),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            title: const Text('Automated Processing'),
-            subtitle: const Text('Monitor automated result processing'),
-            leading: const Icon(Icons.sync),
-            onTap: () => context.go('/admin/automated-processing'),
-          ),
-          ListTile(
-            title: const Text('Live Scores Monitor'),
-            subtitle: const Text('Monitor real-time score updates'),
-            leading: const Icon(Icons.sports_score),
-            onTap: () => context.go('/admin/live-scores'),
-          ),
         ],
       ),
     );

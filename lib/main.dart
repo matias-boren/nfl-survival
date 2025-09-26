@@ -30,28 +30,13 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentUser = ref.watch(currentUserProvider);
+    final goRouter = ref.watch(appRouterProvider);
     
     // Initialize automated result processing
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final processor = ref.read(automatedResultProcessorProvider);
       processor.startProcessing();
     });
-    
-    // Show loading while checking authentication
-    if (currentUser == null) {
-      // Check if we're already on signin page to avoid redirect loop
-      final currentPath = GoRouterState.of(context).uri.path;
-      if (currentPath != '/signin' && currentPath != '/sign-in') {
-        return MaterialApp(
-          home: const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          ),
-        );
-      }
-    }
-    
-    final goRouter = ref.watch(appRouterProvider);
     
     return MaterialApp.router(
       title: 'NFL Survival',

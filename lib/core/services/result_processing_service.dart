@@ -4,6 +4,7 @@ import 'package:nfl_survival/data/models/nfl.dart';
 import 'package:nfl_survival/data/picks/picks_repositories.dart';
 import 'package:nfl_survival/data/leagues/league_repositories.dart';
 import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
+import 'package:nfl_survival/core/services/points_calculation_service.dart';
 
 class ResultProcessingService {
   final PicksRepository _picksRepository;
@@ -82,6 +83,32 @@ class ResultProcessingService {
         result: processedPick.pickResult,
       );
     }
+
+    // Calculate and update points for the league
+    // For now, we'll calculate points for each individual game result
+    Map<String, int> updatedPoints = Map.from(league.memberPoints);
+    
+    for (final gameResult in gameResults.values) {
+      final gamePicks = picks.where((pick) => 
+        pick.teamId == gameResult.homeTeam || pick.teamId == gameResult.awayTeam
+      ).toList();
+      
+      if (gamePicks.isNotEmpty) {
+        final gamePoints = PointsCalculationService.updateLeaguePoints(
+          currentPoints: updatedPoints,
+          picks: gamePicks,
+          homeScore: gameResult.homeScore,
+          awayScore: gameResult.awayScore,
+          homeTeam: gameResult.homeTeam,
+          awayTeam: gameResult.awayTeam,
+        );
+        updatedPoints = gamePoints;
+      }
+    }
+
+    // Update league with new points
+    final updatedLeague = league.copyWith(memberPoints: updatedPoints);
+    await _leagueRepository.updateLeague(updatedLeague);
 
     return ResultProcessingSummary(
       leagueId: leagueId,

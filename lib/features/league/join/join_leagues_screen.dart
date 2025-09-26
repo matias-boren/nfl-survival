@@ -83,10 +83,9 @@ class JoinLeaguesScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Owner: ${league.ownerId.length > 8 ? '${league.ownerId.substring(0, 8)}...' : league.ownerId}'),
-                      Text('Members: ${league.memberIds.length}'),
+                      Text('Season: ${league.season}'),
                       Text('Max Losses: ${league.settings.maxLosses}'),
-                      if (league.settings.maxTeams != null)
-                        Text('Max Teams: ${league.settings.maxTeams}'),
+                      Text('Tiebreaker: Points For'),
                     ],
                   ),
                   trailing: isAlreadyJoined
@@ -129,7 +128,7 @@ class JoinLeaguesScreen extends ConsumerWidget {
     if (currentUser == null) return;
 
     // Check freemium limits
-    final isPremium = ref.read(premiumStatusProvider).valueOrNull ?? false;
+    final isPremium = ref.read(premiumStatusProvider);
     if (!isPremium && currentUser.joinedLeagueIds.length >= 1) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

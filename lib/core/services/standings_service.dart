@@ -2,6 +2,7 @@ import 'package:nfl_survival/data/models/pick.dart';
 import 'package:nfl_survival/data/models/league.dart';
 import 'package:nfl_survival/data/picks/picks_repositories.dart';
 import 'package:nfl_survival/data/users/user_repositories.dart';
+import 'package:nfl_survival/core/services/points_calculation_service.dart';
 
 class StandingsService {
   final PicksRepository _picksRepository;
@@ -54,8 +55,8 @@ class StandingsService {
       }
     }
     
-    // Sort standings based on league tiebreaker rules
-    _sortStandings(standings, league.settings.tiebreaker);
+    // Sort standings based on league rules (points-based tiebreaker)
+    _sortStandings(standings, league);
     
     return standings;
   }
@@ -99,6 +100,9 @@ class StandingsService {
       picks: picks,
     );
     
+    // Get user's points from league
+    final points = league.memberPoints[userId] ?? 0;
+
     return LeagueStanding(
       userId: userId,
       displayName: displayName,
@@ -110,6 +114,7 @@ class StandingsService {
       isEliminated: isEliminated,
       currentStreak: _calculateCurrentStreak(picks),
       longestStreak: _calculateLongestStreak(picks),
+      points: points,
     );
   }
 
@@ -177,7 +182,7 @@ class StandingsService {
     return longestStreak;
   }
 
-  void _sortStandings(List<LeagueStanding> standings, Tiebreaker tiebreaker) {
+  void _sortStandings(List<LeagueStanding> standings, League league) {
     standings.sort((a, b) {
       // First, sort by elimination status (non-eliminated first)
       if (a.isEliminated != b.isEliminated) {
@@ -196,30 +201,19 @@ class StandingsService {
         return bWinPercentage.compareTo(aWinPercentage);
       }
       
-      // Apply tiebreaker rules
-      switch (tiebreaker) {
-        case Tiebreaker.LAST_LONGEST_STREAK:
-          if (a.longestStreak != b.longestStreak) {
-            return b.longestStreak.compareTo(a.longestStreak);
-          }
-          break;
-        case Tiebreaker.MOST_REMAINING_TEAMS:
-          // This would require knowing total available teams
-          // For now, just use longest streak as fallback
-          if (a.longestStreak != b.longestStreak) {
-            return b.longestStreak.compareTo(a.longestStreak);
-          }
-          break;
-        case Tiebreaker.TOTAL_MARGIN:
-          // This would require game margin data
-          // For now, just use longest streak as fallback
-          if (a.longestStreak != b.longestStreak) {
-            return b.longestStreak.compareTo(a.longestStreak);
-          }
-          break;
+      // Points-based tiebreaker (new system)
+      final aPoints = league.memberPoints[a.userId] ?? 0;
+      final bPoints = league.memberPoints[b.userId] ?? 0;
+      if (aPoints != bPoints) {
+        return bPoints.compareTo(aPoints);
       }
       
-      // Final tiebreaker: alphabetical by display name
+      // Final tiebreaker: longest streak
+      if (a.longestStreak != b.longestStreak) {
+        return b.longestStreak.compareTo(a.longestStreak);
+      }
+      
+      // Ultimate tiebreaker: alphabetical by display name
       return a.displayName.compareTo(b.displayName);
     });
   }
@@ -244,6 +238,7 @@ class LeagueStanding {
   final bool isEliminated;
   final int currentStreak;
   final int longestStreak;
+  final int points;
 
   LeagueStanding({
     required this.userId,
@@ -256,6 +251,7 @@ class LeagueStanding {
     required this.isEliminated,
     required this.currentStreak,
     required this.longestStreak,
+    required this.points,
   });
 
   int get totalPicks => wins + losses;

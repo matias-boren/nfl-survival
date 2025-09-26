@@ -16,9 +16,6 @@ class MockLeagueRepository implements LeagueRepository {
         maxLosses: 3,
         allowTeamReuse: false,
         autoEliminateOnNoPick: true,
-        minTeams: 4,
-        maxTeams: 20,
-        tiebreaker: Tiebreaker.LAST_LONGEST_STREAK,
       ),
       season: 2025,
       createdAtIso: '2025-01-01T00:00:00Z',
@@ -33,9 +30,6 @@ class MockLeagueRepository implements LeagueRepository {
         maxLosses: 2,
         allowTeamReuse: true,
         autoEliminateOnNoPick: false,
-        minTeams: 6,
-        maxTeams: 50,
-        tiebreaker: Tiebreaker.MOST_REMAINING_TEAMS,
       ),
       season: 2025,
       createdAtIso: '2025-01-02T00:00:00Z',
@@ -50,9 +44,6 @@ class MockLeagueRepository implements LeagueRepository {
         maxLosses: 1,
         allowTeamReuse: false,
         autoEliminateOnNoPick: true,
-        minTeams: 8,
-        maxTeams: 30,
-        tiebreaker: Tiebreaker.TOTAL_MARGIN,
       ),
       season: 2025,
       createdAtIso: '2025-01-03T00:00:00Z',
@@ -67,9 +58,6 @@ class MockLeagueRepository implements LeagueRepository {
         maxLosses: 4,
         allowTeamReuse: true,
         autoEliminateOnNoPick: false,
-        minTeams: 2,
-        maxTeams: 100,
-        tiebreaker: Tiebreaker.LAST_LONGEST_STREAK,
       ),
       season: 2025,
       createdAtIso: '2025-01-04T00:00:00Z',
@@ -84,9 +72,6 @@ class MockLeagueRepository implements LeagueRepository {
         maxLosses: 2,
         allowTeamReuse: false,
         autoEliminateOnNoPick: true,
-        minTeams: 10,
-        maxTeams: 25,
-        tiebreaker: Tiebreaker.MOST_REMAINING_TEAMS,
       ),
       season: 2025,
       createdAtIso: '2025-01-05T00:00:00Z',
@@ -192,5 +177,24 @@ class MockLeagueRepository implements LeagueRepository {
   Stream<List<User>> leagueMembers(String leagueId) async* {
     // Mock implementation - return empty list for now
     yield [];
+  }
+
+  @override
+  Future<void> updateLeague(League league) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    
+    final index = _leagues.indexWhere((l) => l.id == league.id);
+    if (index != -1) {
+      _leagues[index] = league;
+    } else {
+      throw Exception('League not found');
+    }
+  }
+
+  @override
+  Future<void> deleteLeague(String leagueId) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    
+    _leagues.removeWhere((league) => league.id == leagueId);
   }
 }

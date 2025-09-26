@@ -6,7 +6,7 @@ import 'package:nfl_survival/widgets/app_scaffold.dart';
 import 'package:nfl_survival/widgets/banner_ad_slot.dart';
 
 final friendsListProvider = FutureProvider<List<User>>((ref) async {
-  final currentUser = await ref.watch(currentUserProvider.future);
+  final currentUser = ref.watch(currentUserProvider);
   if (currentUser == null) return [];
   return ref.read(friendsRepositoryProvider).listFriends(currentUser.id);
 });
@@ -17,7 +17,7 @@ class FriendsListScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final friendsAsync = ref.watch(friendsListProvider);
-    final isPremium = ref.watch(premiumStatusProvider).valueOrNull ?? false;
+    final isPremium = ref.watch(premiumStatusProvider);
 
     return AppScaffold(
       appBar: AppBar(
@@ -53,10 +53,12 @@ class FriendsListScreen extends ConsumerWidget {
                   );
                 }
                 return ListView.builder(
+                  itemExtent: 72.0, // Fixed height for friend list items
                   itemCount: friends.length,
                   itemBuilder: (context, index) {
                     final friend = friends[index];
                     return ListTile(
+                      key: ValueKey(friend.id), // Stable key for friends
                       leading: CircleAvatar(
                         child: Text(friend.displayName[0].toUpperCase()),
                       ),

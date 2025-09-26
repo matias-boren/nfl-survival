@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LeagueSettings {
 
- int get maxLosses; bool get allowTeamReuse; bool get autoEliminateOnNoPick; int get minTeams; int? get maxTeams; Tiebreaker get tiebreaker;
+ int get maxLosses; bool get allowTeamReuse; bool get autoEliminateOnNoPick;
 /// Create a copy of LeagueSettings
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $LeagueSettingsCopyWith<LeagueSettings> get copyWith => _$LeagueSettingsCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LeagueSettings&&(identical(other.maxLosses, maxLosses) || other.maxLosses == maxLosses)&&(identical(other.allowTeamReuse, allowTeamReuse) || other.allowTeamReuse == allowTeamReuse)&&(identical(other.autoEliminateOnNoPick, autoEliminateOnNoPick) || other.autoEliminateOnNoPick == autoEliminateOnNoPick)&&(identical(other.minTeams, minTeams) || other.minTeams == minTeams)&&(identical(other.maxTeams, maxTeams) || other.maxTeams == maxTeams)&&(identical(other.tiebreaker, tiebreaker) || other.tiebreaker == tiebreaker));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LeagueSettings&&(identical(other.maxLosses, maxLosses) || other.maxLosses == maxLosses)&&(identical(other.allowTeamReuse, allowTeamReuse) || other.allowTeamReuse == allowTeamReuse)&&(identical(other.autoEliminateOnNoPick, autoEliminateOnNoPick) || other.autoEliminateOnNoPick == autoEliminateOnNoPick));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,maxLosses,allowTeamReuse,autoEliminateOnNoPick,minTeams,maxTeams,tiebreaker);
+int get hashCode => Object.hash(runtimeType,maxLosses,allowTeamReuse,autoEliminateOnNoPick);
 
 @override
 String toString() {
-  return 'LeagueSettings(maxLosses: $maxLosses, allowTeamReuse: $allowTeamReuse, autoEliminateOnNoPick: $autoEliminateOnNoPick, minTeams: $minTeams, maxTeams: $maxTeams, tiebreaker: $tiebreaker)';
+  return 'LeagueSettings(maxLosses: $maxLosses, allowTeamReuse: $allowTeamReuse, autoEliminateOnNoPick: $autoEliminateOnNoPick)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $LeagueSettingsCopyWith<$Res>  {
   factory $LeagueSettingsCopyWith(LeagueSettings value, $Res Function(LeagueSettings) _then) = _$LeagueSettingsCopyWithImpl;
 @useResult
 $Res call({
- int maxLosses, bool allowTeamReuse, bool autoEliminateOnNoPick, int minTeams, int? maxTeams, Tiebreaker tiebreaker
+ int maxLosses, bool allowTeamReuse, bool autoEliminateOnNoPick
 });
 
 
@@ -65,15 +65,12 @@ class _$LeagueSettingsCopyWithImpl<$Res>
 
 /// Create a copy of LeagueSettings
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? maxLosses = null,Object? allowTeamReuse = null,Object? autoEliminateOnNoPick = null,Object? minTeams = null,Object? maxTeams = freezed,Object? tiebreaker = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? maxLosses = null,Object? allowTeamReuse = null,Object? autoEliminateOnNoPick = null,}) {
   return _then(_self.copyWith(
 maxLosses: null == maxLosses ? _self.maxLosses : maxLosses // ignore: cast_nullable_to_non_nullable
 as int,allowTeamReuse: null == allowTeamReuse ? _self.allowTeamReuse : allowTeamReuse // ignore: cast_nullable_to_non_nullable
 as bool,autoEliminateOnNoPick: null == autoEliminateOnNoPick ? _self.autoEliminateOnNoPick : autoEliminateOnNoPick // ignore: cast_nullable_to_non_nullable
-as bool,minTeams: null == minTeams ? _self.minTeams : minTeams // ignore: cast_nullable_to_non_nullable
-as int,maxTeams: freezed == maxTeams ? _self.maxTeams : maxTeams // ignore: cast_nullable_to_non_nullable
-as int?,tiebreaker: null == tiebreaker ? _self.tiebreaker : tiebreaker // ignore: cast_nullable_to_non_nullable
-as Tiebreaker,
+as bool,
   ));
 }
 
@@ -158,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int maxLosses,  bool allowTeamReuse,  bool autoEliminateOnNoPick,  int minTeams,  int? maxTeams,  Tiebreaker tiebreaker)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int maxLosses,  bool allowTeamReuse,  bool autoEliminateOnNoPick)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LeagueSettings() when $default != null:
-return $default(_that.maxLosses,_that.allowTeamReuse,_that.autoEliminateOnNoPick,_that.minTeams,_that.maxTeams,_that.tiebreaker);case _:
+return $default(_that.maxLosses,_that.allowTeamReuse,_that.autoEliminateOnNoPick);case _:
   return orElse();
 
 }
@@ -179,10 +176,10 @@ return $default(_that.maxLosses,_that.allowTeamReuse,_that.autoEliminateOnNoPick
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int maxLosses,  bool allowTeamReuse,  bool autoEliminateOnNoPick,  int minTeams,  int? maxTeams,  Tiebreaker tiebreaker)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int maxLosses,  bool allowTeamReuse,  bool autoEliminateOnNoPick)  $default,) {final _that = this;
 switch (_that) {
 case _LeagueSettings():
-return $default(_that.maxLosses,_that.allowTeamReuse,_that.autoEliminateOnNoPick,_that.minTeams,_that.maxTeams,_that.tiebreaker);case _:
+return $default(_that.maxLosses,_that.allowTeamReuse,_that.autoEliminateOnNoPick);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +196,10 @@ return $default(_that.maxLosses,_that.allowTeamReuse,_that.autoEliminateOnNoPick
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int maxLosses,  bool allowTeamReuse,  bool autoEliminateOnNoPick,  int minTeams,  int? maxTeams,  Tiebreaker tiebreaker)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int maxLosses,  bool allowTeamReuse,  bool autoEliminateOnNoPick)?  $default,) {final _that = this;
 switch (_that) {
 case _LeagueSettings() when $default != null:
-return $default(_that.maxLosses,_that.allowTeamReuse,_that.autoEliminateOnNoPick,_that.minTeams,_that.maxTeams,_that.tiebreaker);case _:
+return $default(_that.maxLosses,_that.allowTeamReuse,_that.autoEliminateOnNoPick);case _:
   return null;
 
 }
@@ -214,15 +211,12 @@ return $default(_that.maxLosses,_that.allowTeamReuse,_that.autoEliminateOnNoPick
 @JsonSerializable()
 
 class _LeagueSettings implements LeagueSettings {
-  const _LeagueSettings({required this.maxLosses, required this.allowTeamReuse, required this.autoEliminateOnNoPick, required this.minTeams, this.maxTeams, required this.tiebreaker});
+  const _LeagueSettings({required this.maxLosses, required this.allowTeamReuse, required this.autoEliminateOnNoPick});
   factory _LeagueSettings.fromJson(Map<String, dynamic> json) => _$LeagueSettingsFromJson(json);
 
 @override final  int maxLosses;
 @override final  bool allowTeamReuse;
 @override final  bool autoEliminateOnNoPick;
-@override final  int minTeams;
-@override final  int? maxTeams;
-@override final  Tiebreaker tiebreaker;
 
 /// Create a copy of LeagueSettings
 /// with the given fields replaced by the non-null parameter values.
@@ -237,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LeagueSettings&&(identical(other.maxLosses, maxLosses) || other.maxLosses == maxLosses)&&(identical(other.allowTeamReuse, allowTeamReuse) || other.allowTeamReuse == allowTeamReuse)&&(identical(other.autoEliminateOnNoPick, autoEliminateOnNoPick) || other.autoEliminateOnNoPick == autoEliminateOnNoPick)&&(identical(other.minTeams, minTeams) || other.minTeams == minTeams)&&(identical(other.maxTeams, maxTeams) || other.maxTeams == maxTeams)&&(identical(other.tiebreaker, tiebreaker) || other.tiebreaker == tiebreaker));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LeagueSettings&&(identical(other.maxLosses, maxLosses) || other.maxLosses == maxLosses)&&(identical(other.allowTeamReuse, allowTeamReuse) || other.allowTeamReuse == allowTeamReuse)&&(identical(other.autoEliminateOnNoPick, autoEliminateOnNoPick) || other.autoEliminateOnNoPick == autoEliminateOnNoPick));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,maxLosses,allowTeamReuse,autoEliminateOnNoPick,minTeams,maxTeams,tiebreaker);
+int get hashCode => Object.hash(runtimeType,maxLosses,allowTeamReuse,autoEliminateOnNoPick);
 
 @override
 String toString() {
-  return 'LeagueSettings(maxLosses: $maxLosses, allowTeamReuse: $allowTeamReuse, autoEliminateOnNoPick: $autoEliminateOnNoPick, minTeams: $minTeams, maxTeams: $maxTeams, tiebreaker: $tiebreaker)';
+  return 'LeagueSettings(maxLosses: $maxLosses, allowTeamReuse: $allowTeamReuse, autoEliminateOnNoPick: $autoEliminateOnNoPick)';
 }
 
 
@@ -257,7 +251,7 @@ abstract mixin class _$LeagueSettingsCopyWith<$Res> implements $LeagueSettingsCo
   factory _$LeagueSettingsCopyWith(_LeagueSettings value, $Res Function(_LeagueSettings) _then) = __$LeagueSettingsCopyWithImpl;
 @override @useResult
 $Res call({
- int maxLosses, bool allowTeamReuse, bool autoEliminateOnNoPick, int minTeams, int? maxTeams, Tiebreaker tiebreaker
+ int maxLosses, bool allowTeamReuse, bool autoEliminateOnNoPick
 });
 
 
@@ -274,15 +268,12 @@ class __$LeagueSettingsCopyWithImpl<$Res>
 
 /// Create a copy of LeagueSettings
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? maxLosses = null,Object? allowTeamReuse = null,Object? autoEliminateOnNoPick = null,Object? minTeams = null,Object? maxTeams = freezed,Object? tiebreaker = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? maxLosses = null,Object? allowTeamReuse = null,Object? autoEliminateOnNoPick = null,}) {
   return _then(_LeagueSettings(
 maxLosses: null == maxLosses ? _self.maxLosses : maxLosses // ignore: cast_nullable_to_non_nullable
 as int,allowTeamReuse: null == allowTeamReuse ? _self.allowTeamReuse : allowTeamReuse // ignore: cast_nullable_to_non_nullable
 as bool,autoEliminateOnNoPick: null == autoEliminateOnNoPick ? _self.autoEliminateOnNoPick : autoEliminateOnNoPick // ignore: cast_nullable_to_non_nullable
-as bool,minTeams: null == minTeams ? _self.minTeams : minTeams // ignore: cast_nullable_to_non_nullable
-as int,maxTeams: freezed == maxTeams ? _self.maxTeams : maxTeams // ignore: cast_nullable_to_non_nullable
-as int?,tiebreaker: null == tiebreaker ? _self.tiebreaker : tiebreaker // ignore: cast_nullable_to_non_nullable
-as Tiebreaker,
+as bool,
   ));
 }
 
@@ -293,7 +284,7 @@ as Tiebreaker,
 /// @nodoc
 mixin _$League {
 
- String get id; String get name; String get ownerId; LeagueVisibility get visibility; LeagueSettings get settings; int get season; String get createdAtIso; List<String> get memberIds; String? get inviteCode;
+ String get id; String get name; String get ownerId; LeagueVisibility get visibility; LeagueSettings get settings; int get season; String get createdAtIso; List<String> get memberIds; String? get inviteCode; Map<String, int> get memberPoints;
 /// Create a copy of League
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -306,16 +297,16 @@ $LeagueCopyWith<League> get copyWith => _$LeagueCopyWithImpl<League>(this as Lea
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is League&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.season, season) || other.season == season)&&(identical(other.createdAtIso, createdAtIso) || other.createdAtIso == createdAtIso)&&const DeepCollectionEquality().equals(other.memberIds, memberIds)&&(identical(other.inviteCode, inviteCode) || other.inviteCode == inviteCode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is League&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.season, season) || other.season == season)&&(identical(other.createdAtIso, createdAtIso) || other.createdAtIso == createdAtIso)&&const DeepCollectionEquality().equals(other.memberIds, memberIds)&&(identical(other.inviteCode, inviteCode) || other.inviteCode == inviteCode)&&const DeepCollectionEquality().equals(other.memberPoints, memberPoints));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,ownerId,visibility,settings,season,createdAtIso,const DeepCollectionEquality().hash(memberIds),inviteCode);
+int get hashCode => Object.hash(runtimeType,id,name,ownerId,visibility,settings,season,createdAtIso,const DeepCollectionEquality().hash(memberIds),inviteCode,const DeepCollectionEquality().hash(memberPoints));
 
 @override
 String toString() {
-  return 'League(id: $id, name: $name, ownerId: $ownerId, visibility: $visibility, settings: $settings, season: $season, createdAtIso: $createdAtIso, memberIds: $memberIds, inviteCode: $inviteCode)';
+  return 'League(id: $id, name: $name, ownerId: $ownerId, visibility: $visibility, settings: $settings, season: $season, createdAtIso: $createdAtIso, memberIds: $memberIds, inviteCode: $inviteCode, memberPoints: $memberPoints)';
 }
 
 
@@ -326,7 +317,7 @@ abstract mixin class $LeagueCopyWith<$Res>  {
   factory $LeagueCopyWith(League value, $Res Function(League) _then) = _$LeagueCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String ownerId, LeagueVisibility visibility, LeagueSettings settings, int season, String createdAtIso, List<String> memberIds, String? inviteCode
+ String id, String name, String ownerId, LeagueVisibility visibility, LeagueSettings settings, int season, String createdAtIso, List<String> memberIds, String? inviteCode, Map<String, int> memberPoints
 });
 
 
@@ -343,7 +334,7 @@ class _$LeagueCopyWithImpl<$Res>
 
 /// Create a copy of League
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? ownerId = null,Object? visibility = null,Object? settings = null,Object? season = null,Object? createdAtIso = null,Object? memberIds = null,Object? inviteCode = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? ownerId = null,Object? visibility = null,Object? settings = null,Object? season = null,Object? createdAtIso = null,Object? memberIds = null,Object? inviteCode = freezed,Object? memberPoints = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -354,7 +345,8 @@ as LeagueSettings,season: null == season ? _self.season : season // ignore: cast
 as int,createdAtIso: null == createdAtIso ? _self.createdAtIso : createdAtIso // ignore: cast_nullable_to_non_nullable
 as String,memberIds: null == memberIds ? _self.memberIds : memberIds // ignore: cast_nullable_to_non_nullable
 as List<String>,inviteCode: freezed == inviteCode ? _self.inviteCode : inviteCode // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,memberPoints: null == memberPoints ? _self.memberPoints : memberPoints // ignore: cast_nullable_to_non_nullable
+as Map<String, int>,
   ));
 }
 /// Create a copy of League
@@ -448,10 +440,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String ownerId,  LeagueVisibility visibility,  LeagueSettings settings,  int season,  String createdAtIso,  List<String> memberIds,  String? inviteCode)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String ownerId,  LeagueVisibility visibility,  LeagueSettings settings,  int season,  String createdAtIso,  List<String> memberIds,  String? inviteCode,  Map<String, int> memberPoints)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _League() when $default != null:
-return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.settings,_that.season,_that.createdAtIso,_that.memberIds,_that.inviteCode);case _:
+return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.settings,_that.season,_that.createdAtIso,_that.memberIds,_that.inviteCode,_that.memberPoints);case _:
   return orElse();
 
 }
@@ -469,10 +461,10 @@ return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.setting
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String ownerId,  LeagueVisibility visibility,  LeagueSettings settings,  int season,  String createdAtIso,  List<String> memberIds,  String? inviteCode)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String ownerId,  LeagueVisibility visibility,  LeagueSettings settings,  int season,  String createdAtIso,  List<String> memberIds,  String? inviteCode,  Map<String, int> memberPoints)  $default,) {final _that = this;
 switch (_that) {
 case _League():
-return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.settings,_that.season,_that.createdAtIso,_that.memberIds,_that.inviteCode);case _:
+return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.settings,_that.season,_that.createdAtIso,_that.memberIds,_that.inviteCode,_that.memberPoints);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -489,10 +481,10 @@ return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.setting
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String ownerId,  LeagueVisibility visibility,  LeagueSettings settings,  int season,  String createdAtIso,  List<String> memberIds,  String? inviteCode)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String ownerId,  LeagueVisibility visibility,  LeagueSettings settings,  int season,  String createdAtIso,  List<String> memberIds,  String? inviteCode,  Map<String, int> memberPoints)?  $default,) {final _that = this;
 switch (_that) {
 case _League() when $default != null:
-return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.settings,_that.season,_that.createdAtIso,_that.memberIds,_that.inviteCode);case _:
+return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.settings,_that.season,_that.createdAtIso,_that.memberIds,_that.inviteCode,_that.memberPoints);case _:
   return null;
 
 }
@@ -504,7 +496,7 @@ return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.setting
 @JsonSerializable()
 
 class _League implements League {
-  const _League({required this.id, required this.name, required this.ownerId, required this.visibility, required this.settings, required this.season, required this.createdAtIso, required final  List<String> memberIds, this.inviteCode}): _memberIds = memberIds;
+  const _League({required this.id, required this.name, required this.ownerId, required this.visibility, required this.settings, required this.season, required this.createdAtIso, required final  List<String> memberIds, this.inviteCode, final  Map<String, int> memberPoints = const {}}): _memberIds = memberIds,_memberPoints = memberPoints;
   factory _League.fromJson(Map<String, dynamic> json) => _$LeagueFromJson(json);
 
 @override final  String id;
@@ -522,6 +514,13 @@ class _League implements League {
 }
 
 @override final  String? inviteCode;
+ final  Map<String, int> _memberPoints;
+@override@JsonKey() Map<String, int> get memberPoints {
+  if (_memberPoints is EqualUnmodifiableMapView) return _memberPoints;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_memberPoints);
+}
+
 
 /// Create a copy of League
 /// with the given fields replaced by the non-null parameter values.
@@ -536,16 +535,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _League&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.season, season) || other.season == season)&&(identical(other.createdAtIso, createdAtIso) || other.createdAtIso == createdAtIso)&&const DeepCollectionEquality().equals(other._memberIds, _memberIds)&&(identical(other.inviteCode, inviteCode) || other.inviteCode == inviteCode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _League&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.season, season) || other.season == season)&&(identical(other.createdAtIso, createdAtIso) || other.createdAtIso == createdAtIso)&&const DeepCollectionEquality().equals(other._memberIds, _memberIds)&&(identical(other.inviteCode, inviteCode) || other.inviteCode == inviteCode)&&const DeepCollectionEquality().equals(other._memberPoints, _memberPoints));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,ownerId,visibility,settings,season,createdAtIso,const DeepCollectionEquality().hash(_memberIds),inviteCode);
+int get hashCode => Object.hash(runtimeType,id,name,ownerId,visibility,settings,season,createdAtIso,const DeepCollectionEquality().hash(_memberIds),inviteCode,const DeepCollectionEquality().hash(_memberPoints));
 
 @override
 String toString() {
-  return 'League(id: $id, name: $name, ownerId: $ownerId, visibility: $visibility, settings: $settings, season: $season, createdAtIso: $createdAtIso, memberIds: $memberIds, inviteCode: $inviteCode)';
+  return 'League(id: $id, name: $name, ownerId: $ownerId, visibility: $visibility, settings: $settings, season: $season, createdAtIso: $createdAtIso, memberIds: $memberIds, inviteCode: $inviteCode, memberPoints: $memberPoints)';
 }
 
 
@@ -556,7 +555,7 @@ abstract mixin class _$LeagueCopyWith<$Res> implements $LeagueCopyWith<$Res> {
   factory _$LeagueCopyWith(_League value, $Res Function(_League) _then) = __$LeagueCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String ownerId, LeagueVisibility visibility, LeagueSettings settings, int season, String createdAtIso, List<String> memberIds, String? inviteCode
+ String id, String name, String ownerId, LeagueVisibility visibility, LeagueSettings settings, int season, String createdAtIso, List<String> memberIds, String? inviteCode, Map<String, int> memberPoints
 });
 
 
@@ -573,7 +572,7 @@ class __$LeagueCopyWithImpl<$Res>
 
 /// Create a copy of League
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? ownerId = null,Object? visibility = null,Object? settings = null,Object? season = null,Object? createdAtIso = null,Object? memberIds = null,Object? inviteCode = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? ownerId = null,Object? visibility = null,Object? settings = null,Object? season = null,Object? createdAtIso = null,Object? memberIds = null,Object? inviteCode = freezed,Object? memberPoints = null,}) {
   return _then(_League(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -584,7 +583,8 @@ as LeagueSettings,season: null == season ? _self.season : season // ignore: cast
 as int,createdAtIso: null == createdAtIso ? _self.createdAtIso : createdAtIso // ignore: cast_nullable_to_non_nullable
 as String,memberIds: null == memberIds ? _self._memberIds : memberIds // ignore: cast_nullable_to_non_nullable
 as List<String>,inviteCode: freezed == inviteCode ? _self.inviteCode : inviteCode // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,memberPoints: null == memberPoints ? _self._memberPoints : memberPoints // ignore: cast_nullable_to_non_nullable
+as Map<String, int>,
   ));
 }
 

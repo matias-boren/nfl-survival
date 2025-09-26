@@ -7,6 +7,7 @@ import 'package:nfl_survival/widgets/app_scaffold.dart';
 import 'package:nfl_survival/widgets/banner_ad_slot.dart';
 import 'package:nfl_survival/features/league/table/league_list_screen.dart';
 import 'package:nfl_survival/features/league/join/league_options_dialog.dart';
+import 'package:nfl_survival/core/services/team_logo_service.dart';
 
 final nextWeekGamesProvider = FutureProvider<List<Game>>((ref) async {
   print('nextWeekGamesProvider called');
@@ -26,7 +27,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.watch(currentUserProvider);
     final gamesAsync = ref.watch(nextWeekGamesProvider);
-    final isPremium = ref.watch(premiumStatusProvider).valueOrNull ?? false;
+    final isPremium = ref.watch(premiumStatusProvider);
     final userPicksAsync = ref.watch(userPicksForWeekProvider);
     
     // Debug output
@@ -308,18 +309,31 @@ class HomeScreen extends ConsumerWidget {
             const SizedBox(height: 8),
             Row(
               children: [
+                // Away team with logo
                 Expanded(
-                  child: Text(
-                    '${game.awayTeam.abbreviation} @ ${game.homeTeam.abbreviation}',
-                    style: const TextStyle(fontWeight: FontWeight.w500),
+                  child: Row(
+                    children: [
+                      TeamLogoService.buildTeamLogo(
+                        teamAbbreviation: game.awayTeam.abbreviation,
+                        size: 32,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          game.awayTeam.abbreviation,
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                // VS or Score
                 if (game.awayScore != null && game.homeScore != null && isPremium)
                   Text(
                     '${game.awayScore} - ${game.homeScore}',
                     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                if (!isPremium && (game.awayScore != null || game.homeScore != null))
+                  )
+                else if (!isPremium && (game.awayScore != null || game.homeScore != null))
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
@@ -334,7 +348,34 @@ class HomeScreen extends ConsumerWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                  )
+                else
+                  const Text(
+                    'VS',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
                   ),
+                // Home team with logo
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          game.homeTeam.abbreviation,
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      TeamLogoService.buildTeamLogo(
+                        teamAbbreviation: game.homeTeam.abbreviation,
+                        size: 32,
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 8),

@@ -7,7 +7,7 @@ class BannerAdSlot extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isPremium = ref.watch(premiumStatusProvider).valueOrNull ?? false;
+    final isPremium = ref.watch(premiumStatusProvider);
 
     if (isPremium) {
       return const SizedBox.shrink(); // No ads for premium users

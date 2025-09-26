@@ -11,9 +11,6 @@ _LeagueSettings _$LeagueSettingsFromJson(Map<String, dynamic> json) =>
       maxLosses: (json['maxLosses'] as num).toInt(),
       allowTeamReuse: json['allowTeamReuse'] as bool,
       autoEliminateOnNoPick: json['autoEliminateOnNoPick'] as bool,
-      minTeams: (json['minTeams'] as num).toInt(),
-      maxTeams: (json['maxTeams'] as num?)?.toInt(),
-      tiebreaker: $enumDecode(_$TiebreakerEnumMap, json['tiebreaker']),
     );
 
 Map<String, dynamic> _$LeagueSettingsToJson(_LeagueSettings instance) =>
@@ -21,16 +18,7 @@ Map<String, dynamic> _$LeagueSettingsToJson(_LeagueSettings instance) =>
       'maxLosses': instance.maxLosses,
       'allowTeamReuse': instance.allowTeamReuse,
       'autoEliminateOnNoPick': instance.autoEliminateOnNoPick,
-      'minTeams': instance.minTeams,
-      'maxTeams': instance.maxTeams,
-      'tiebreaker': _$TiebreakerEnumMap[instance.tiebreaker]!,
     };
-
-const _$TiebreakerEnumMap = {
-  Tiebreaker.LAST_LONGEST_STREAK: 'LAST_LONGEST_STREAK',
-  Tiebreaker.MOST_REMAINING_TEAMS: 'MOST_REMAINING_TEAMS',
-  Tiebreaker.TOTAL_MARGIN: 'TOTAL_MARGIN',
-};
 
 _League _$LeagueFromJson(Map<String, dynamic> json) => _League(
   id: json['id'] as String,
@@ -44,6 +32,11 @@ _League _$LeagueFromJson(Map<String, dynamic> json) => _League(
       .map((e) => e as String)
       .toList(),
   inviteCode: json['inviteCode'] as String?,
+  memberPoints:
+      (json['memberPoints'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, (e as num).toInt()),
+      ) ??
+      const {},
 );
 
 Map<String, dynamic> _$LeagueToJson(_League instance) => <String, dynamic>{
@@ -56,6 +49,7 @@ Map<String, dynamic> _$LeagueToJson(_League instance) => <String, dynamic>{
   'createdAtIso': instance.createdAtIso,
   'memberIds': instance.memberIds,
   'inviteCode': instance.inviteCode,
+  'memberPoints': instance.memberPoints,
 };
 
 const _$LeagueVisibilityEnumMap = {

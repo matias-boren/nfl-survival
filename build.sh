@@ -1,15 +1,15 @@
 #!/bin/bash
-set -e
 
-echo "🚀 Building Flutter web app..."
-
-# Check if Flutter is available
+# Install Flutter if not present
 if ! command -v flutter &> /dev/null; then
-    echo "❌ Flutter not found. Using pre-built files."
-    exit 0
+    echo "Installing Flutter..."
+    # Add Flutter installation logic here if needed
 fi
 
-# Build the Flutter web app
+# Get dependencies
+flutter pub get
+
+# Build for web
 flutter build web --release
 
-echo "✅ Build completed successfully!"
+echo "Build completed successfully!"

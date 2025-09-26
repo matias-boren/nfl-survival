@@ -20,9 +20,6 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
   int _maxLosses = 0;
   bool _allowTeamReuse = false;
   bool _autoEliminateOnNoPick = true;
-  int _minTeams = 2;
-  int? _maxTeams;
-  Tiebreaker _tiebreaker = Tiebreaker.LAST_LONGEST_STREAK;
   LeagueVisibility _visibility = LeagueVisibility.PRIVATE;
   
   bool _isCreating = false;
@@ -48,7 +45,7 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
       }
 
       // Check freemium limits
-      final isPremium = ref.read(premiumStatusProvider).valueOrNull ?? false;
+      final isPremium = ref.read(premiumStatusProvider);
       if (!isPremium && currentUser.joinedLeagueIds.length >= 1) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -70,9 +67,6 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
           maxLosses: _maxLosses,
           allowTeamReuse: _allowTeamReuse,
           autoEliminateOnNoPick: _autoEliminateOnNoPick,
-          minTeams: _minTeams,
-          maxTeams: _maxTeams,
-          tiebreaker: _tiebreaker,
         ),
         season: 2025, // Mock season
         createdAtIso: DateTime.now().toIso8601String(),
@@ -108,7 +102,7 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isPremium = ref.watch(premiumStatusProvider).valueOrNull ?? false;
+    final isPremium = ref.watch(premiumStatusProvider);
     
     return AppScaffold(
       appBar: AppBar(
@@ -288,107 +282,34 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Min/Max Teams
+              // Points System Info
               Card(
+                color: Colors.blue[50],
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Team Limits',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
                       Row(
                         children: [
-                          Expanded(
-                            child: TextFormField(
-                              initialValue: _minTeams.toString(),
-                              decoration: const InputDecoration(
-                                labelText: 'Minimum Teams',
-                                border: OutlineInputBorder(),
-                              ),
-                              keyboardType: TextInputType.number,
-                              onChanged: isPremium ? (value) {
-                                final parsed = int.tryParse(value);
-                                if (parsed != null && parsed >= 2) {
-                                  setState(() => _minTeams = parsed);
-                                }
-                              } : null,
-                              enabled: isPremium,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: TextFormField(
-                              initialValue: _maxTeams?.toString() ?? '',
-                              decoration: const InputDecoration(
-                                labelText: 'Maximum Teams (Optional)',
-                                border: OutlineInputBorder(),
-                              ),
-                              keyboardType: TextInputType.number,
-                              onChanged: isPremium ? (value) {
-                                final parsed = int.tryParse(value);
-                                setState(() => _maxTeams = parsed);
-                              } : null,
-                              enabled: isPremium,
+                          Icon(Icons.info_outline, color: Colors.blue[700], size: 20),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Points For Tiebreaker',
+                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue[700],
                             ),
                           ),
                         ],
                       ),
-                      if (!isPremium)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Row(
-                            children: [
-                              Icon(Icons.lock, color: Colors.grey[400], size: 16),
-                              const SizedBox(width: 4),
-                              Text(
-                                'Premium feature',
-                                style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Tiebreaker
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Tiebreaker',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                       const SizedBox(height: 8),
                       Text(
-                        'How to break ties in standings',
+                        'Ties in standings are broken by "Points For" - the total points scored by teams you picked correctly. Example: Pick ARI (wins 24-20) = 24 points.',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey[600],
+                          color: Colors.blue[600],
                         ),
                       ),
-                      const SizedBox(height: 12),
-                      ...Tiebreaker.values.map((tiebreaker) {
-                        return RadioListTile<Tiebreaker>(
-                          title: Text(_getTiebreakerDescription(tiebreaker)),
-                          value: tiebreaker,
-                          groupValue: _tiebreaker,
-                          onChanged: isPremium ? (value) => setState(() => _tiebreaker = value!) : null,
-                          secondary: !isPremium ? Icon(Icons.lock, color: Colors.grey[400]) : null,
-                        );
-                      }).toList(),
                     ],
                   ),
                 ),
@@ -427,14 +348,4 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
     );
   }
 
-  String _getTiebreakerDescription(Tiebreaker tiebreaker) {
-    switch (tiebreaker) {
-      case Tiebreaker.LAST_LONGEST_STREAK:
-        return 'Last Longest Streak - Most recent winning streak';
-      case Tiebreaker.MOST_REMAINING_TEAMS:
-        return 'Most Remaining Teams - Teams not yet picked';
-      case Tiebreaker.TOTAL_MARGIN:
-        return 'Total Margin - Combined margin of victory';
-    }
-  }
 }

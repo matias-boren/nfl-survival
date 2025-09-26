@@ -4,7 +4,6 @@ part 'league.freezed.dart';
 part 'league.g.dart';
 
 enum LeagueVisibility { PUBLIC, PRIVATE }
-enum Tiebreaker { LAST_LONGEST_STREAK, MOST_REMAINING_TEAMS, TOTAL_MARGIN }
 
 @freezed
 abstract class LeagueSettings with _$LeagueSettings {
@@ -12,9 +11,6 @@ abstract class LeagueSettings with _$LeagueSettings {
     required int maxLosses,
     required bool allowTeamReuse,
     required bool autoEliminateOnNoPick,
-    required int minTeams,
-    int? maxTeams,
-    required Tiebreaker tiebreaker,
   }) = _LeagueSettings;
 
   factory LeagueSettings.fromJson(Map<String, dynamic> json) => _$LeagueSettingsFromJson(json);
@@ -32,6 +28,7 @@ abstract class League with _$League {
     required String createdAtIso,
     required List<String> memberIds,
     String? inviteCode,
+    @Default({}) Map<String, int> memberPoints, // User ID -> Points
   }) = _League;
 
   factory League.fromJson(Map<String, dynamic> json) => _$LeagueFromJson(json);

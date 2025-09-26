@@ -4,72 +4,9 @@ import 'package:nfl_survival/app/providers.dart';
 import 'package:nfl_survival/data/models/pick.dart';
 import 'package:nfl_survival/widgets/app_scaffold.dart';
 import 'package:nfl_survival/widgets/banner_ad_slot.dart';
+import 'package:nfl_survival/core/services/standings_service.dart';
 
-class LeagueStanding {
-  final String userId;
-  final String displayName;
-  final int wins;
-  final int losses;
-  final List<String> usedTeams;
-  final String? lastPickTeam;
-  final PickResult? lastPickResult;
-
-  LeagueStanding({
-    required this.userId,
-    required this.displayName,
-    required this.wins,
-    required this.losses,
-    required this.usedTeams,
-    this.lastPickTeam,
-    this.lastPickResult,
-  });
-
-  int get totalPicks => wins + losses;
-  double get winPercentage => totalPicks > 0 ? wins / totalPicks : 0.0;
-}
-
-final leagueStandingsProvider = FutureProvider.family<List<LeagueStanding>, String>((ref, leagueId) async {
-  // Mock standings data
-  await Future.delayed(const Duration(milliseconds: 500));
-  return [
-    LeagueStanding(
-      userId: 'user1',
-      displayName: 'Alice Johnson',
-      wins: 3,
-      losses: 0,
-      usedTeams: ['KC', 'BUF', 'SF'],
-      lastPickTeam: 'SF',
-      lastPickResult: PickResult.WIN,
-    ),
-    LeagueStanding(
-      userId: 'user2',
-      displayName: 'Bob Smith',
-      wins: 2,
-      losses: 1,
-      usedTeams: ['DAL', 'PHI', 'LAR'],
-      lastPickTeam: 'LAR',
-      lastPickResult: PickResult.LOSE,
-    ),
-    LeagueStanding(
-      userId: 'user3',
-      displayName: 'Charlie Brown',
-      wins: 2,
-      losses: 0,
-      usedTeams: ['GB', 'MIA'],
-      lastPickTeam: 'MIA',
-      lastPickResult: PickResult.WIN,
-    ),
-    LeagueStanding(
-      userId: 'user4',
-      displayName: 'Diana Prince',
-      wins: 1,
-      losses: 1,
-      usedTeams: ['NE', 'NYG'],
-      lastPickTeam: 'NYG',
-      lastPickResult: PickResult.LOSE,
-    ),
-  ];
-});
+// Use the standings provider from app/providers.dart instead of local mock data
 
 class LeagueStandingsScreen extends ConsumerWidget {
   final String leagueId;
@@ -78,7 +15,7 @@ class LeagueStandingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final standingsAsync = ref.watch(leagueStandingsProvider(leagueId));
-    final isPremium = ref.watch(premiumStatusProvider).valueOrNull ?? false;
+    final isPremium = ref.watch(premiumStatusProvider);
 
     return AppScaffold(
       appBar: AppBar(
@@ -103,19 +40,22 @@ class LeagueStandingsScreen extends ConsumerWidget {
                   );
                 }
                 
-                // Sort by wins (descending), then by win percentage
+                // Sort by wins (descending), then by points (descending), then by win percentage
                 standings.sort((a, b) {
                   if (a.wins != b.wins) return b.wins.compareTo(a.wins);
+                  if (a.points != b.points) return b.points.compareTo(a.points);
                   return b.winPercentage.compareTo(a.winPercentage);
                 });
 
                 return ListView.builder(
+                  itemExtent: 80.0, // Fixed height for standings items
                   itemCount: standings.length,
                   itemBuilder: (context, index) {
                     final standing = standings[index];
                     final rank = index + 1;
                     
                     return Card(
+                      key: ValueKey(standing.userId), // Stable key for standings
                       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                       child: ListTile(
                         leading: CircleAvatar(
@@ -135,7 +75,7 @@ class LeagueStandingsScreen extends ConsumerWidget {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('${standing.wins}W - ${standing.losses}L (${(standing.winPercentage * 100).toStringAsFixed(1)}%)'),
+                            Text('${standing.wins}W - ${standing.losses}L (${(standing.winPercentage * 100).toStringAsFixed(1)}%) • ${standing.points} PF'),
                             if (standing.lastPickTeam != null)
                               Text(
                                 'Last pick: ${standing.lastPickTeam} (${standing.lastPickResult?.name ?? 'PENDING'})',

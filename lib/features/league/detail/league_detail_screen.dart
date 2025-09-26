@@ -7,7 +7,10 @@ import 'package:nfl_survival/widgets/app_scaffold.dart';
 import 'package:nfl_survival/features/league/table/league_list_screen.dart';
 
 final leagueProvider = FutureProvider.family<League, String>((ref, leagueId) async {
-  return ref.read(leagueRepositoryProvider).getLeague(leagueId);
+  print('leagueProvider: Fetching league $leagueId');
+  final league = await ref.read(leagueRepositoryProvider).getLeague(leagueId);
+  print('leagueProvider: Got league ${league.name} with ${league.memberIds.length} members');
+  return league;
 });
 
 class LeagueDetailScreen extends ConsumerWidget {
@@ -31,7 +34,17 @@ class LeagueDetailScreen extends ConsumerWidget {
         }
         
         return AppScaffold(
-        appBar: AppBar(title: Text(league.name)),
+        appBar: AppBar(
+          title: Text(league.name),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () {
+                ref.invalidate(leagueProvider(leagueId));
+              },
+            ),
+          ],
+        ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -56,14 +69,6 @@ class LeagueDetailScreen extends ConsumerWidget {
                           Icon(Icons.calendar_today, size: 16, color: Colors.grey[600]),
                           const SizedBox(width: 8),
                           Text('Season ${league.season}'),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Icon(Icons.group, size: 16, color: Colors.grey[600]),
-                          const SizedBox(width: 8),
-                          Text('${league.memberIds.length} members'),
                         ],
                       ),
                       const SizedBox(height: 8),

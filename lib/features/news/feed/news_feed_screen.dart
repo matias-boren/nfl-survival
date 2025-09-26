@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:nfl_survival/app/providers.dart';
 import 'package:nfl_survival/data/news/news_repositories.dart';
 import 'package:nfl_survival/data/scores/scores_repositories.dart';
@@ -18,7 +19,7 @@ class NewsFeedScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final newsAsync = ref.watch(newsFeedProvider);
     final scoresAsync = ref.watch(liveScoresProvider);
-    final isPremium = ref.watch(premiumStatusProvider).valueOrNull ?? false;
+    final isPremium = ref.watch(premiumStatusProvider);
 
     return AppScaffold(
       appBar: AppBar(
@@ -333,13 +334,14 @@ class NewsFeedScreen extends ConsumerWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              article.imageUrl,
+                            child: CachedNetworkImage(
+                              imageUrl: article.imageUrl,
                               width: double.infinity,
                               height: 200,
                               fit: BoxFit.cover,
-                              loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
+                              memCacheWidth: 400, // Cache at reasonable resolution
+                              memCacheHeight: 200,
+                              placeholder: (context, url) {
                                 return Container(
                                   height: 200,
                                   color: Colors.grey[200],
@@ -348,7 +350,7 @@ class NewsFeedScreen extends ConsumerWidget {
                                   ),
                                 );
                               },
-                              errorBuilder: (context, error, stackTrace) {
+                              errorWidget: (context, url, error) {
                                 return Container(
                                   height: 200,
                                   color: Colors.grey[300],

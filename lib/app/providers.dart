@@ -19,9 +19,11 @@ import 'package:nfl_survival/data/nfl/mock_nfl_repository.dart';
 import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
 import 'package:nfl_survival/data/nfl/hybrid_nfl_repository.dart';
 import 'package:nfl_survival/data/picks/mock_picks_repository.dart';
+import 'package:nfl_survival/data/picks/supabase_picks_repository.dart';
 import 'package:nfl_survival/data/picks/picks_repositories.dart';
 import 'package:nfl_survival/data/news/news_repositories.dart';
 import 'package:nfl_survival/data/news/mock_news_repository.dart';
+import 'package:nfl_survival/data/news/supabase_news_repository.dart';
 import 'package:nfl_survival/data/scores/scores_repositories.dart';
 import 'package:nfl_survival/data/scores/mock_scores_repository.dart';
 import 'package:nfl_survival/data/friends/friends_repositories.dart';
@@ -30,9 +32,13 @@ import 'package:nfl_survival/data/invitations/invitation_repositories.dart';
 import 'package:nfl_survival/data/invitations/mock_invitation_repository.dart';
 import 'package:nfl_survival/data/users/user_repositories.dart';
 import 'package:nfl_survival/data/users/mock_user_repository.dart';
+import 'package:nfl_survival/data/chat/chat_repositories.dart';
+import 'package:nfl_survival/data/chat/supabase_chat_repository.dart';
+import 'package:nfl_survival/data/chat/mock_chat_repository.dart';
 import 'package:nfl_survival/data/models/user.dart';
 import 'package:nfl_survival/data/models/pick.dart';
 import 'package:nfl_survival/data/models/nfl.dart';
+import 'package:nfl_survival/data/models/chat_message.dart';
 import 'package:nfl_survival/core/services/deadline_service.dart';
 import 'package:nfl_survival/features/league/table/league_list_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,8 +49,9 @@ final billingRepositoryProvider = Provider<BillingRepository>((ref) => MockBilli
 final adsServiceProvider = Provider<AdsService>((ref) => MockAdsService());
 final nflRepositoryProvider = Provider<NflRepository>((ref) => HybridNflRepository());
 final leagueRepositoryProvider = Provider<LeagueRepository>((ref) => SupabaseLeagueRepository());
-final picksRepositoryProvider = Provider<PicksRepository>((ref) => MockPicksRepository());
-final newsRepositoryProvider = Provider<NewsRepository>((ref) => MockNewsRepository());
+final picksRepositoryProvider = Provider<PicksRepository>((ref) => SupabasePicksRepository());
+final chatRepositoryProvider = Provider<ChatRepository>((ref) => SupabaseChatRepository());
+final newsRepositoryProvider = Provider<NewsRepository>((ref) => SupabaseNewsRepository());
 final scoresRepositoryProvider = Provider<ScoresRepository>((ref) => MockScoresRepository());
 final friendsRepositoryProvider = Provider<FriendsRepository>((ref) => MockFriendsRepository());
 final invitationRepositoryProvider = Provider<InvitationRepository>((ref) => MockInvitationRepository());
@@ -63,7 +70,12 @@ final currentWeekProvider = StreamProvider<int>((ref) {
 final currentUserProvider = StateNotifierProvider<CurrentUserNotifier, User?>((ref) {
   return CurrentUserNotifier(ref.read(authRepositoryProvider));
 });
-final premiumStatusProvider = StreamProvider<bool>((ref) => ref.watch(billingRepositoryProvider).premiumStatus());
+final premiumStatusProvider = Provider<bool>((ref) {
+  // Use select to only watch the isPremium field, reducing rebuilds
+  final isPremium = ref.watch(currentUserProvider.select((user) => user?.isPremium ?? false));
+  print('💰 Premium status provider - isPremium: $isPremium');
+  return isPremium;
+});
 
 // News and Scores Providers
 final newsFeedProvider = FutureProvider<List<NewsArticle>>((ref) async {
@@ -144,6 +156,7 @@ class CurrentUserNotifier extends StateNotifier<User?> {
   
   void _init() {
     _authRepository.currentUser().listen((user) {
+      print('👤 CurrentUserNotifier - User changed: ${user?.email}, isPremium: ${user?.isPremium}');
       state = user;
       _isInitialized = true;
     });
@@ -152,7 +165,9 @@ class CurrentUserNotifier extends StateNotifier<User?> {
   bool get isInitialized => _isInitialized;
   
   Future<void> signIn(String email, String password) async {
+    print('🔐 Signing in user: $email');
     final user = await _authRepository.signInWithEmail(email, password);
+    print('✅ Sign in successful - isPremium: ${user.isPremium}');
     state = user;
   }
   
@@ -211,10 +226,25 @@ final userPicksForWeekProvider = FutureProvider<List<Map<String, dynamic>>>((ref
 
 // Testing provider to easily toggle premium status
 final premiumToggleProvider = Provider<void Function()>((ref) {
-  return () {
-    final billingRepo = ref.read(billingRepositoryProvider) as MockBillingRepository;
-    billingRepo.togglePremiumStatus();
+  return () async {
+    final authRepo = ref.read(authRepositoryProvider) as SupabaseAuthRepository;
+    final currentUser = ref.read(currentUserProvider);
+    
+    if (currentUser != null) {
+      // Toggle premium status
+      final newPremiumStatus = !currentUser.isPremium;
+      await authRepo.updatePremiumStatus(currentUser.id, newPremiumStatus);
+      
+      // Refresh the current user to get updated data
+      // The currentUser stream will automatically update
+    }
   };
+});
+
+// Chat messages provider
+final leagueChatProvider = StreamProvider.family<List<ChatMessage>, String>((ref, leagueId) {
+  final chatRepo = ref.read(chatRepositoryProvider);
+  return chatRepo.getChatMessages(leagueId);
 });
 
 // Provider for deadline status using NFL repository

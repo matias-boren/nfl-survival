@@ -12,4 +12,6 @@ abstract class LeagueRepository {
   Future<List<League>> getPublicLeagues();
   Future<List<League>> listLeagues();
   Stream<List<User>> leagueMembers(String leagueId);
+  Future<void> updateLeague(League league);
+  Future<void> deleteLeague(String leagueId);
 }

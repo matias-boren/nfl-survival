@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nfl_survival/app/providers.dart';
 import 'package:nfl_survival/data/models/nfl.dart';
 import 'package:nfl_survival/widgets/app_scaffold.dart';
+import 'package:nfl_survival/core/services/team_logo_service.dart';
 
 final gamesForWeekProvider = FutureProvider.family<List<Game>, int>((ref, week) async {
   return ref.read(nflRepositoryProvider).listGames(season: 2025, week: week);
@@ -134,11 +135,14 @@ class MakePickScreen extends ConsumerWidget {
                 ),
               Expanded(
                 child: ListView.builder(
-            itemCount: games.length,
-            itemBuilder: (context, index) {
-              final game = games[index];
-              return Card(
-                margin: const EdgeInsets.all(8.0),
+                  itemExtent: 200.0, // Fixed height for better performance
+                  cacheExtent: 1000.0, // Cache more items for smooth scrolling
+                  itemCount: games.length,
+                  itemBuilder: (context, index) {
+                    final game = games[index];
+                    return Card(
+                      key: ValueKey(game.id), // Stable key for better widget recycling
+                      margin: const EdgeInsets.all(8.0),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -256,6 +260,11 @@ class MakePickScreen extends ConsumerWidget {
         ),
         child: Column(
           children: [
+            TeamLogoService.buildTeamLogo(
+              teamAbbreviation: teamId,
+              size: 48,
+            ),
+            const SizedBox(height: 8),
             Text(
               teamId,
               style: TextStyle(

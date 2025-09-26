@@ -1,73 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:nfl_survival/app/providers.dart';
 import 'package:nfl_survival/widgets/app_scaffold.dart';
 import 'package:nfl_survival/widgets/banner_ad_slot.dart';
-
-// Mock Chat Message Model
-class ChatMessage {
-  final String id;
-  final String userId;
-  final String userName;
-  final String message;
-  final DateTime timestamp;
-  final bool isSystemMessage;
-
-  ChatMessage({
-    required this.id,
-    required this.userId,
-    required this.userName,
-    required this.message,
-    required this.timestamp,
-    this.isSystemMessage = false,
-  });
-}
-
-// Mock Chat Provider
-final leagueChatProvider = FutureProvider.family<List<ChatMessage>, String>((ref, leagueId) async {
-  await Future.delayed(const Duration(seconds: 1)); // Simulate network delay
-  
-  // Mock chat messages
-  return [
-    ChatMessage(
-      id: '1',
-      userId: 'user1',
-      userName: 'Alice',
-      message: 'Good luck everyone! 🏈',
-      timestamp: DateTime.now().subtract(const Duration(hours: 2)),
-    ),
-    ChatMessage(
-      id: '2',
-      userId: 'user2',
-      userName: 'Bob',
-      message: 'Who are you picking this week?',
-      timestamp: DateTime.now().subtract(const Duration(hours: 1, minutes: 30)),
-    ),
-    ChatMessage(
-      id: '3',
-      userId: 'system',
-      userName: 'System',
-      message: 'Bob joined the league',
-      timestamp: DateTime.now().subtract(const Duration(hours: 1)),
-      isSystemMessage: true,
-    ),
-    ChatMessage(
-      id: '4',
-      userId: 'user3',
-      userName: 'Charlie',
-      message: 'I\'m going with the Chiefs this week',
-      timestamp: DateTime.now().subtract(const Duration(minutes: 45)),
-    ),
-    ChatMessage(
-      id: '5',
-      userId: 'user1',
-      userName: 'Alice',
-      message: 'Smart pick! They\'re looking strong',
-      timestamp: DateTime.now().subtract(const Duration(minutes: 30)),
-    ),
-  ];
-});
+import 'package:nfl_survival/data/models/chat_message.dart';
 
 class LeagueChatScreen extends ConsumerStatefulWidget {
   final String leagueId;
@@ -91,7 +27,14 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
   @override
   Widget build(BuildContext context) {
     final chatAsync = ref.watch(leagueChatProvider(widget.leagueId));
-    final isPremium = ref.watch(premiumStatusProvider).valueOrNull ?? false;
+    final isPremium = ref.watch(premiumStatusProvider);
+    
+    print('🏗️ Building chat screen for league: ${widget.leagueId}');
+    print('📊 Chat state: ${chatAsync.when(
+      data: (messages) => '${messages.length} messages',
+      loading: () => 'loading',
+      error: (e, st) => 'error: $e',
+    )}');
 
     return AppScaffold(
       appBar: AppBar(
@@ -246,7 +189,7 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      _formatTime(message.timestamp),
+                      _formatTime(message.createdAt),
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 10,
@@ -286,26 +229,41 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
     }
   }
 
-  void _sendMessage() {
+  void _sendMessage() async {
     final message = _messageController.text.trim();
     if (message.isEmpty) return;
 
-    // Mock sending message
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Message sent! (Mock)')),
-    );
+    final currentUser = ref.read(currentUserProvider);
+    if (currentUser == null) return;
+
+    final chatRepo = ref.read(chatRepositoryProvider);
     
-    _messageController.clear();
-    
-    // Scroll to bottom
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
+    try {
+      await chatRepo.sendMessage(
+        leagueId: widget.leagueId,
+        userId: currentUser.id,
+        userName: currentUser.displayName,
+        message: message,
+      );
+      
+      _messageController.clear();
+      
+      // Scroll to bottom
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to send message: $e')),
         );
       }
-    });
+    }
   }
 }

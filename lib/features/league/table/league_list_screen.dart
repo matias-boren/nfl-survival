@@ -20,7 +20,7 @@ class LeagueListScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final leaguesAsync = ref.watch(userLeaguesProvider);
-    final isPremium = ref.watch(premiumStatusProvider).valueOrNull ?? false;
+    final isPremium = ref.watch(premiumStatusProvider);
 
     return AppScaffold(
       appBar: AppBar(title: const Text('My Leagues')),
@@ -45,7 +45,7 @@ class LeagueListScreen extends ConsumerWidget {
                     final league = leagues[index];
                     return ListTile(
                       title: Text(league.name),
-                      subtitle: Text('Season: ${league.season} | Members: ${league.memberIds.length}'),
+                      subtitle: Text('Season: ${league.season}'),
                       onTap: () => context.go('/league/${league.id}'),
                     );
                   },

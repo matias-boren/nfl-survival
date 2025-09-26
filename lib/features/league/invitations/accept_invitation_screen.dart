@@ -241,7 +241,7 @@ class _AcceptInvitationScreenState extends ConsumerState<AcceptInvitationScreen>
     return Column(
       children: [
         _buildDetailRow('Max Losses', _league!.settings.maxLosses.toString()),
-        _buildDetailRow('Max Teams', _league!.settings.maxTeams?.toString() ?? 'No limit'),
+        _buildDetailRow('Tiebreaker', 'Points For (total points scored by picked teams)'),
         _buildDetailRow('Visibility', _league!.visibility == LeagueVisibility.PUBLIC ? 'Public' : 'Private'),
         _buildDetailRow('Allow Team Reuse', _league!.settings.allowTeamReuse ? 'Yes' : 'No'),
       ],

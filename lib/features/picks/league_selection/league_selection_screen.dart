@@ -13,7 +13,7 @@ class LeagueSelectionScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final leaguesAsync = ref.watch(userLeaguesProvider);
-    final isPremium = ref.watch(premiumStatusProvider).valueOrNull ?? false;
+    final isPremium = ref.watch(premiumStatusProvider);
 
     return AppScaffold(
       appBar: AppBar(
@@ -121,7 +121,7 @@ class LeagueSelectionScreen extends ConsumerWidget {
                           children: [
                             const SizedBox(height: 4),
                             Text(
-                              '${league.memberIds.length} members',
+                              'Season ${league.season}',
                               style: TextStyle(
                                 color: Colors.grey[600],
                                 fontSize: 14,
