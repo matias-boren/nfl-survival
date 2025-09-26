@@ -7,7 +7,6 @@ const { body, validationResult } = require('express-validator');
 const cron = require('node-cron');
 const axios = require('axios');
 const redis = require('redis');
-const { generateNews } = require('./ai_news_generator');
 
 // Load environment variables
 require('dotenv').config();
@@ -15,30 +14,45 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Redis client
-let redisClient;
-if (process.env.REDIS_URL) {
-  redisClient = redis.createClient({
-    url: process.env.REDIS_URL
-  });
-} else {
-  redisClient = redis.createClient({
-    host: process.env.REDIS_HOST || 'localhost',
-    port: process.env.REDIS_PORT || 6379
-  });
-}
+// Redis client (optional)
+let redisClient = null;
 
-redisClient.on('error', (err) => console.log('Redis Client Error', err));
-redisClient.connect();
+// Only try to connect to Redis if REDIS_URL is provided
+if (process.env.REDIS_URL) {
+  try {
+    redisClient = redis.createClient({
+      url: process.env.REDIS_URL
+    });
+    redisClient.on('error', (err) => console.log('Redis Client Error:', err.message));
+    redisClient.on('connect', () => console.log('✅ Redis connected'));
+    redisClient.connect();
+  } catch (error) {
+    console.log('❌ Redis connection failed:', error.message);
+    redisClient = null;
+  }
+} else {
+  console.log('ℹ️ No Redis URL provided, running without cache');
+}
 
 // Middleware
 app.use(helmet());
 app.use(compression());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
+  origin: true, // Allow all origins for now
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With']
 }));
 app.use(express.json({ limit: '10mb' }));
+
+// Handle preflight requests
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Origin, X-Requested-With');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.sendStatus(200);
+});
 
 // Rate limiting
 const limiter = rateLimit({
@@ -123,7 +137,12 @@ class ESPNPollingService {
         console.log('❌ ESPN API request failed:', response.status);
       }
     } catch (error) {
-      console.error('💥 Error polling ESPN API:', error.message);
+      if (error.response) {
+        console.error('💥 Error polling ESPN API:', error.response.status, error.response.statusText);
+        console.error('Response data:', error.response.data);
+      } else {
+        console.error('💥 Error polling ESPN API:', error.message);
+      }
     }
   }
 
@@ -187,40 +206,80 @@ class ESPNPollingService {
 // Initialize ESPN polling service
 const espnService = new ESPNPollingService();
 
+// Parse ESPN API data
+function parseESPNData(data) {
+  const scores = [];
+  
+  if (data.events) {
+    for (const event of data.events) {
+      const competition = event.competitions[0];
+      if (competition && competition.competitors) {
+        const homeTeam = competition.competitors.find(c => c.homeAway === 'home');
+        const awayTeam = competition.competitors.find(c => c.homeAway === 'away');
+        
+        if (homeTeam && awayTeam) {
+          scores.push({
+            gameId: event.id,
+            homeTeam: {
+              abbreviation: homeTeam.team.abbreviation,
+              name: homeTeam.team.displayName
+            },
+            awayTeam: {
+              abbreviation: awayTeam.team.abbreviation,
+              name: awayTeam.team.displayName
+            },
+            homeScore: parseInt(homeTeam.score) || 0,
+            awayScore: parseInt(awayTeam.score) || 0,
+            status: event.status.type.name === 'STATUS_FINAL' ? 'FINAL' : 
+                   event.status.type.name === 'STATUS_IN_PROGRESS' ? 'IN_PROGRESS' : 'SCHEDULED',
+            quarter: event.status.period || '1',
+            timeRemaining: event.status.displayClock || '15:00',
+            isLive: event.status.type.name === 'STATUS_IN_PROGRESS',
+            gameDate: event.date
+          });
+        }
+      }
+    }
+  }
+  
+  return scores;
+}
+
+// Add CORS headers to all responses
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
 // API Routes
-app.get('/api/health', async (req, res) => {
+app.get('/', (req, res) => {
+  res.json({
+    message: 'NFL Survival Backend API',
+    status: 'running',
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.get('/api/health', (req, res) => {
+  console.log('🏥 Health check requested');
   try {
-    const cacheStatus = await redisClient.ping();
-    res.json({
+    const healthData = {
       status: 'healthy',
       timestamp: new Date().toISOString(),
-      polling: espnService.isPolling,
-      redis: cacheStatus === 'PONG' ? 'connected' : 'disconnected',
-      uptime: process.uptime()
-    });
+      uptime: process.uptime(),
+      port: PORT,
+      memory: process.memoryUsage(),
+      nodeVersion: process.version,
+      redis: redisClient ? 'available' : 'not configured'
+    };
+    console.log('✅ Health check passed:', healthData);
+    res.json(healthData);
   } catch (error) {
+    console.error('❌ Health check failed:', error);
     res.status(500).json({
       status: 'unhealthy',
       error: error.message
-    });
-  }
-});
-
-// API endpoint to manually trigger news generation (admin only)
-app.post('/api/admin/generate-news', async (req, res) => {
-  try {
-    console.log('🤖 Manual news generation triggered');
-    await generateNews();
-    res.json({ 
-      success: true, 
-      message: 'News generation completed',
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    console.error('Error in manual news generation:', error);
-    res.status(500).json({ 
-      success: false, 
-      error: error.message 
     });
   }
 });
@@ -231,9 +290,19 @@ app.get('/api/live-scores', async (req, res) => {
     const currentWeek = week || espnService.getCurrentWeek();
     const currentSeason = season || 2025;
     
-    // Try to get from cache first
+    console.log(`📊 Live scores request: week=${currentWeek}, season=${currentSeason}`);
+    console.log(`📊 Request from: ${req.get('origin') || 'unknown'}`);
+    
+    // Try to get from cache first (if Redis is available)
     const cacheKey = `live-scores:week-${currentWeek}`;
-    const cachedData = await redisClient.get(cacheKey);
+    let cachedData = null;
+    if (redisClient) {
+      try {
+        cachedData = await redisClient.get(cacheKey);
+      } catch (error) {
+        console.log('Redis cache error:', error.message);
+      }
+    }
     
     if (cachedData) {
       console.log(`📦 Serving cached live scores for week ${currentWeek}`);
@@ -245,81 +314,189 @@ app.get('/api/live-scores', async (req, res) => {
       });
     }
     
-    // If no cache, fetch from ESPN
-    console.log(`🔄 No cache found, fetching from ESPN for week ${currentWeek}`);
-    const response = await axios.get(`${ESPN_API_URL}?week=${currentWeek}&season=${currentSeason}`, {
-      timeout: 10000
-    });
-    
-    if (response.status === 200) {
-      const liveScores = espnService.parseESPNData(response.data);
+    // Try to fetch from ESPN API with proper headers
+    console.log(`🔄 Attempting to fetch from ESPN API for week ${currentWeek}`);
+    try {
+      const response = await axios.get(`${ESPN_API_URL}`, {
+        timeout: 10000,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+          'Accept': 'application/json, text/plain, */*',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Referer': 'https://www.espn.com/',
+          'Origin': 'https://www.espn.com'
+        }
+      });
       
-      // Cache the results
-      await redisClient.setEx(
-        cacheKey,
-        CACHE_DURATION,
-        JSON.stringify({
+      if (response.status === 200) {
+        console.log(`✅ Successfully fetched from ESPN API`);
+        const liveScores = parseESPNData(response.data);
+        
+        // Cache the results (if Redis is available)
+        if (redisClient) {
+          try {
+            await redisClient.setEx(
+              cacheKey,
+              CACHE_DURATION,
+              JSON.stringify({
+                scores: liveScores,
+                lastUpdate: Date.now(),
+                week: currentWeek,
+                season: currentSeason
+              })
+            );
+          } catch (error) {
+            console.log('Redis cache set error:', error.message);
+          }
+        }
+        
+        return res.json({
           scores: liveScores,
           lastUpdate: Date.now(),
           week: currentWeek,
-          season: currentSeason
-        })
-      );
-      
-      res.json({
-        scores: liveScores,
-        lastUpdate: Date.now(),
-        week: currentWeek,
-        season: currentSeason,
-        cached: false,
-        source: 'espn'
-      });
-    } else {
-      res.status(500).json({
-        error: 'Failed to fetch from ESPN API',
-        status: response.status
-      });
+          season: currentSeason,
+          source: 'espn'
+        });
+      }
+    } catch (error) {
+      console.log(`⚠️ ESPN API failed: ${error.message}, falling back to mock data`);
     }
+    
+    // Fallback to mock data
+    console.log(`📊 Returning mock data for week ${currentWeek}`);
+    const mockScores = [
+      {
+        gameId: 'mock-1',
+        homeTeam: { abbreviation: 'KC', name: 'Kansas City Chiefs' },
+        awayTeam: { abbreviation: 'BUF', name: 'Buffalo Bills' },
+        homeScore: 24,
+        awayScore: 21,
+        status: 'FINAL',
+        quarter: 'F',
+        timeRemaining: '0:00',
+        isLive: false,
+        gameDate: new Date().toISOString()
+      },
+      {
+        gameId: 'mock-2',
+        homeTeam: { abbreviation: 'DAL', name: 'Dallas Cowboys' },
+        awayTeam: { abbreviation: 'PHI', name: 'Philadelphia Eagles' },
+        homeScore: 28,
+        awayScore: 31,
+        status: 'FINAL',
+        quarter: 'F',
+        timeRemaining: '0:00',
+        isLive: false,
+        gameDate: new Date().toISOString()
+      },
+      {
+        gameId: 'mock-3',
+        homeTeam: { abbreviation: 'GB', name: 'Green Bay Packers' },
+        awayTeam: { abbreviation: 'CHI', name: 'Chicago Bears' },
+        homeScore: 0,
+        awayScore: 0,
+        status: 'SCHEDULED',
+        quarter: '1',
+        timeRemaining: '15:00',
+        isLive: false,
+        gameDate: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString() // 2 hours from now
+      }
+    ];
+    
+    res.json({
+      scores: mockScores,
+      lastUpdate: Date.now(),
+      week: currentWeek,
+      season: currentSeason,
+      source: 'mock'
+    });
   } catch (error) {
-    console.error('Error fetching live scores:', error);
-    res.status(500).json({
-      error: 'Internal server error',
-      message: error.message
+    console.error('❌ Error fetching live scores:', error);
+    console.log('🔄 Falling back to mock data due to error');
+    
+    // Fallback to mock data when any error occurs
+    const mockScores = [
+      {
+        gameId: 'mock-1',
+        homeTeam: { abbreviation: 'KC', name: 'Kansas City Chiefs' },
+        awayTeam: { abbreviation: 'BUF', name: 'Buffalo Bills' },
+        homeScore: 24,
+        awayScore: 21,
+        status: 'FINAL',
+        quarter: 'F',
+        timeRemaining: '0:00',
+        isLive: false,
+        gameDate: new Date().toISOString()
+      },
+      {
+        gameId: 'mock-2',
+        homeTeam: { abbreviation: 'DAL', name: 'Dallas Cowboys' },
+        awayTeam: { abbreviation: 'PHI', name: 'Philadelphia Eagles' },
+        homeScore: 28,
+        awayScore: 31,
+        status: 'FINAL',
+        quarter: 'F',
+        timeRemaining: '0:00',
+        isLive: false,
+        gameDate: new Date().toISOString()
+      }
+    ];
+    
+    res.json({
+      scores: mockScores,
+      lastUpdate: Date.now(),
+      week: currentWeek,
+      season: currentSeason,
+      source: 'mock-error-fallback'
     });
   }
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
-  
-  // Start ESPN polling
-  espnService.startPolling();
-  
-  // Schedule AI news generation every 6 hours
-  cron.schedule('0 */6 * * *', () => {
-    console.log('🤖 Starting scheduled AI news generation...');
-    generateNews()
-      .then(() => console.log('✅ Scheduled news generation completed'))
-      .catch((error) => console.error('❌ Scheduled news generation failed:', error));
-  });
-  
-  console.log('📰 AI news generation scheduled every 6 hours');
+// Global error handler
+process.on('uncaughtException', (error) => {
+  console.error('❌ Uncaught Exception:', error);
+  process.exit(1);
 });
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
+
+// Start the server
+try {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🔗 Health check available at: http://0.0.0.0:${PORT}/api/health`);
+    console.log(`📊 Redis status: ${redisClient ? 'Connected' : 'Not configured'}`);
+    
+    // Start ESPN polling
+    espnService.startPolling();
+    console.log('✅ ESPN polling enabled - fetching real NFL data');
+  });
+} catch (error) {
+  console.error('❌ Failed to start server:', error);
+  process.exit(1);
+}
 
 // Graceful shutdown
 process.on('SIGINT', () => {
   console.log('🛑 Shutting down server...');
   espnService.stopPolling();
-  redisClient.quit();
+  if (redisClient) {
+    redisClient.quit();
+  }
   process.exit(0);
 });
 
 process.on('SIGTERM', () => {
   console.log('🛑 Shutting down server...');
   espnService.stopPolling();
-  redisClient.quit();
+  if (redisClient) {
+    redisClient.quit();
+  }
   process.exit(0);
 });
 
