@@ -1,0 +1,6 @@
+Changing current working directory to: /Users/matias.nygard/nfl_survival
+00:00 +0: loading /Users/matias.nygard/nfl_survival/scripts/test/performance                                                                                                                           00:00 +0 -1: loading /Users/matias.nygard/nfl_survival/scripts/test/performance [E]                                                                                                                    
+  Failed to load "/Users/matias.nygard/nfl_survival/scripts/test/performance": Does not exist.
+
+To run this test again: /opt/homebrew/share/flutter/bin/cache/dart-sdk/bin/dart test /Users/matias.nygard/nfl_survival/scripts/test/performance -p vm --plain-name 'loading /Users/matias.nygard/nfl_survival/scripts/test/performance'
+00:00 +0 -1: Some tests failed.                                                                                                                                                                        

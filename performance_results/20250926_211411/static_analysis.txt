@@ -1,0 +1,379 @@
+Analyzing nfl_survival...                                       
+
+warning • Unused import: 'package:nfl_survival/data/auth/mock_auth_repository.dart' • lib/app/providers.dart:11:8 • unused_import
+warning • Unused import: 'package:nfl_survival/data/leagues/mock_league_repository.dart' • lib/app/providers.dart:16:8 • unused_import
+warning • Unused import: 'package:nfl_survival/data/nfl/mock_nfl_repository.dart' • lib/app/providers.dart:18:8 • unused_import
+warning • Unused import: 'package:nfl_survival/data/picks/mock_picks_repository.dart' • lib/app/providers.dart:21:8 • unused_import
+warning • Unused import: 'package:nfl_survival/data/chat/mock_chat_repository.dart' • lib/app/providers.dart:36:8 • unused_import
+warning • Duplicate import • lib/app/providers.dart:43:8 • duplicate_import
+   info • Don't invoke 'print' in production code • lib/app/providers.dart:75:3 • avoid_print
+   info • Don't invoke 'print' in production code • lib/app/providers.dart:158:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/app/providers.dart:167:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/app/providers.dart:169:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/app/providers.dart:278:5 • avoid_print
+warning • The operand can't be 'null', so the condition is always 'false' • lib/app/providers.dart:313:14 • unnecessary_null_comparison
+warning • Dead code • lib/app/providers.dart:313:23 • dead_code
+warning • Unused import: 'dart:async' • lib/app/router.dart:1:8 • unused_import
+   info • The constant name 'USE_SERVER_SYNC' isn't a lowerCamelCase identifier • lib/core/config/api_config.dart:4:21 • constant_identifier_names
+   info • The constant name 'USE_DIRECT_ESPN' isn't a lowerCamelCase identifier • lib/core/config/api_config.dart:5:21 • constant_identifier_names
+   info • The constant name 'SERVER_BASE_URL' isn't a lowerCamelCase identifier • lib/core/config/api_config.dart:8:23 • constant_identifier_names
+   info • The constant name 'SERVER_LIVE_SCORES_ENDPOINT' isn't a lowerCamelCase identifier • lib/core/config/api_config.dart:9:23 • constant_identifier_names
+   info • The constant name 'ESPN_POLLING_INTERVAL_SECONDS' isn't a lowerCamelCase identifier • lib/core/config/api_config.dart:12:20 • constant_identifier_names
+   info • The constant name 'ESPN_RATE_LIMIT_REQUESTS_PER_MINUTE' isn't a lowerCamelCase identifier • lib/core/config/api_config.dart:13:20 • constant_identifier_names
+   info • The constant name 'CACHE_DURATION_SECONDS' isn't a lowerCamelCase identifier • lib/core/config/api_config.dart:16:20 • constant_identifier_names
+   info • The constant name 'ENABLE_CACHING' isn't a lowerCamelCase identifier • lib/core/config/api_config.dart:17:21 • constant_identifier_names
+   info • The constant name 'MAX_REQUESTS_PER_USER_PER_MINUTE' isn't a lowerCamelCase identifier • lib/core/config/api_config.dart:20:20 • constant_identifier_names
+   info • The constant name 'MAX_CONCURRENT_USERS' isn't a lowerCamelCase identifier • lib/core/config/api_config.dart:21:20 • constant_identifier_names
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:50:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:54:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:68:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:79:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:84:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:91:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:95:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:99:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:105:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:109:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:117:11 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:124:11 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:126:11 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:130:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:132:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:147:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:161:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:181:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/automated_result_processor.dart:216:7 • avoid_print
+warning • The declaration '_clearProcessedGames' isn't referenced • lib/core/services/automated_result_processor.dart:239:8 • unused_element
+warning • Unused import: 'package:nfl_survival/data/models/nfl.dart' • lib/core/services/deadline_service.dart:3:8 • unused_import
+warning • Unused import: 'package:nfl_survival/data/nfl/nfl_repositories.dart' • lib/core/services/deadline_service.dart:4:8 • unused_import
+   info • Don't invoke 'print' in production code • lib/core/services/deadline_service.dart:47:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/deadline_service.dart:50:7 • avoid_print
+warning • The declaration '_getNextSunday' isn't referenced • lib/core/services/deadline_service.dart:60:12 • unused_element
+warning • The declaration '_getNextThursday' isn't referenced • lib/core/services/deadline_service.dart:69:12 • unused_element
+   info • Don't invoke 'print' in production code • lib/core/services/deadline_service.dart:80:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/deadline_service.dart:82:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/deadline_service.dart:86:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/live_scores_service.dart:34:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/live_scores_service.dart:51:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/live_scores_service.dart:66:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/live_scores_service.dart:72:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/live_scores_service.dart:77:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/live_scores_service.dart:102:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/live_scores_service.dart:109:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/live_scores_service.dart:151:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/result_processing_service.dart:27:5 • avoid_print
+warning • The operand can't be 'null', so the condition is always 'false' • lib/core/services/result_processing_service.dart:31:16 • unnecessary_null_comparison
+warning • Dead code • lib/core/services/result_processing_service.dart:31:25 • dead_code
+   info • Don't invoke 'print' in production code • lib/core/services/result_processing_service.dart:37:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/result_processing_service.dart:41:5 • avoid_print
+warning • Dead code • lib/core/services/result_processing_service.dart:51:37 • dead_code
+warning • The left operand can't be null, so the right operand is never executed • lib/core/services/result_processing_service.dart:51:40 • dead_null_aware_expression
+warning • The left operand can't be null, so the right operand is never executed • lib/core/services/result_processing_service.dart:52:40 • dead_null_aware_expression
+   info • Don't invoke 'print' in production code • lib/core/services/result_processing_service.dart:58:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/result_processing_service.dart:140:9 • avoid_print
+warning • The operand can't be 'null', so the condition is always 'false' • lib/core/services/result_processing_service.dart:188:24 • unnecessary_null_comparison
+warning • The operand can't be 'null', so the condition is always 'false' • lib/core/services/result_processing_service.dart:188:50 • unnecessary_null_comparison
+warning • Dead code • lib/core/services/result_processing_service.dart:188:59 • dead_code
+warning • The '!' will have no effect because the receiver can't be null • lib/core/services/result_processing_service.dart:190:23 • unnecessary_non_null_assertion
+warning • The '!' will have no effect because the receiver can't be null • lib/core/services/result_processing_service.dart:190:41 • unnecessary_non_null_assertion
+   info • Don't invoke 'print' in production code • lib/core/services/server_sync_service.dart:38:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/server_sync_service.dart:55:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/server_sync_service.dart:70:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/server_sync_service.dart:76:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/server_sync_service.dart:95:11 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/server_sync_service.dart:101:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/server_sync_service.dart:106:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/server_sync_service.dart:144:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/server_sync_service.dart:163:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/server_sync_service.dart:167:7 • avoid_print
+warning • Unused import: 'package:nfl_survival/core/services/points_calculation_service.dart' • lib/core/services/standings_service.dart:5:8 • unused_import
+   info • Don't invoke 'print' in production code • lib/core/services/standings_service.dart:22:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/standings_service.dart:26:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/standings_service.dart:34:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/services/standings_service.dart:54:9 • avoid_print
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/core/services/team_logo_service.dart:99:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/core/services/team_logo_service.dart:101:49 • deprecated_member_use
+   info • Don't invoke 'print' in production code • lib/data/auth/mock_auth_repository.dart:18:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/auth/mock_auth_repository.dart:30:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/auth/supabase_auth_repository.dart:41:13 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/auth/supabase_auth_repository.dart:43:13 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/auth/supabase_auth_repository.dart:46:11 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/auth/supabase_auth_repository.dart:103:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/auth/supabase_auth_repository.dart:105:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/auth/supabase_auth_repository.dart:108:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/auth/supabase_auth_repository.dart:145:7 • avoid_print
+warning • The value of the local variable 'response' isn't used • lib/data/auth/supabase_auth_repository.dart:154:11 • unused_local_variable
+   info • Don't invoke 'print' in production code • lib/data/chat/supabase_chat_repository.dart:10:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/chat/supabase_chat_repository.dart:15:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/chat/supabase_chat_repository.dart:22:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/chat/supabase_chat_repository.dart:38:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/chat/supabase_chat_repository.dart:50:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/chat/supabase_chat_repository.dart:54:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/chat/supabase_chat_repository.dart:63:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/chat/supabase_chat_repository.dart:71:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/chat/supabase_chat_repository.dart:79:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:11:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:12:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:45:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:46:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:54:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:55:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:63:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:64:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:72:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:73:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:98:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:99:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:105:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:123:5 • avoid_print
+warning • The value of the local variable 'response' isn't used • lib/data/leagues/supabase_league_repository.dart:155:22 • unused_local_variable
+warning • The method doesn't override an inherited method • lib/data/leagues/supabase_league_repository.dart:177:19 • override_on_non_overriding_member
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:237:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:238:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:239:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:241:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:242:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:243:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:244:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:248:7 • avoid_print
+warning • The declaration '_getMemberCount' isn't referenced • lib/data/leagues/supabase_league_repository.dart:277:15 • unused_element
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:279:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:280:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:288:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:289:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:290:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:293:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:296:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:297:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:298:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:302:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:307:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:308:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:311:9 • avoid_print
+warning • The declaration '_getMemberIds' isn't referenced • lib/data/leagues/supabase_league_repository.dart:318:24 • unused_element
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:326:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/leagues/supabase_league_repository.dart:329:7 • avoid_print
+   info • The constant name 'PUBLIC' isn't a lowerCamelCase identifier • lib/data/models/league.dart:6:25 • constant_identifier_names
+   info • The constant name 'PRIVATE' isn't a lowerCamelCase identifier • lib/data/models/league.dart:6:33 • constant_identifier_names
+   info • The constant name 'SCHEDULED' isn't a lowerCamelCase identifier • lib/data/models/nfl.dart:6:19 • constant_identifier_names
+   info • The constant name 'IN_PROGRESS' isn't a lowerCamelCase identifier • lib/data/models/nfl.dart:6:30 • constant_identifier_names
+   info • The constant name 'FINAL' isn't a lowerCamelCase identifier • lib/data/models/nfl.dart:6:43 • constant_identifier_names
+   info • The constant name 'PENDING' isn't a lowerCamelCase identifier • lib/data/models/pick.dart:6:19 • constant_identifier_names
+   info • The constant name 'WIN' isn't a lowerCamelCase identifier • lib/data/models/pick.dart:6:28 • constant_identifier_names
+   info • The constant name 'LOSE' isn't a lowerCamelCase identifier • lib/data/models/pick.dart:6:33 • constant_identifier_names
+  error • Missing concrete implementations of 'getter mixin _$EspnGame on Object.competitions', 'getter mixin _$EspnGame on Object.date', 'getter mixin _$EspnGame on Object.id', 'getter mixin _$EspnGame on Object.name', and 5 more • lib/data/nfl/api_models.dart:8:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnDate on Object.date' and 'mixin _$EspnDate on Object.toJson' • lib/data/nfl/api_models.dart:24:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnCompetition on Object.attendance', 'getter mixin _$EspnCompetition on Object.broadcast', 'getter mixin _$EspnCompetition on Object.competitors', 'getter mixin _$EspnCompetition on Object.date', and 10 more • lib/data/nfl/api_models.dart:33:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnCompetitor on Object.homeAway', 'getter mixin _$EspnCompetitor on Object.id', 'getter mixin _$EspnCompetitor on Object.leaders', 'getter mixin _$EspnCompetitor on Object.order', and 8 more • lib/data/nfl/api_models.dart:54:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnTeam on Object.abbreviation', 'getter mixin _$EspnTeam on Object.alternateColor', 'getter mixin _$EspnTeam on Object.color', 'getter mixin _$EspnTeam on Object.displayName', and 8 more • lib/data/nfl/api_models.dart:73:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnLogo on Object.alt', 'getter mixin _$EspnLogo on Object.height', 'getter mixin _$EspnLogo on Object.href', 'getter mixin _$EspnLogo on Object.rel', and 2 more • lib/data/nfl/api_models.dart:92:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnScore on Object.displayValue', 'getter mixin _$EspnScore on Object.value', and 'mixin _$EspnScore on Object.toJson' • lib/data/nfl/api_models.dart:105:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnRecord on Object.abbreviation', 'getter mixin _$EspnRecord on Object.name', 'getter mixin _$EspnRecord on Object.summary', 'getter mixin _$EspnRecord on Object.type', and 1 more • lib/data/nfl/api_models.dart:115:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnWinner on Object.displayValue', 'getter mixin _$EspnWinner on Object.value', and 'mixin _$EspnWinner on Object.toJson' • lib/data/nfl/api_models.dart:127:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnStatistic on Object.label', 'getter mixin _$EspnStatistic on Object.value', and 'mixin _$EspnStatistic on Object.toJson' • lib/data/nfl/api_models.dart:137:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnLeader on Object.abbreviation', 'getter mixin _$EspnLeader on Object.displayName', 'getter mixin _$EspnLeader on Object.leaders', 'getter mixin _$EspnLeader on Object.shortDisplayName', and 1 more • lib/data/nfl/api_models.dart:147:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnLeaderLeaders on Object.displayValue', 'getter mixin _$EspnLeaderLeaders on Object.value', and 'mixin _$EspnLeaderLeaders on Object.toJson' • lib/data/nfl/api_models.dart:159:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnStatus on Object.clock', 'getter mixin _$EspnStatus on Object.completed', 'getter mixin _$EspnStatus on Object.description', 'getter mixin _$EspnStatus on Object.detail', and 5 more • lib/data/nfl/api_models.dart:169:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnType on Object.abbreviation', 'getter mixin _$EspnType on Object.id', and 'mixin _$EspnType on Object.toJson' • lib/data/nfl/api_models.dart:185:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnBroadcast on Object.market', 'getter mixin _$EspnBroadcast on Object.names', and 'mixin _$EspnBroadcast on Object.toJson' • lib/data/nfl/api_models.dart:195:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnVenue on Object.address', 'getter mixin _$EspnVenue on Object.capacity', 'getter mixin _$EspnVenue on Object.city', 'getter mixin _$EspnVenue on Object.country', and 7 more • lib/data/nfl/api_models.dart:205:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnCity on Object.id', 'getter mixin _$EspnCity on Object.name', and 'mixin _$EspnCity on Object.toJson' • lib/data/nfl/api_models.dart:223:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnState on Object.abbreviation', 'getter mixin _$EspnState on Object.id', 'getter mixin _$EspnState on Object.name', and 'mixin _$EspnState on Object.toJson' • lib/data/nfl/api_models.dart:233:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnStartDate on Object.displayValue', 'getter mixin _$EspnStartDate on Object.value', and 'mixin _$EspnStartDate on Object.toJson' • lib/data/nfl/api_models.dart:244:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnWeather on Object.conditionId', 'getter mixin _$EspnWeather on Object.displayValue', 'getter mixin _$EspnWeather on Object.highTemperature', 'getter mixin _$EspnWeather on Object.link', and 1 more • lib/data/nfl/api_models.dart:254:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnReferee on Object.displayName', 'getter mixin _$EspnReferee on Object.fullName', 'getter mixin _$EspnReferee on Object.homeAway', 'getter mixin _$EspnReferee on Object.id', and 2 more • lib/data/nfl/api_models.dart:266:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnWeek on Object.number' and 'mixin _$EspnWeek on Object.toJson' • lib/data/nfl/api_models.dart:279:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnSeason on Object.type', 'getter mixin _$EspnSeason on Object.year', and 'mixin _$EspnSeason on Object.toJson' • lib/data/nfl/api_models.dart:288:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnNflResponse on Object.events', 'getter mixin _$EspnNflResponse on Object.league', 'getter mixin _$EspnNflResponse on Object.season', 'getter mixin _$EspnNflResponse on Object.week', and 1 more • lib/data/nfl/api_models.dart:299:7 • non_abstract_class_inherits_abstract_member
+  error • Missing concrete implementations of 'getter mixin _$EspnTeamsResponse on Object.league', 'getter mixin _$EspnTeamsResponse on Object.season', 'getter mixin _$EspnTeamsResponse on Object.teams', and 'mixin _$EspnTeamsResponse on Object.toJson' • lib/data/nfl/api_models.dart:311:7 • non_abstract_class_inherits_abstract_member
+warning • The value of the local variable 'currentDate' isn't used • lib/data/nfl/hybrid_nfl_repository.dart:17:13 • unused_local_variable
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:19:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:33:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:37:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:42:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:45:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:50:11 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:55:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:59:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:121:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:123:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:127:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:130:11 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:137:11 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:153:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:154:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:155:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:156:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:157:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:158:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:159:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:160:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:195:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:198:7 • avoid_print
+   info • The member 'getPickDeadline' overrides an inherited member but isn't annotated with '@override' • lib/data/nfl/hybrid_nfl_repository.dart:348:21 • annotate_overrides
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:352:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:358:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/hybrid_nfl_repository.dart:362:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/mock_nfl_repository.dart:7:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/nfl/mock_nfl_repository.dart:105:5 • avoid_print
+  error • Missing concrete implementation of 'abstract class NflRepository.getPickDeadline' • lib/data/nfl/real_nfl_repository.dart:6:7 • non_abstract_class_inherits_abstract_member
+warning • The value of the field '_apiKey' isn't used • lib/data/nfl/real_nfl_repository.dart:8:23 • unused_field
+  error • The name 'Game' isn't a type, so it can't be used as a type argument • lib/data/nfl/real_nfl_repository.dart:15:15 • non_type_as_type_argument
+  error • The name 'Team' isn't a type, so it can't be used as a type argument • lib/data/nfl/real_nfl_repository.dart:39:15 • non_type_as_type_argument
+  error • The name 'LiveScore' isn't a type, so it can't be used as a type argument • lib/data/nfl/real_nfl_repository.dart:63:15 • non_type_as_type_argument
+  error • The method 'LiveScore' isn't defined for the type 'RealNflRepository' • lib/data/nfl/real_nfl_repository.dart:72:34 • undefined_method
+  error • The property 'id' can't be unconditionally accessed because the receiver can be 'null' • lib/data/nfl/real_nfl_repository.dart:73:22 • unchecked_use_of_nullable_value
+  error • The property 'homeTeam' can't be unconditionally accessed because the receiver can be 'null' • lib/data/nfl/real_nfl_repository.dart:74:24 • unchecked_use_of_nullable_value
+  error • The property 'awayTeam' can't be unconditionally accessed because the receiver can be 'null' • lib/data/nfl/real_nfl_repository.dart:75:24 • unchecked_use_of_nullable_value
+  error • The property 'homeScore' can't be unconditionally accessed because the receiver can be 'null' • lib/data/nfl/real_nfl_repository.dart:76:25 • unchecked_use_of_nullable_value
+  error • The property 'awayScore' can't be unconditionally accessed because the receiver can be 'null' • lib/data/nfl/real_nfl_repository.dart:77:25 • unchecked_use_of_nullable_value
+  error • The property 'status' can't be unconditionally accessed because the receiver can be 'null' • lib/data/nfl/real_nfl_repository.dart:78:41 • unchecked_use_of_nullable_value
+  error • The property 'quarter' can't be unconditionally accessed because the receiver can be 'null' • lib/data/nfl/real_nfl_repository.dart:79:23 • unchecked_use_of_nullable_value
+  error • The property 'timeRemaining' can't be unconditionally accessed because the receiver can be 'null' • lib/data/nfl/real_nfl_repository.dart:80:29 • unchecked_use_of_nullable_value
+  error • The property 'status' can't be unconditionally accessed because the receiver can be 'null' • lib/data/nfl/real_nfl_repository.dart:81:22 • unchecked_use_of_nullable_value
+  error • Undefined name 'GameStatus' • lib/data/nfl/real_nfl_repository.dart:81:32 • undefined_identifier
+  error • The name 'Game' isn't a type, so it can't be used as a type argument • lib/data/nfl/real_nfl_repository.dart:88:8 • non_type_as_type_argument
+  error • The method 'Game' isn't defined for the type 'RealNflRepository' • lib/data/nfl/real_nfl_repository.dart:108:14 • undefined_method
+  error • The name 'Team' isn't a type, so it can't be used as a type argument • lib/data/nfl/real_nfl_repository.dart:124:8 • non_type_as_type_argument
+  error • Undefined class 'Team' • lib/data/nfl/real_nfl_repository.dart:128:3 • undefined_class
+  error • The method 'Team' isn't defined for the type 'RealNflRepository' • lib/data/nfl/real_nfl_repository.dart:129:12 • undefined_method
+  error • Undefined class 'GameStatus' • lib/data/nfl/real_nfl_repository.dart:140:3 • undefined_class
+  error • Undefined name 'GameStatus' • lib/data/nfl/real_nfl_repository.dart:142:14 • undefined_identifier
+  error • Undefined name 'GameStatus' • lib/data/nfl/real_nfl_repository.dart:144:14 • undefined_identifier
+  error • Undefined name 'GameStatus' • lib/data/nfl/real_nfl_repository.dart:146:14 • undefined_identifier
+  error • Undefined name 'GameStatus' • lib/data/nfl/real_nfl_repository.dart:148:14 • undefined_identifier
+  error • Undefined name 'GameStatus' • lib/data/nfl/real_nfl_repository.dart:150:14 • undefined_identifier
+  error • The body might complete normally, causing 'null' to be returned, but the return type, 'String', is a potentially non-nullable type • lib/data/nfl/real_nfl_repository.dart:158:10 • body_might_complete_normally
+  error • Undefined class 'GameStatus' • lib/data/nfl/real_nfl_repository.dart:158:29 • undefined_class
+  error • Undefined name 'GameStatus' • lib/data/nfl/real_nfl_repository.dart:160:12 • undefined_identifier
+  error • Undefined name 'GameStatus' • lib/data/nfl/real_nfl_repository.dart:162:12 • undefined_identifier
+  error • Undefined name 'GameStatus' • lib/data/nfl/real_nfl_repository.dart:164:12 • undefined_identifier
+   info • Don't invoke 'print' in production code • lib/data/picks/supabase_picks_repository.dart:104:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/picks/supabase_picks_repository.dart:132:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/picks/supabase_picks_repository.dart:161:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/data/picks/supabase_picks_repository.dart:189:7 • avoid_print
+warning • Unused import: 'package:nfl_survival/core/services/automated_result_processor.dart' • lib/features/admin/automated_processing_screen.dart:4:8 • unused_import
+warning • Unused import: 'package:nfl_survival/core/services/live_scores_service.dart' • lib/features/admin/live_scores_monitor_screen.dart:4:8 • unused_import
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/admin/live_scores_monitor_screen.dart:167:52 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/admin/live_scores_monitor_screen.dart:244:34 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/admin/live_scores_monitor_screen.dart:244:65 • deprecated_member_use
+warning • The operand can't be 'null', so the condition is always 'true' • lib/features/admin/live_scores_monitor_screen.dart:269:39 • unnecessary_null_comparison
+warning • The operand can't be 'null', so the condition is always 'true' • lib/features/admin/live_scores_monitor_screen.dart:269:66 • unnecessary_null_comparison
+warning • The operand can't be 'null', so the condition is always 'true' • lib/features/admin/live_scores_monitor_screen.dart:289:41 • unnecessary_null_comparison
+warning • The '!' will have no effect because the receiver can't be null • lib/features/admin/live_scores_monitor_screen.dart:289:71 • unnecessary_non_null_assertion
+warning • The '!' will have no effect because the receiver can't be null • lib/features/admin/live_scores_monitor_screen.dart:291:40 • unnecessary_non_null_assertion
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/features/admin/result_processing_screen.dart:62:19 • deprecated_member_use
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/features/auth/sign_in_screen.dart:174:17 • deprecated_member_use
+warning • The member 'state' can only be used within 'package:state_notifier/state_notifier.dart' or a test • lib/features/auth/sign_in_screen.dart:288:46 • invalid_use_of_visible_for_testing_member
+warning • The member 'state' can only be used within instance members of subclasses of 'StateNotifier' • lib/features/auth/sign_in_screen.dart:288:46 • invalid_use_of_protected_member
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/features/auth/sign_in_screen.dart:450:32 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/features/auth/sign_in_screen.dart:451:40 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/features/auth/sign_in_screen.dart:457:40 • use_build_context_synchronously
+   info • Don't invoke 'print' in production code • lib/features/home/presentation/home_screen.dart:13:3 • avoid_print
+   info • Don't invoke 'print' in production code • lib/features/home/presentation/home_screen.dart:16:3 • avoid_print
+   info • Don't invoke 'print' in production code • lib/features/home/presentation/home_screen.dart:19:3 • avoid_print
+   info • Don't invoke 'print' in production code • lib/features/home/presentation/home_screen.dart:34:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/features/home/presentation/home_screen.dart:35:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/features/home/presentation/home_screen.dart:36:5 • avoid_print
+warning • The receiver can't be null, so the null-aware operator '?.' is unnecessary • lib/features/home/presentation/home_screen.dart:66:61 • invalid_null_aware_operator
+warning • The receiver can't be 'null' because of short-circuiting, so the null-aware operator '?.' can't be used • lib/features/home/presentation/home_screen.dart:66:74 • invalid_null_aware_operator
+warning • The '!' will have no effect because the receiver can't be null • lib/features/home/presentation/home_screen.dart:66:108 • unnecessary_non_null_assertion
+warning • The receiver can't be null, so the null-aware operator '?.' is unnecessary • lib/features/home/presentation/home_screen.dart:66:135 • invalid_null_aware_operator
+   info • Don't invoke 'print' in production code • lib/features/home/presentation/home_screen.dart:104:27 • avoid_print
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/home/presentation/home_screen.dart:109:54 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/home/presentation/home_screen.dart:111:73 • deprecated_member_use
+warning • The value of the local variable 'deadlineService' isn't used • lib/features/home/presentation/home_screen.dart:130:45 • unused_local_variable
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/home/presentation/home_screen.dart:184:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/home/presentation/home_screen.dart:186:66 • deprecated_member_use
+   info • Don't use 'BuildContext's across async gaps • lib/features/home/presentation/home_screen.dart:220:56 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/features/home/presentation/home_screen.dart:223:31 • use_build_context_synchronously
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/home/presentation/home_screen.dart:295:57 • deprecated_member_use
+warning • The operand can't be 'null', so the condition is always 'true' • lib/features/home/presentation/home_screen.dart:331:36 • unnecessary_null_comparison
+warning • The operand can't be 'null', so the condition is always 'true' • lib/features/home/presentation/home_screen.dart:331:62 • unnecessary_null_comparison
+warning • The operand can't be 'null', so the condition is always 'true' • lib/features/home/presentation/home_screen.dart:336:56 • unnecessary_null_comparison
+warning • Dead code • lib/features/home/presentation/home_screen.dart:336:64 • dead_code
+warning • The operand can't be 'null', so the condition is always 'true' • lib/features/home/presentation/home_screen.dart:336:82 • unnecessary_null_comparison
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/home/presentation/home_screen.dart:340:44 • deprecated_member_use
+warning • The value of the local variable 'formatter' isn't used • lib/features/home/presentation/home_screen.dart:425:13 • unused_local_variable
+   info • Use interpolation to compose strings and values • lib/features/home/presentation/home_screen.dart:428:14 • prefer_interpolation_to_compose_strings
+   info • Don't invoke 'print' in production code • lib/features/league/chat/league_chat_screen.dart:32:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/features/league/chat/league_chat_screen.dart:33:5 • avoid_print
+   info • Use 'isNotEmpty' instead of 'length' to test whether the collection is empty • lib/features/league/create/league_create_screen.dart:49:25 • prefer_is_empty
+warning • The member 'state' can only be used within 'package:state_notifier/state_notifier.dart' or a test • lib/features/league/create/league_create_screen.dart:82:46 • invalid_use_of_visible_for_testing_member
+warning • The member 'state' can only be used within instance members of subclasses of 'StateNotifier' • lib/features/league/create/league_create_screen.dart:82:46 • invalid_use_of_protected_member
+   info • 'groupValue' is deprecated and shouldn't be used. Use a RadioGroup ancestor to manage group value instead. This feature was deprecated after v3.32.0-0.0.pre • lib/features/league/create/league_create_screen.dart:163:23 • deprecated_member_use
+   info • 'onChanged' is deprecated and shouldn't be used. Use RadioGroup to handle value change instead. This feature was deprecated after v3.32.0-0.0.pre • lib/features/league/create/league_create_screen.dart:164:23 • deprecated_member_use
+   info • 'groupValue' is deprecated and shouldn't be used. Use a RadioGroup ancestor to manage group value instead. This feature was deprecated after v3.32.0-0.0.pre • lib/features/league/create/league_create_screen.dart:170:23 • deprecated_member_use
+   info • 'onChanged' is deprecated and shouldn't be used. Use RadioGroup to handle value change instead. This feature was deprecated after v3.32.0-0.0.pre • lib/features/league/create/league_create_screen.dart:171:23 • deprecated_member_use
+   info • Don't invoke 'print' in production code • lib/features/league/detail/league_detail_screen.dart:10:3 • avoid_print
+   info • Don't invoke 'print' in production code • lib/features/league/detail/league_detail_screen.dart:12:3 • avoid_print
+warning • The member 'state' can only be used within 'package:state_notifier/state_notifier.dart' or a test • lib/features/league/detail/league_detail_screen.dart:247:46 • invalid_use_of_visible_for_testing_member
+warning • The member 'state' can only be used within instance members of subclasses of 'StateNotifier' • lib/features/league/detail/league_detail_screen.dart:247:46 • invalid_use_of_protected_member
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/league/invitations/accept_invitation_screen.dart:220:63 • deprecated_member_use
+warning • The member 'state' can only be used within 'package:state_notifier/state_notifier.dart' or a test • lib/features/league/invitations/accept_invitation_screen.dart:331:46 • invalid_use_of_visible_for_testing_member
+warning • The member 'state' can only be used within instance members of subclasses of 'StateNotifier' • lib/features/league/invitations/accept_invitation_screen.dart:331:46 • invalid_use_of_protected_member
+warning • Unused import: 'package:go_router/go_router.dart' • lib/features/league/invitations/league_invitations_screen.dart:3:8 • unused_import
+warning • The value of the local variable 'currentUser' isn't used • lib/features/league/invitations/league_invitations_screen.dart:19:11 • unused_local_variable
+   info • Use 'isNotEmpty' instead of 'length' to test whether the collection is empty • lib/features/league/join/join_leagues_screen.dart:132:23 • prefer_is_empty
+warning • The member 'state' can only be used within 'package:state_notifier/state_notifier.dart' or a test • lib/features/league/join/join_leagues_screen.dart:163:46 • invalid_use_of_visible_for_testing_member
+warning • The member 'state' can only be used within instance members of subclasses of 'StateNotifier' • lib/features/league/join/join_leagues_screen.dart:163:46 • invalid_use_of_protected_member
+warning • Unused import: 'package:nfl_survival/data/models/user.dart' • lib/features/league/table/league_list_screen.dart:8:8 • unused_import
+warning • Unused import: 'package:go_router/go_router.dart' • lib/features/news/feed/news_feed_screen.dart:3:8 • unused_import
+warning • Unused import: 'package:nfl_survival/data/scores/scores_repositories.dart' • lib/features/news/feed/news_feed_screen.dart:7:8 • unused_import
+warning • Unused import: 'package:nfl_survival/data/news/mock_news_repository.dart' • lib/features/news/feed/news_feed_screen.dart:9:8 • unused_import
+warning • Unused import: 'package:nfl_survival/data/scores/mock_scores_repository.dart' • lib/features/news/feed/news_feed_screen.dart:10:8 • unused_import
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/news/feed/news_feed_screen.dart:223:63 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/news/feed/news_feed_screen.dart:295:57 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/news/feed/news_feed_screen.dart:442:77 • deprecated_member_use
+warning • The declaration '_getResultIcon' isn't referenced • lib/features/picks/history/picks_history_screen.dart:122:12 • unused_element
+warning • The declaration '_formatDate' isn't referenced • lib/features/picks/history/picks_history_screen.dart:135:10 • unused_element
+   info • Don't invoke 'print' in production code • lib/features/picks/make_pick/make_pick_screen.dart:19:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/features/picks/make_pick/make_pick_screen.dart:25:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/features/picks/make_pick/make_pick_screen.dart:28:5 • avoid_print
+warning • The value of the local variable 'currentUserAsync' isn't used • lib/features/picks/make_pick/make_pick_screen.dart:45:11 • unused_local_variable
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/picks/make_pick/make_pick_screen.dart:73:60 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/picks/make_pick/make_pick_screen.dart:73:91 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/picks/make_pick/make_pick_screen.dart:116:41 • deprecated_member_use
+   info • Don't invoke 'print' in production code • lib/features/picks/make_pick/make_pick_screen.dart:225:5 • avoid_print
+   info • Don't use 'BuildContext's across async gaps • lib/features/picks/make_pick/make_pick_screen.dart:242:32 • use_build_context_synchronously
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/picks/make_pick/make_pick_screen.dart:251:27 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/picks/make_pick/make_pick_screen.dart:252:78 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/picks/make_pick/make_pick_screen.dart:252:109 • deprecated_member_use
+   info • Don't use 'BuildContext's across async gaps • lib/features/settings/settings_screen.dart:68:15 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/features/settings/settings_screen.dart:75:36 • use_build_context_synchronously
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/features/settings/settings_screen.dart:184:17 • deprecated_member_use
+warning • The member 'state' can only be used within 'package:state_notifier/state_notifier.dart' or a test • lib/features/settings/settings_screen.dart:228:60 • invalid_use_of_visible_for_testing_member
+warning • The member 'state' can only be used within instance members of subclasses of 'StateNotifier' • lib/features/settings/settings_screen.dart:228:60 • invalid_use_of_protected_member
+   info • Don't invoke 'print' in production code • test/performance/baseline_measurements.dart:40:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/baseline_measurements.dart:41:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/baseline_measurements.dart:42:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/baseline_measurements.dart:43:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/memory_baseline.dart:16:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/memory_baseline.dart:17:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/memory_baseline.dart:18:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/memory_baseline.dart:19:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/memory_baseline.dart:20:7 • avoid_print
+  error • The function 'MockClient' isn't defined • test/performance/network_baseline.dart:11:26 • undefined_function
+   info • Don't invoke 'print' in production code • test/performance/network_baseline.dart:22:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/network_baseline.dart:23:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/network_baseline.dart:24:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/network_baseline.dart:25:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/provider_rebuilds.dart:17:9 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/provider_rebuilds.dart:22:9 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/provider_rebuilds.dart:28:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/provider_rebuilds.dart:29:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/provider_rebuilds.dart:30:7 • avoid_print
+   info • Don't invoke 'print' in production code • test/performance/provider_rebuilds.dart:31:7 • avoid_print
+warning • Unused import: 'package:nfl_survival/app/router.dart' • test/widget_test.dart:4:8 • unused_import
+   info • Don't invoke 'print' in production code • test_member_count_direct.dart:17:5 • avoid_print
+   info • Don't invoke 'print' in production code • test_member_count_direct.dart:25:5 • avoid_print
+   info • Don't invoke 'print' in production code • test_member_count_direct.dart:26:5 • avoid_print
+   info • Don't invoke 'print' in production code • test_member_count_direct.dart:27:5 • avoid_print
+   info • Don't invoke 'print' in production code • test_member_count_direct.dart:28:5 • avoid_print
+  error • Too many positional arguments: 1 expected, but 2 found • test_member_count_direct.dart:33:22 • extra_positional_arguments
+  error • The name 'FetchOptions' isn't a class • test_member_count_direct.dart:33:28 • creation_with_non_type
+   info • Don't invoke 'print' in production code • test_member_count_direct.dart:36:5 • avoid_print
+  error • The getter 'count' isn't defined for the type 'PostgrestList' • test_member_count_direct.dart:36:44 • undefined_getter
+   info • Don't invoke 'print' in production code • test_member_count_direct.dart:39:5 • avoid_print
+
+375 issues found. (ran in 3.7s)

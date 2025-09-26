@@ -1,0 +1,583 @@
+00:00 +0: loading test/app_smoke_test.dart                                                                                                                                                             00:01 +0: loading test/app_smoke_test.dart                                                                                                                                                             test/providers_smoke_test.dart:23:40: Error: Undefined name 'nflDataRepositoryProvider'.
+    final nflDataRepo = container.read(nflDataRepositoryProvider);
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+test/providers_smoke_test.dart:43:66: Error: The getter 'future' isn't defined for the type 'StateNotifierProvider<CurrentUserNotifier, User?>'.
+ - 'StateNotifierProvider' is from 'package:riverpod/src/state_notifier_provider.dart' ('../.pub-cache/hosted/pub.dev/riverpod-2.6.1/lib/src/state_notifier_provider.dart').
+ - 'CurrentUserNotifier' is from 'package:nfl_survival/app/providers.dart' ('lib/app/providers.dart').
+ - 'User' is from 'package:nfl_survival/data/models/user.dart' ('lib/data/models/user.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'future'.
+    final currentUser = await container.read(currentUserProvider.future);
+                                                                 ^^^^^^
+test/providers_smoke_test.dart:47:66: Error: The getter 'future' isn't defined for the type 'Provider<bool>'.
+ - 'Provider' is from 'package:riverpod/src/provider.dart' ('../.pub-cache/hosted/pub.dev/riverpod-2.6.1/lib/src/provider.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'future'.
+    final isPremium = await container.read(premiumStatusProvider.future);
+                                                                 ^^^^^^
+00:01 +0 -1: loading test/providers_smoke_test.dart [E]                                                                                                                                                
+  Failed to load "test/providers_smoke_test.dart":
+  Compilation failed for testPath=test/providers_smoke_test.dart: test/providers_smoke_test.dart:23:40: Error: Undefined name 'nflDataRepositoryProvider'.
+      final nflDataRepo = container.read(nflDataRepositoryProvider);
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  test/providers_smoke_test.dart:43:66: Error: The getter 'future' isn't defined for the type 'StateNotifierProvider<CurrentUserNotifier, User?>'.
+   - 'StateNotifierProvider' is from 'package:riverpod/src/state_notifier_provider.dart' ('../.pub-cache/hosted/pub.dev/riverpod-2.6.1/lib/src/state_notifier_provider.dart').
+   - 'CurrentUserNotifier' is from 'package:nfl_survival/app/providers.dart' ('lib/app/providers.dart').
+   - 'User' is from 'package:nfl_survival/data/models/user.dart' ('lib/data/models/user.dart').
+  Try correcting the name to the name of an existing getter, or defining a getter or field named 'future'.
+      final currentUser = await container.read(currentUserProvider.future);
+                                                                   ^^^^^^
+  test/providers_smoke_test.dart:47:66: Error: The getter 'future' isn't defined for the type 'Provider<bool>'.
+   - 'Provider' is from 'package:riverpod/src/provider.dart' ('../.pub-cache/hosted/pub.dev/riverpod-2.6.1/lib/src/provider.dart').
+  Try correcting the name to the name of an existing getter, or defining a getter or field named 'future'.
+      final isPremium = await container.read(premiumStatusProvider.future);
+                                                                   ^^^^^^
+  .
+
+To run this test again: /opt/homebrew/share/flutter/bin/cache/dart-sdk/bin/dart test test/providers_smoke_test.dart -p vm --plain-name 'loading test/providers_smoke_test.dart'
+00:01 +0 -2: loading test/app_smoke_test.dart [E]                                                                                                                                                      
+  Error: The Dart compiler exited unexpectedly.
+  package:flutter_tools/src/base/common.dart 34:3  throwToolExit
+  package:flutter_tools/src/compile.dart 910:11    DefaultResidentCompiler._compile.<fn>
+  dart:async/zone.dart 1538:47                     _rootRunUnary
+  dart:async/zone.dart 1429:19                     _CustomZone.runUnary
+  dart:async/future_impl.dart 948:45               Future._propagateToListeners.handleValueCallback
+  dart:async/future_impl.dart 977:13               Future._propagateToListeners
+  dart:async/future_impl.dart 862:9                Future._propagateToListeners
+  dart:async/future_impl.dart 720:5                Future._completeWithValue
+  dart:async/future_impl.dart 804:7                Future._asyncCompleteWithValue.<fn>
+  dart:async/zone.dart 1525:13                     _rootRun
+  dart:async/zone.dart 1422:19                     _CustomZone.run
+  dart:async/zone.dart 1321:7                      _CustomZone.runGuarded
+  dart:async/zone.dart 1362:23                     _CustomZone.bindCallbackGuarded.<fn>
+  dart:async/schedule_microtask.dart 40:35         _microtaskLoop
+  dart:async/schedule_microtask.dart 49:5          _startMicrotaskLoop
+  dart:isolate-patch/isolate_patch.dart 127:13     _runPendingImmediateCallback
+  dart:isolate-patch/isolate_patch.dart 194:5      _RawReceivePort._handleMessage
+  
+
+To run this test again: /opt/homebrew/share/flutter/bin/cache/dart-sdk/bin/dart test test/app_smoke_test.dart -p vm --plain-name 'loading test/app_smoke_test.dart'
+00:01 +0 -2: test/app_smoke_test.dart: router provider builds                                                                                                                                          00:01 +1 -2: test/app_smoke_test.dart: router provider builds                                                                                                                                          00:01 +1 -2: loading test/widget_test.dart                                                                                                                                                             00:01 +1 -2: test/widget_test.dart: Counter increments smoke test                                                                                                                                      00:01 +1 -2: test/widget_test.dart: Counter increments smoke test                                                                                                                                      
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following assertion was thrown building DefaultSelectionStyle:
+You must initialize the supabase instance before calling Supabase.instance
+'package:supabase_flutter/src/supabase.dart':
+Failed assertion: line 45 pos 7: '_instance._isInitialized'
+
+The relevant error-causing widget was:
+  MaterialApp MaterialApp:file:///Users/matias.nygard/nfl_survival/lib/main.dart:41:24
+
+When the exception was thrown, this was the stack:
+#1      ProviderElementBase.watch (package:riverpod/src/framework/element.dart:742:20)
+#2      appRouterProvider.<anonymous closure>.<anonymous closure> (package:nfl_survival/app/router.dart:31:31)
+#3      RouteConfiguration.redirect.processRedirect (package:go_router/src/configuration.dart:446:80)
+#4      RouteConfiguration.redirect (package:go_router/src/configuration.dart:458:14)
+#5      GoRouteInformationParser._redirect (package:go_router/src/parser.dart:173:69)
+#6      GoRouteInformationParser.parseRouteInformationWithDependencies (package:go_router/src/parser.dart:102:32)
+#7      _RouterState._processRouteInformation (package:flutter/src/widgets/router.dart:778:10)
+#8      _RouterState.restoreState (package:flutter/src/widgets/router.dart:635:7)
+#9      RestorationMixin._doRestore (package:flutter/src/widgets/restoration.dart:929:5)
+#10     RestorationMixin.didChangeDependencies (package:flutter/src/widgets/restoration.dart:915:7)
+#11     _RouterState.didChangeDependencies (package:flutter/src/widgets/router.dart:715:11)
+#12     StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5870:11)
+#13     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5699:5)
+...     Normal element mounting (386 frames)
+#399    _UncontrolledProviderScopeElement.mount (package:flutter_riverpod/src/framework.dart:315:11)
+...     Normal element mounting (9 frames)
+#408    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#409    Element.updateChild (package:flutter/src/widgets/framework.dart:3998:20)
+#410    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#411    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#412    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#413    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#414    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#415    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#416    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#417    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#418    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#419    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#420    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#421    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#422    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#423    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#424    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#425    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#426    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#427    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#428    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#429    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#430    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#431    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#432    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#433    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#434    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#435    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#436    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#437    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#438    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#439    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#440    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#441    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#442    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#443    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#444    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#445    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#446    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#447    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#448    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#449    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#450    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#451    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#452    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#453    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#454    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#455    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#456    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#457    StatelessElement.update (package:flutter/src/widgets/framework.dart:5797:5)
+#458    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#459    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#460    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#461    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#462    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#463    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#464    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1716:16)
+#465    RootElement.update (package:flutter/src/widgets/binding.dart:1694:5)
+#466    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1708:7)
+#467    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#468    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2695:15)
+#469    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2752:11)
+#470    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3056:18)
+#471    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#472    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#473    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#474    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#475    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#478    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#479    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#480    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#483    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#484    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#485    main.<anonymous closure> (file:///Users/matias.nygard/nfl_survival/test/widget_test.dart:9:18)
+#486    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+#487    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+#489    ProviderElementBase.read (package:riverpod/src/framework/element.dart:692:23)
+#490    currentUserProvider.<anonymous closure> (package:nfl_survival/app/providers.dart:70:34)
+#491    ProviderElementBase.watch (package:riverpod/src/framework/element.dart:714:12)
+#492    appRouterProvider.<anonymous closure>.<anonymous closure> (package:nfl_survival/app/router.dart:31:31)
+#493    RouteConfiguration.redirect.processRedirect (package:go_router/src/configuration.dart:446:80)
+#494    RouteConfiguration.redirect (package:go_router/src/configuration.dart:458:14)
+#495    GoRouteInformationParser._redirect (package:go_router/src/parser.dart:173:69)
+#496    GoRouteInformationParser.parseRouteInformationWithDependencies (package:go_router/src/parser.dart:102:32)
+#497    _RouterState._processRouteInformation (package:flutter/src/widgets/router.dart:778:10)
+#498    _RouterState.restoreState (package:flutter/src/widgets/router.dart:635:7)
+#499    RestorationMixin._doRestore (package:flutter/src/widgets/restoration.dart:929:5)
+#500    RestorationMixin.didChangeDependencies (package:flutter/src/widgets/restoration.dart:915:7)
+#501    _RouterState.didChangeDependencies (package:flutter/src/widgets/router.dart:715:11)
+#502    StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5870:11)
+#503    ComponentElement.mount (package:flutter/src/widgets/framework.dart:5699:5)
+...     Normal element mounting (386 frames)
+#889    _UncontrolledProviderScopeElement.mount (package:flutter_riverpod/src/framework.dart:315:11)
+...     Normal element mounting (9 frames)
+#898    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#899    Element.updateChild (package:flutter/src/widgets/framework.dart:3998:20)
+#900    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#901    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#902    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#903    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#904    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#905    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#906    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#907    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#908    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#909    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#910    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#911    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#912    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#913    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#914    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#915    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#916    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#917    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#918    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#919    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#920    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#921    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#922    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#923    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#924    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#925    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#926    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#927    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#928    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#929    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#930    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#931    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#932    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#933    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#934    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#935    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#936    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#937    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#938    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#939    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#940    ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#941    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#942    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#943    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#944    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#945    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#946    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#947    StatelessElement.update (package:flutter/src/widgets/framework.dart:5797:5)
+#948    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#949    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#950    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#951    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#952    StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#953    Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#954    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1716:16)
+#955    RootElement.update (package:flutter/src/widgets/binding.dart:1694:5)
+#956    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1708:7)
+#957    Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#958    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2695:15)
+#959    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2752:11)
+#960    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3056:18)
+#961    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#962    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#963    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#964    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#965    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#968    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#969    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#970    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#973    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#974    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#975    main.<anonymous closure> (file:///Users/matias.nygard/nfl_survival/test/widget_test.dart:9:18)
+#976    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+#977    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+#981    Supabase.instance (package:supabase_flutter/src/supabase.dart:45:7)
+#982    new SupabaseAuthRepository (package:nfl_survival/data/auth/supabase_auth_repository.dart:6:45)
+#983    authRepositoryProvider.<anonymous closure> (package:nfl_survival/app/providers.dart:46:66)
+#984    ProviderElementBase.read (package:riverpod/src/framework/element.dart:691:12)
+#985    currentUserProvider.<anonymous closure> (package:nfl_survival/app/providers.dart:70:34)
+#986    ProviderElementBase.watch (package:riverpod/src/framework/element.dart:714:12)
+#987    appRouterProvider.<anonymous closure>.<anonymous closure> (package:nfl_survival/app/router.dart:31:31)
+#988    RouteConfiguration.redirect.processRedirect (package:go_router/src/configuration.dart:446:80)
+#989    RouteConfiguration.redirect (package:go_router/src/configuration.dart:458:14)
+#990    GoRouteInformationParser._redirect (package:go_router/src/parser.dart:173:69)
+#991    GoRouteInformationParser.parseRouteInformationWithDependencies (package:go_router/src/parser.dart:102:32)
+#992    _RouterState._processRouteInformation (package:flutter/src/widgets/router.dart:778:10)
+#993    _RouterState.restoreState (package:flutter/src/widgets/router.dart:635:7)
+#994    RestorationMixin._doRestore (package:flutter/src/widgets/restoration.dart:929:5)
+#995    RestorationMixin.didChangeDependencies (package:flutter/src/widgets/restoration.dart:915:7)
+#996    _RouterState.didChangeDependencies (package:flutter/src/widgets/router.dart:715:11)
+#997    StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5870:11)
+#998    ComponentElement.mount (package:flutter/src/widgets/framework.dart:5699:5)
+...     Normal element mounting (386 frames)
+#1384   _UncontrolledProviderScopeElement.mount (package:flutter_riverpod/src/framework.dart:315:11)
+...     Normal element mounting (9 frames)
+#1393   Element.inflateWidget (package:flutter/src/widgets/framework.dart:4548:16)
+#1394   Element.updateChild (package:flutter/src/widgets/framework.dart:3998:20)
+#1395   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1396   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1397   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1398   _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#1399   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1400   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1401   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1402   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1403   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1404   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1405   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1406   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1407   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1408   _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#1409   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1410   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1411   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1412   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1413   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1414   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1415   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1416   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1417   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1418   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1419   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1420   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1421   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1422   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1423   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1424   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1425   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1426   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1427   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1428   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1429   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1430   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1431   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1432   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1433   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1434   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1435   ProxyElement.update (package:flutter/src/widgets/framework.dart:6051:5)
+#1436   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1437   _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#1438   _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#1439   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1440   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1441   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1442   StatelessElement.update (package:flutter/src/widgets/framework.dart:5797:5)
+#1443   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1444   ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5747:16)
+#1445   StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5884:11)
+#1446   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1447   StatefulElement.update (package:flutter/src/widgets/framework.dart:5909:5)
+#1448   Element.updateChild (package:flutter/src/widgets/framework.dart:3982:15)
+#1449   RootElement._rebuild (package:flutter/src/widgets/binding.dart:1716:16)
+#1450   RootElement.update (package:flutter/src/widgets/binding.dart:1694:5)
+#1451   RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1708:7)
+#1452   Element.rebuild (package:flutter/src/widgets/framework.dart:5435:7)
+#1453   BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2695:15)
+#1454   BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2752:11)
+#1455   BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3056:18)
+#1456   AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#1457   RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#1458   SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#1459   SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#1460   AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#1463   TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#1464   AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#1465   WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#1468   TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#1469   WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#1470   main.<anonymous closure> (file:///Users/matias.nygard/nfl_survival/test/widget_test.dart:9:18)
+#1471   testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+#1473   testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:189:25)
+#1474   TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:19)
+#1476   TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1048:5)
+#1479   TestWidgetsFlutterBinding._runTest (package:flutter_test/src/binding.dart:1033:10)
+#1480   AutomatedTestWidgetsFlutterBinding.runTest.<anonymous closure> (package:flutter_test/src/binding.dart:1564:24)
+#1481   FakeAsync.run.<anonymous closure>.<anonymous closure> (package:fake_async/fake_async.dart:182:47)
+#1486   withClock (package:clock/src/default.dart:52:10)
+#1487   FakeAsync.run.<anonymous closure> (package:fake_async/fake_async.dart:182:15)
+#1492   FakeAsync.run (package:fake_async/fake_async.dart:181:52)
+#1493   AutomatedTestWidgetsFlutterBinding.runTest (package:flutter_test/src/binding.dart:1561:15)
+#1494   testWidgets.<anonymous closure> (package:flutter_test/src/widget_tester.dart:184:24)
+#1495   Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:242:19)
+#1497   Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:241:9)
+#1502   Declarer.test.<anonymous closure> (package:test_api/src/backend/declarer.dart:240:13)
+#1503   Invoker._waitForOutstandingCallbacks.<anonymous closure> (package:test_api/src/backend/invoker.dart:282:17)
+#1508   Invoker._waitForOutstandingCallbacks (package:test_api/src/backend/invoker.dart:278:5)
+#1509   Invoker._onRun.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:418:17)
+#1511   Invoker._onRun.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:416:11)
+#1516   Invoker._onRun.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:407:9)
+#1517   Invoker._guardIfGuarded (package:test_api/src/backend/invoker.dart:450:15)
+#1518   Invoker._onRun.<anonymous closure> (package:test_api/src/backend/invoker.dart:406:7)
+#1525   Invoker._onRun (package:test_api/src/backend/invoker.dart:405:11)
+#1526   LiveTestController.run (package:test_api/src/backend/live_test_controller.dart:153:11)
+#1527   RemoteListener._runLiveTest.<anonymous closure> (package:test_api/src/backend/remote_listener.dart:275:16)
+#1532   RemoteListener._runLiveTest (package:test_api/src/backend/remote_listener.dart:274:5)
+#1533   RemoteListener._serializeTest.<anonymous closure> (package:test_api/src/backend/remote_listener.dart:221:7)
+#1551   _GuaranteeSink.add (package:stream_channel/src/guarantee_channel.dart:125:12)
+#1552   new _MultiChannel.<anonymous closure> (package:stream_channel/src/multi_channel.dart:159:31)
+#1554   CastStreamSubscription._onData (dart:_internal/async_cast.dart:95:11)
+#1580   new _WebSocketImpl._fromSocket.<anonymous closure> (dart:_http/websocket_impl.dart:1252:27)
+#1586   _WebSocketProtocolTransformer._messageFrameEnd (dart:_http/websocket_impl.dart:348:23)
+#1587   _WebSocketProtocolTransformer.add (dart:_http/websocket_impl.dart:238:46)
+#1595   _Socket._onData (dart:io-patch/socket_patch.dart:2912:41)
+#1602   new _RawSocket.<anonymous closure> (dart:io-patch/socket_patch.dart:2331:31)
+#1603   _NativeSocket.issueReadEvent.issue (dart:io-patch/socket_patch.dart:1655:14)
+#1607   testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:189:25)
+#1608   TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:19)
+#1610   TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1048:5)
+#1613   TestWidgetsFlutterBinding._runTest (package:flutter_test/src/binding.dart:1033:10)
+#1614   AutomatedTestWidgetsFlutterBinding.runTest.<anonymous closure> (package:flutter_test/src/binding.dart:1564:24)
+#1615   FakeAsync.run.<anonymous closure>.<anonymous closure> (package:fake_async/fake_async.dart:182:47)
+#1620   withClock (package:clock/src/default.dart:52:10)
+#1621   FakeAsync.run.<anonymous closure> (package:fake_async/fake_async.dart:182:15)
+#1626   FakeAsync.run (package:fake_async/fake_async.dart:181:52)
+#1627   AutomatedTestWidgetsFlutterBinding.runTest (package:flutter_test/src/binding.dart:1561:15)
+#1628   testWidgets.<anonymous closure> (package:flutter_test/src/widget_tester.dart:184:24)
+#1629   Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:242:19)
+#1631   Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:241:9)
+#1636   Declarer.test.<anonymous closure> (package:test_api/src/backend/declarer.dart:240:13)
+#1637   Invoker._waitForOutstandingCallbacks.<anonymous closure> (package:test_api/src/backend/invoker.dart:282:17)
+#1642   Invoker._waitForOutstandingCallbacks (package:test_api/src/backend/invoker.dart:278:5)
+#1643   Invoker._onRun.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:418:17)
+#1645   Invoker._onRun.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:416:11)
+#1650   Invoker._onRun.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:407:9)
+#1651   Invoker._guardIfGuarded (package:test_api/src/backend/invoker.dart:450:15)
+#1652   Invoker._onRun.<anonymous closure> (package:test_api/src/backend/invoker.dart:406:7)
+#1659   Invoker._onRun (package:test_api/src/backend/invoker.dart:405:11)
+#1660   LiveTestController.run (package:test_api/src/backend/live_test_controller.dart:153:11)
+#1661   RemoteListener._runLiveTest.<anonymous closure> (package:test_api/src/backend/remote_listener.dart:275:16)
+#1666   RemoteListener._runLiveTest (package:test_api/src/backend/remote_listener.dart:274:5)
+#1667   RemoteListener._serializeTest.<anonymous closure> (package:test_api/src/backend/remote_listener.dart:221:7)
+#1685   _GuaranteeSink.add (package:stream_channel/src/guarantee_channel.dart:125:12)
+#1686   new _MultiChannel.<anonymous closure> (package:stream_channel/src/multi_channel.dart:159:31)
+#1688   CastStreamSubscription._onData (dart:_internal/async_cast.dart:95:11)
+#1714   new _WebSocketImpl._fromSocket.<anonymous closure> (dart:_http/websocket_impl.dart:1252:27)
+#1720   _WebSocketProtocolTransformer._messageFrameEnd (dart:_http/websocket_impl.dart:348:23)
+#1721   _WebSocketProtocolTransformer.add (dart:_http/websocket_impl.dart:238:46)
+#1729   _Socket._onData (dart:io-patch/socket_patch.dart:2912:41)
+#1736   new _RawSocket.<anonymous closure> (dart:io-patch/socket_patch.dart:2331:31)
+#1737   _NativeSocket.issueReadEvent.issue (dart:io-patch/socket_patch.dart:1655:14)
+(elided 214 frames from class _AssertionError, dart:async, and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY SCHEDULER LIBRARY ╞═════════════════════════════════════════════════════════
+The following assertion was thrown during a scheduler callback:
+You must initialize the supabase instance before calling Supabase.instance
+'package:supabase_flutter/src/supabase.dart':
+Failed assertion: line 45 pos 7: '_instance._isInitialized'
+
+When the exception was thrown, this was the stack:
+#1      ProviderContainer.read (package:riverpod/src/framework/container.dart:241:21)
+#2      ConsumerStatefulElement.read (package:flutter_riverpod/src/consumer.dart:620:59)
+#3      MyApp.build.<anonymous closure> (package:nfl_survival/main.dart:37:29)
+#4      SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#5      SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1361:11)
+#6      AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#9      TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#10     AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#11     WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#14     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#15     WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#16     main.<anonymous closure> (file:///Users/matias.nygard/nfl_survival/test/widget_test.dart:9:18)
+#17     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+#18     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+#20     ProviderElementBase.read (package:riverpod/src/framework/element.dart:692:23)
+#21     automatedResultProcessorProvider.<anonymous closure> (package:nfl_survival/app/providers.dart:332:27)
+#22     ProviderContainer.read (package:riverpod/src/framework/container.dart:241:21)
+#23     ConsumerStatefulElement.read (package:flutter_riverpod/src/consumer.dart:620:59)
+#24     MyApp.build.<anonymous closure> (package:nfl_survival/main.dart:37:29)
+#25     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#26     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1361:11)
+#27     AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#30     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#31     AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#32     WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#35     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#36     WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#37     main.<anonymous closure> (file:///Users/matias.nygard/nfl_survival/test/widget_test.dart:9:18)
+#38     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+#39     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+#43     Supabase.instance (package:supabase_flutter/src/supabase.dart:45:7)
+#44     new SupabaseLeagueRepository (package:nfl_survival/data/leagues/supabase_league_repository.dart:7:45)
+#45     leagueRepositoryProvider.<anonymous closure> (package:nfl_survival/app/providers.dart:50:70)
+#46     ProviderElementBase.read (package:riverpod/src/framework/element.dart:691:12)
+#47     automatedResultProcessorProvider.<anonymous closure> (package:nfl_survival/app/providers.dart:332:27)
+#48     ProviderContainer.read (package:riverpod/src/framework/container.dart:241:21)
+#49     ConsumerStatefulElement.read (package:flutter_riverpod/src/consumer.dart:620:59)
+#50     MyApp.build.<anonymous closure> (package:nfl_survival/main.dart:37:29)
+#51     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#52     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1361:11)
+#53     AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#56     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#57     AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#58     WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#61     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#62     WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#63     main.<anonymous closure> (file:///Users/matias.nygard/nfl_survival/test/widget_test.dart:9:18)
+#64     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+#66     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:189:25)
+#67     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:19)
+#69     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1048:5)
+#72     TestWidgetsFlutterBinding._runTest (package:flutter_test/src/binding.dart:1033:10)
+#73     AutomatedTestWidgetsFlutterBinding.runTest.<anonymous closure> (package:flutter_test/src/binding.dart:1564:24)
+#74     FakeAsync.run.<anonymous closure>.<anonymous closure> (package:fake_async/fake_async.dart:182:47)
+#79     withClock (package:clock/src/default.dart:52:10)
+#80     FakeAsync.run.<anonymous closure> (package:fake_async/fake_async.dart:182:15)
+#85     FakeAsync.run (package:fake_async/fake_async.dart:181:52)
+#86     AutomatedTestWidgetsFlutterBinding.runTest (package:flutter_test/src/binding.dart:1561:15)
+#87     testWidgets.<anonymous closure> (package:flutter_test/src/widget_tester.dart:184:24)
+#88     Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:242:19)
+#90     Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:241:9)
+#95     Declarer.test.<anonymous closure> (package:test_api/src/backend/declarer.dart:240:13)
+#96     Invoker._waitForOutstandingCallbacks.<anonymous closure> (package:test_api/src/backend/invoker.dart:282:17)
+#101    Invoker._waitForOutstandingCallbacks (package:test_api/src/backend/invoker.dart:278:5)
+#102    Invoker._onRun.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:418:17)
+#104    Invoker._onRun.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:416:11)
+#109    Invoker._onRun.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:407:9)
+#110    Invoker._guardIfGuarded (package:test_api/src/backend/invoker.dart:450:15)
+#111    Invoker._onRun.<anonymous closure> (package:test_api/src/backend/invoker.dart:406:7)
+#118    Invoker._onRun (package:test_api/src/backend/invoker.dart:405:11)
+#119    LiveTestController.run (package:test_api/src/backend/live_test_controller.dart:153:11)
+#120    RemoteListener._runLiveTest.<anonymous closure> (package:test_api/src/backend/remote_listener.dart:275:16)
+#125    RemoteListener._runLiveTest (package:test_api/src/backend/remote_listener.dart:274:5)
+#126    RemoteListener._serializeTest.<anonymous closure> (package:test_api/src/backend/remote_listener.dart:221:7)
+#144    _GuaranteeSink.add (package:stream_channel/src/guarantee_channel.dart:125:12)
+#145    new _MultiChannel.<anonymous closure> (package:stream_channel/src/multi_channel.dart:159:31)
+#147    CastStreamSubscription._onData (dart:_internal/async_cast.dart:95:11)
+#173    new _WebSocketImpl._fromSocket.<anonymous closure> (dart:_http/websocket_impl.dart:1252:27)
+#179    _WebSocketProtocolTransformer._messageFrameEnd (dart:_http/websocket_impl.dart:348:23)
+#180    _WebSocketProtocolTransformer.add (dart:_http/websocket_impl.dart:238:46)
+#188    _Socket._onData (dart:io-patch/socket_patch.dart:2912:41)
+#195    new _RawSocket.<anonymous closure> (dart:io-patch/socket_patch.dart:2331:31)
+#196    _NativeSocket.issueReadEvent.issue (dart:io-patch/socket_patch.dart:1655:14)
+#200    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:189:25)
+#201    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:19)
+#203    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1048:5)
+#206    TestWidgetsFlutterBinding._runTest (package:flutter_test/src/binding.dart:1033:10)
+#207    AutomatedTestWidgetsFlutterBinding.runTest.<anonymous closure> (package:flutter_test/src/binding.dart:1564:24)
+#208    FakeAsync.run.<anonymous closure>.<anonymous closure> (package:fake_async/fake_async.dart:182:47)
+#213    withClock (package:clock/src/default.dart:52:10)
+#214    FakeAsync.run.<anonymous closure> (package:fake_async/fake_async.dart:182:15)
+#219    FakeAsync.run (package:fake_async/fake_async.dart:181:52)
+#220    AutomatedTestWidgetsFlutterBinding.runTest (package:flutter_test/src/binding.dart:1561:15)
+#221    testWidgets.<anonymous closure> (package:flutter_test/src/widget_tester.dart:184:24)
+#222    Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:242:19)
+#224    Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:241:9)
+#229    Declarer.test.<anonymous closure> (package:test_api/src/backend/declarer.dart:240:13)
+#230    Invoker._waitForOutstandingCallbacks.<anonymous closure> (package:test_api/src/backend/invoker.dart:282:17)
+#235    Invoker._waitForOutstandingCallbacks (package:test_api/src/backend/invoker.dart:278:5)
+#236    Invoker._onRun.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:418:17)
+#238    Invoker._onRun.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:416:11)
+#243    Invoker._onRun.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:407:9)
+#244    Invoker._guardIfGuarded (package:test_api/src/backend/invoker.dart:450:15)
+#245    Invoker._onRun.<anonymous closure> (package:test_api/src/backend/invoker.dart:406:7)
+#252    Invoker._onRun (package:test_api/src/backend/invoker.dart:405:11)
+#253    LiveTestController.run (package:test_api/src/backend/live_test_controller.dart:153:11)
+#254    RemoteListener._runLiveTest.<anonymous closure> (package:test_api/src/backend/remote_listener.dart:275:16)
+#259    RemoteListener._runLiveTest (package:test_api/src/backend/remote_listener.dart:274:5)
+#260    RemoteListener._serializeTest.<anonymous closure> (package:test_api/src/backend/remote_listener.dart:221:7)
+#278    _GuaranteeSink.add (package:stream_channel/src/guarantee_channel.dart:125:12)
+#279    new _MultiChannel.<anonymous closure> (package:stream_channel/src/multi_channel.dart:159:31)
+#281    CastStreamSubscription._onData (dart:_internal/async_cast.dart:95:11)
+#307    new _WebSocketImpl._fromSocket.<anonymous closure> (dart:_http/websocket_impl.dart:1252:27)
+#313    _WebSocketProtocolTransformer._messageFrameEnd (dart:_http/websocket_impl.dart:348:23)
+#314    _WebSocketProtocolTransformer.add (dart:_http/websocket_impl.dart:238:46)
+#322    _Socket._onData (dart:io-patch/socket_patch.dart:2912:41)
+#329    new _RawSocket.<anonymous closure> (dart:io-patch/socket_patch.dart:2331:31)
+#330    _NativeSocket.issueReadEvent.issue (dart:io-patch/socket_patch.dart:1655:14)
+(elided 214 frames from class _AssertionError, dart:async, and package:stack_trace)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "0": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/matias.nygard/nfl_survival/test/widget_test.dart:12:5)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/matias.nygard/nfl_survival/test/widget_test.dart line 12
+The test description was:
+  Counter increments smoke test
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (3) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +1 -3: test/widget_test.dart: Counter increments smoke test [E]                                                                                                                                  
+  Test failed. See exception logs above.
+  The test description was: Counter increments smoke test
+  
+
+To run this test again: /opt/homebrew/share/flutter/bin/cache/dart-sdk/bin/dart test test/widget_test.dart -p vm --plain-name 'Counter increments smoke test'
+00:02 +1 -3: Some tests failed.                                                                                                                                                                        

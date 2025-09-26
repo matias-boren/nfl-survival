@@ -104,9 +104,8 @@ CREATE POLICY "Users can view league members of their leagues" ON league_members
   FOR SELECT USING (
     league_id IN (
       SELECT id FROM leagues WHERE creator_id = auth.uid()
-      UNION
-      SELECT league_id FROM league_members WHERE user_id = auth.uid()
     )
+    OR user_id = auth.uid()
   );
 
 CREATE POLICY "Users can join leagues" ON league_members
@@ -118,17 +117,15 @@ CREATE POLICY "Users can leave leagues" ON league_members
 -- Create RLS policies for picks
 CREATE POLICY "Users can view picks in their leagues" ON picks
   FOR SELECT USING (
-    league_id IN (
-      SELECT league_id FROM league_members WHERE user_id = auth.uid()
+    user_id = auth.uid()
+    OR league_id IN (
+      SELECT id FROM leagues WHERE creator_id = auth.uid()
     )
   );
 
 CREATE POLICY "Users can create picks in their leagues" ON picks
   FOR INSERT WITH CHECK (
-    user_id = auth.uid() AND
-    league_id IN (
-      SELECT league_id FROM league_members WHERE user_id = auth.uid()
-    )
+    user_id = auth.uid()
   );
 
 CREATE POLICY "Users can update their own picks" ON picks
