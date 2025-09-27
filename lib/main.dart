@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:nfl_survival/app/router.dart';
 import 'package:nfl_survival/app/theme/theme.dart';
 import 'package:nfl_survival/app/providers.dart';
+import 'package:nfl_survival/core/services/ad_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +23,9 @@ Future<void> main() async {
     anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? 'your-anon-key',
   );
   
+  // Initialize AdMob
+  await AdService().initialize();
+  
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -36,6 +40,10 @@ class MyApp extends ConsumerWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final processor = ref.read(automatedResultProcessorProvider);
       processor.startProcessing();
+      
+      // Initialize weekly data refresh service
+      final weeklyRefreshService = ref.read(weeklyDataRefreshServiceProvider);
+      weeklyRefreshService.startService();
     });
     
     return MaterialApp.router(

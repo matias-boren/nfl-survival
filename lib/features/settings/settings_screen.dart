@@ -83,6 +83,23 @@ class SettingsScreen extends ConsumerWidget {
               onTap: () => context.go('/paywall'),
             ),
           
+          const Divider(),
+          
+          // Admin Section (for premium users or testing)
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'System Status',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+          ),
+          ListTile(
+            title: const Text('Weekly Data Refresh Status'),
+            subtitle: const Text('View automated processing status'),
+            leading: const Icon(Icons.schedule),
+            onTap: () => _showWeeklyRefreshStatus(context, ref),
+          ),
+          
         ],
       ),
     );
@@ -224,6 +241,94 @@ class SettingsScreen extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showWeeklyRefreshStatus(BuildContext context, WidgetRef ref) {
+    final weeklyRefreshService = ref.read(weeklyDataRefreshServiceProvider);
+    final status = weeklyRefreshService.getStatus();
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Weekly Data Refresh Status'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildStatusRow('Service Running', status['isRunning'] ? 'Active' : 'Inactive', status['isRunning']),
+            _buildStatusRow('Currently Processing', status['isProcessing'] ? 'Yes' : 'No', status['isProcessing']),
+            _buildStatusRow('Processing Week', status['currentProcessingWeek']?.toString() ?? 'None', status['currentProcessingWeek'] != null),
+            _buildStatusRow('Check Timer', status['nextCheckTime'] ?? 'Inactive', status['nextCheckTime'] == 'Active'),
+            _buildStatusRow('Refresh Timer', status['nextRefreshTime'] ?? 'Inactive', status['nextRefreshTime'] == 'Active'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Close'),
+          ),
+          if (status['isRunning'] == true)
+            TextButton(
+              onPressed: () {
+                weeklyRefreshService.stopService();
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Weekly refresh service stopped')),
+                );
+              },
+              child: const Text('Stop Service'),
+            )
+          else
+            TextButton(
+              onPressed: () {
+                weeklyRefreshService.startService();
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Weekly refresh service started')),
+                );
+              },
+              child: const Text('Start Service'),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatusRow(String label, String value, bool isActive) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(fontWeight: FontWeight.w500),
+          ),
+          Row(
+            children: [
+              Container(
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isActive ? Colors.green : Colors.red,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                value,
+                style: TextStyle(
+                  color: isActive ? Colors.green : Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

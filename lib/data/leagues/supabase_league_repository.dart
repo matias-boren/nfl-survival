@@ -142,7 +142,13 @@ class SupabaseLeagueRepository implements LeagueRepository {
   }
 
   @override
-  Future<List<League>> listLeagues() async {
+  Future<List<League>> listLeagues([String? userId]) async {
+    if (userId != null) {
+      // Get leagues for a specific user
+      return listLeaguesForUser(userId);
+    }
+    
+    // Get all leagues (for system processing)
     final response = await _supabase
         .from('leagues')
         .select('*');

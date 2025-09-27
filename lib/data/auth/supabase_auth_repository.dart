@@ -216,11 +216,16 @@ class SupabaseAuthRepository implements AuthRepository {
   }
 
   // Method to update premium status (for admin/testing purposes)
-  Future<void> updatePremiumStatus(String userId, bool isPremium) async {
+  Future<void> updatePremiumStatus(bool isPremium) async {
+    final currentUser = _supabase.auth.currentUser;
+    if (currentUser == null) {
+      throw Exception('No authenticated user');
+    }
+    
     await _supabase
         .from('user_profiles')
         .upsert({
-          'user_id': userId,
+          'user_id': currentUser.id,
           'is_premium': isPremium,
           'updated_at': DateTime.now().toIso8601String(),
         });

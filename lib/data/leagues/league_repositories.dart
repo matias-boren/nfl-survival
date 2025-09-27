@@ -10,7 +10,7 @@ abstract class LeagueRepository {
   Future<void> joinLeague(String leagueId, String userId);
   Future<void> leaveLeague(String leagueId, String userId);
   Future<List<League>> getPublicLeagues();
-  Future<List<League>> listLeagues();
+  Future<List<League>> listLeagues([String? userId]);
   Stream<List<User>> leagueMembers(String leagueId);
   Future<void> updateLeague(League league);
   Future<void> deleteLeague(String leagueId);

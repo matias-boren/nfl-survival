@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nfl_survival/core/services/result_processing_service.dart';
 import 'package:nfl_survival/core/services/standings_service.dart';
 import 'package:nfl_survival/core/services/automated_result_processor.dart';
+import 'package:nfl_survival/core/services/weekly_data_refresh_service.dart';
 import 'package:nfl_survival/core/services/live_scores_service.dart';
 import 'package:nfl_survival/core/services/server_sync_service.dart';
 import 'package:nfl_survival/core/config/api_config.dart';
@@ -233,7 +234,7 @@ final premiumToggleProvider = Provider<void Function()>((ref) {
     if (currentUser != null) {
       // Toggle premium status
       final newPremiumStatus = !currentUser.isPremium;
-      await authRepo.updatePremiumStatus(currentUser.id, newPremiumStatus);
+      await authRepo.updatePremiumStatus(newPremiumStatus);
       
       // Refresh the current user to get updated data
       // The currentUser stream will automatically update
@@ -336,4 +337,33 @@ final automatedResultProcessorProvider = Provider<AutomatedResultProcessor>((ref
   );
   
   return processor;
+});
+
+// User's previous picks for a specific league (to prevent duplicate team selection)
+final userPreviousPicksProvider = FutureProvider.family<List<Pick>, String>((ref, leagueId) async {
+  final currentUser = ref.watch(currentUserProvider);
+  if (currentUser == null) return [];
+  
+  return ref.read(picksRepositoryProvider).getUserPicksForLeague(currentUser.id, leagueId);
+});
+
+// User's previously picked team IDs for a specific league
+final userPickedTeamIdsProvider = FutureProvider.family<Set<String>, String>((ref, leagueId) async {
+  final previousPicks = await ref.watch(userPreviousPicksProvider(leagueId).future);
+  return previousPicks.map((pick) => pick.teamId).toSet();
+});
+
+// Weekly data refresh service provider
+final weeklyDataRefreshServiceProvider = Provider<WeeklyDataRefreshService>((ref) {
+  final service = WeeklyDataRefreshService();
+  
+  // Initialize with dependencies
+  service.initialize(
+    leagueRepository: ref.read(leagueRepositoryProvider),
+    nflRepository: ref.read(nflRepositoryProvider),
+    picksRepository: ref.read(picksRepositoryProvider),
+    userRepository: ref.read(userRepositoryProvider),
+  );
+  
+  return service;
 });

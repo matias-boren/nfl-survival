@@ -97,4 +97,18 @@ class MockAuthRepository implements AuthRepository {
     _userStreamController.add(updatedUser);
     return updatedUser;
   }
+
+  @override
+  Future<void> updatePremiumStatus(bool isPremium) async {
+    if (_currentUser == null) {
+      throw Exception('No user is currently signed in');
+    }
+
+    await Future.delayed(const Duration(milliseconds: 500)); // Simulate network delay
+
+    // Update the current user's premium status
+    final updatedUser = _currentUser!.copyWith(isPremium: isPremium);
+    _currentUser = updatedUser;
+    _userStreamController.add(updatedUser);
+  }
 }

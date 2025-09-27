@@ -4,13 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:nfl_survival/app/providers.dart';
 import 'package:nfl_survival/data/news/news_repositories.dart';
-import 'package:nfl_survival/data/scores/scores_repositories.dart';
-import 'package:nfl_survival/data/models/nfl.dart';
-import 'package:nfl_survival/data/news/mock_news_repository.dart';
-import 'package:nfl_survival/data/scores/mock_scores_repository.dart';
 import 'package:nfl_survival/widgets/app_scaffold.dart';
 import 'package:nfl_survival/widgets/banner_ad_slot.dart';
-import 'package:nfl_survival/widgets/premium_gate.dart';
 
 class NewsFeedScreen extends ConsumerWidget {
   const NewsFeedScreen({super.key});
@@ -18,7 +13,6 @@ class NewsFeedScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final newsAsync = ref.watch(newsFeedProvider);
-    final scoresAsync = ref.watch(liveScoresProvider);
     final isPremium = ref.watch(premiumStatusProvider);
 
     return AppScaffold(
@@ -29,7 +23,6 @@ class NewsFeedScreen extends ConsumerWidget {
             icon: const Icon(Icons.refresh),
             onPressed: () {
               ref.invalidate(newsFeedProvider);
-              ref.invalidate(liveScoresProvider);
             },
           ),
         ],
@@ -40,43 +33,12 @@ class NewsFeedScreen extends ConsumerWidget {
             child: RefreshIndicator(
               onRefresh: () async {
                 ref.invalidate(newsFeedProvider);
-                ref.invalidate(liveScoresProvider);
               },
               child: ListView(
                 children: [
-                  // Live Scores Section (Premium)
+                  // News Articles Header
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: PremiumGate(
-                      featureName: 'Live Scores',
-                      gatedChild: scoresAsync.when(
-                        data: (scores) {
-                          if (scores.isEmpty) {
-                            return const SizedBox.shrink();
-                          }
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Live Scores',
-                                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              ...scores.map((score) => _buildScoreCard(context, score)),
-                            ],
-                          );
-                        },
-                        loading: () => const Center(child: CircularProgressIndicator()),
-                        error: (e, st) => Text('Error loading scores: $e'),
-                      ),
-                    ),
-                  ),
-                  
-                  // News Articles
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
                       'Latest News',
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -84,8 +46,8 @@ class NewsFeedScreen extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
                   
+                  // News Articles
                   newsAsync.when(
                     data: (articles) {
                       if (articles.isEmpty) {
@@ -118,82 +80,6 @@ class NewsFeedScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildScoreCard(BuildContext context, LiveScore score) {
-    Color statusColor = Colors.grey;
-    if (score.status == 'LIVE') statusColor = Colors.red;
-    if (score.status == 'FINAL') statusColor = Colors.green;
-    
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  score.status,
-                  style: TextStyle(
-                    color: statusColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                ),
-                Text(
-                  'Q${score.quarter}',
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    score.awayTeam.abbreviation,
-                    style: const TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ),
-                Text(
-                  '${score.awayScore}',
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    score.homeTeam.abbreviation,
-                    style: const TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ),
-                Text(
-                  '${score.homeScore}',
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                score.status == 'LIVE' 
-                  ? 'Time: ${score.timeRemaining}'
-                  : score.gameDate != null 
-                    ? 'Kickoff: ${_formatGameTime(score.gameDate!.toIso8601String())}'
-                    : 'Time TBD',
-                style: TextStyle(color: Colors.grey[600], fontSize: 12),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildNewsCard(BuildContext context, NewsArticle article) {
     return Card(
@@ -473,13 +359,4 @@ class NewsFeedScreen extends ConsumerWidget {
     }
   }
 
-  String _formatGameTime(String utcString) {
-    try {
-      final utc = DateTime.parse(utcString);
-      final local = utc.toLocal();
-      return '${local.month}/${local.day} ${local.hour.toString().padLeft(2, '0')}:${local.minute.toString().padLeft(2, '0')}';
-    } catch (e) {
-      return utcString;
-    }
-  }
 }

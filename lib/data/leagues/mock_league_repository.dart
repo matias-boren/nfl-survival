@@ -168,8 +168,15 @@ class MockLeagueRepository implements LeagueRepository {
   }
 
   @override
-  Future<List<League>> listLeagues() async {
+  Future<List<League>> listLeagues([String? userId]) async {
     await Future.delayed(const Duration(milliseconds: 300));
+    
+    if (userId != null) {
+      // Get leagues for a specific user
+      return listLeaguesForUser(userId);
+    }
+    
+    // Get all leagues (for system processing)
     return List.from(_leagues);
   }
 

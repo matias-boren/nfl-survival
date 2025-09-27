@@ -9,6 +9,7 @@ import 'package:nfl_survival/features/picks/make_pick/make_pick_screen.dart';
 import 'package:nfl_survival/features/news/feed/news_feed_screen.dart';
 import 'package:nfl_survival/features/settings/settings_screen.dart';
 import 'package:nfl_survival/features/paywall/paywall_screen.dart';
+import 'package:nfl_survival/features/paywall/premium_upgrade_screen.dart';
 import 'package:nfl_survival/features/league/table/league_list_screen.dart';
 import 'package:nfl_survival/features/picks/history/picks_history_screen.dart';
 import 'package:nfl_survival/features/league/standings/league_standings_screen.dart';
@@ -164,6 +165,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         ),
       ),
       GoRoute(path: '/paywall', builder: (context, state) => const PaywallScreen()),
+      GoRoute(path: '/premium-upgrade', builder: (context, state) => const PremiumUpgradeScreen()),
     ],
   );
 });

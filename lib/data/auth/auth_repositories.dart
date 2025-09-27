@@ -8,4 +8,5 @@ abstract class AuthRepository {
   Future<void> resetPassword(String email);
   Future<void> signOut();
   Future<User> updateUser({String? displayName, String? favoriteTeam});
+  Future<void> updatePremiumStatus(bool isPremium);
 }
