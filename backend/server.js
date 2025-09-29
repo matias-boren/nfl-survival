@@ -133,6 +133,8 @@ class ESPNPollingService {
       const currentWeek = this.getCurrentWeek();
       const season = 2025;
       
+      console.log(`🔍 Requesting ESPN API: week=${currentWeek}, season=${season}`);
+      
       const response = await axios.get(`${ESPN_API_URL}?week=${currentWeek}&season=${season}`, {
         timeout: 10000,
         headers: {
@@ -140,13 +142,34 @@ class ESPNPollingService {
         }
       });
       
+      console.log(`📊 ESPN API Response Status: ${response.status}`);
+      
       if (response.status === 200) {
+        console.log('📦 Parsing ESPN API data...');
         const data = response.data;
-        const liveScores = this.parseESPNData(data);
+        
+        // Add safety checks for data structure
+        if (!data) {
+          console.log('⚠️ ESPN API returned null/undefined data');
+          return;
+        }
+        
+        console.log(`📊 ESPN API data keys: ${Object.keys(data).join(', ')}`);
+        
+        let liveScores = [];
+        try {
+          liveScores = this.parseESPNData(data);
+          console.log(`✅ Successfully parsed ${liveScores.length} games`);
+        } catch (parseError) {
+          console.error('💥 Error parsing ESPN data:', parseError.message);
+          console.error('Parse error stack:', parseError.stack);
+          return; // Exit early if parsing fails
+        }
         
         // Cache the results only if Redis is available and connected
         if (redisClient) {
           try {
+            console.log('💾 Attempting to cache data...');
             await redisClient.setEx(
               `live-scores:week-${currentWeek}`,
               CACHE_DURATION,
@@ -176,11 +199,19 @@ class ESPNPollingService {
         console.log('❌ ESPN API request failed:', response.status);
       }
     } catch (error) {
+      console.error('💥 Error in pollESPN function:');
+      console.error('Error type:', error.constructor.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      
       if (error.response) {
-        console.error('💥 Error polling ESPN API:', error.response.status, error.response.statusText);
+        console.error('Response status:', error.response.status);
+        console.error('Response statusText:', error.response.statusText);
         console.error('Response data:', error.response.data);
-      } else {
-        console.error('💥 Error polling ESPN API:', error.message);
+      }
+      
+      if (error.code) {
+        console.error('Error code:', error.code);
       }
     }
   }
@@ -188,46 +219,100 @@ class ESPNPollingService {
   parseESPNData(data) {
     const scores = [];
     
-    if (data.events) {
-      for (const event of data.events) {
-        const competition = event.competitions[0];
-        const competitors = competition.competitors;
+    try {
+      console.log('🔍 Parsing ESPN data structure...');
+      
+      if (!data || typeof data !== 'object') {
+        console.log('⚠️ Invalid data structure received');
+        return scores;
+      }
+      
+      if (!data.events || !Array.isArray(data.events)) {
+        console.log('⚠️ No events array found in ESPN data');
+        return scores;
+      }
+      
+      console.log(`📊 Found ${data.events.length} events to process`);
+      
+      for (let i = 0; i < data.events.length; i++) {
+        const event = data.events[i];
         
-        // Determine home and away teams
-        const homeTeam = competitors.find(c => c.homeAway === 'home');
-        const awayTeam = competitors.find(c => c.homeAway === 'away');
-        
-        if (homeTeam && awayTeam) {
-          scores.push({
-            gameId: event.id,
+        try {
+          console.log(`🏈 Processing event ${i + 1}/${data.events.length}: ${event.name || 'Unknown'}`);
+          
+          if (!event.competitions || !Array.isArray(event.competitions) || event.competitions.length === 0) {
+            console.log(`⚠️ No competitions found for event ${i + 1}`);
+            continue;
+          }
+          
+          const competition = event.competitions[0];
+          
+          if (!competition.competitors || !Array.isArray(competition.competitors)) {
+            console.log(`⚠️ No competitors found for event ${i + 1}`);
+            continue;
+          }
+          
+          const competitors = competition.competitors;
+          
+          // Determine home and away teams
+          const homeTeam = competitors.find(c => c.homeAway === 'home');
+          const awayTeam = competitors.find(c => c.homeAway === 'away');
+          
+          if (!homeTeam || !awayTeam) {
+            console.log(`⚠️ Missing home or away team for event ${i + 1}`);
+            continue;
+          }
+          
+          if (!homeTeam.team || !awayTeam.team) {
+            console.log(`⚠️ Missing team data for event ${i + 1}`);
+            continue;
+          }
+          
+          const scoreData = {
+            gameId: event.id || `event-${i}`,
             homeTeam: {
-              id: homeTeam.team.id,
-              name: homeTeam.team.displayName,
-              abbreviation: homeTeam.team.abbreviation,
-              city: homeTeam.team.name,
-              logoUrl: homeTeam.team.logo,
-              color: homeTeam.team.color,
-              alternateColor: homeTeam.team.alternateColor,
+              id: homeTeam.team.id || '',
+              name: homeTeam.team.displayName || 'Unknown',
+              abbreviation: homeTeam.team.abbreviation || 'UNK',
+              city: homeTeam.team.name || 'Unknown',
+              logoUrl: homeTeam.team.logo || '',
+              color: homeTeam.team.color || '#000000',
+              alternateColor: homeTeam.team.alternateColor || '#FFFFFF',
             },
             awayTeam: {
-              id: awayTeam.team.id,
-              name: awayTeam.team.displayName,
-              abbreviation: awayTeam.team.abbreviation,
-              city: awayTeam.team.name,
-              logoUrl: awayTeam.team.logo,
-              color: awayTeam.team.color,
-              alternateColor: awayTeam.team.alternateColor,
+              id: awayTeam.team.id || '',
+              name: awayTeam.team.displayName || 'Unknown',
+              abbreviation: awayTeam.team.abbreviation || 'UNK',
+              city: awayTeam.team.name || 'Unknown',
+              logoUrl: awayTeam.team.logo || '',
+              color: awayTeam.team.color || '#000000',
+              alternateColor: awayTeam.team.alternateColor || '#FFFFFF',
             },
-            homeScore: homeTeam.score || 0,
-            awayScore: awayTeam.score || 0,
-            status: event.status.type.name,
-            quarter: competition.status.period || 0,
-            timeRemaining: competition.status.displayClock || '15:00',
-            isLive: event.status.type.name === 'STATUS_IN_PROGRESS',
-            gameDate: event.date,
-          });
+            homeScore: parseInt(homeTeam.score) || 0,
+            awayScore: parseInt(awayTeam.score) || 0,
+            status: (event.status && event.status.type && event.status.type.name) || 'SCHEDULED',
+            quarter: (competition.status && competition.status.period) || 0,
+            timeRemaining: (competition.status && competition.status.displayClock) || '15:00',
+            isLive: (event.status && event.status.type && event.status.type.name === 'STATUS_IN_PROGRESS') || false,
+            gameDate: event.date || new Date().toISOString(),
+          };
+          
+          scores.push(scoreData);
+          console.log(`✅ Added game: ${scoreData.awayTeam.abbreviation} @ ${scoreData.homeTeam.abbreviation}`);
+          
+        } catch (eventError) {
+          console.error(`💥 Error processing event ${i + 1}:`, eventError.message);
+          console.error('Event data:', JSON.stringify(event, null, 2));
+          // Continue processing other events
         }
       }
+      
+      console.log(`✅ Successfully parsed ${scores.length} games from ${data.events.length} events`);
+      
+    } catch (parseError) {
+      console.error('💥 Error in parseESPNData:', parseError.message);
+      console.error('Parse error stack:', parseError.stack);
+      console.error('Data structure:', JSON.stringify(data, null, 2));
     }
     
     return scores;
@@ -514,9 +599,10 @@ try {
     console.log(`🔗 Health check available at: http://0.0.0.0:${PORT}/api/health`);
     console.log(`📊 Redis status: ${redisClient ? 'Connected' : 'Not configured'}`);
     
-    // Start ESPN polling
-    espnService.startPolling();
-    console.log('✅ ESPN polling enabled - fetching real NFL data');
+    // Start ESPN polling (temporarily disabled for debugging)
+    // espnService.startPolling();
+    // console.log('✅ ESPN polling enabled - fetching real NFL data');
+    console.log('⚠️ ESPN polling temporarily disabled for debugging');
   });
 } catch (error) {
   console.error('❌ Failed to start server:', error);
