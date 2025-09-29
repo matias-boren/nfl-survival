@@ -39,6 +39,7 @@ GitHub Actions runs format, analyze, and tests.
 - Repository is now public with unlimited GitHub Actions minutes
 - Environment variables configured for secure deployment
 - Firebase Hosting with automated CI/CD pipeline
+- Fixed Firebase authentication with CI token
 
 ## Notes
 - No NFL trademarks/logos included.
