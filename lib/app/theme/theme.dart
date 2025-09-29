@@ -49,6 +49,22 @@ ThemeData buildAppTheme() {
   );
 
   return base.copyWith(
+    colorScheme: const ColorScheme.dark(
+      primary: Color(0xFF76ABAE),
+      onPrimary: Color(0xFF222831),
+      secondary: Color(0xFF76ABAE),
+      onSecondary: Color(0xFF222831),
+      tertiary: Color(0xFF76ABAE),
+      onTertiary: Color(0xFF222831),
+      error: Color(0xFFFF6B6B),
+      onError: Color(0xFFEEEEEE),
+      surface: Color(0xFF222831),
+      onSurface: Color(0xFFEEEEEE),
+      background: Color(0xFF222831),
+      onBackground: Color(0xFFEEEEEE),
+      outline: Color(0xFF31363F),
+      outlineVariant: Color(0xFF76ABAE),
+    ),
     appBarTheme: const AppBarTheme(
       centerTitle: true,
       backgroundColor: Color(0xFF222831),
@@ -104,6 +120,23 @@ ThemeData buildAppTheme() {
       ),
       labelStyle: const TextStyle(color: Color(0xFFEEEEEE)),
       hintStyle: const TextStyle(color: Color(0xFF76ABAE)),
+    ),
+    textTheme: const TextTheme(
+      displayLarge: TextStyle(color: Color(0xFFEEEEEE)),
+      displayMedium: TextStyle(color: Color(0xFFEEEEEE)),
+      displaySmall: TextStyle(color: Color(0xFFEEEEEE)),
+      headlineLarge: TextStyle(color: Color(0xFFEEEEEE)),
+      headlineMedium: TextStyle(color: Color(0xFFEEEEEE)),
+      headlineSmall: TextStyle(color: Color(0xFFEEEEEE)),
+      titleLarge: TextStyle(color: Color(0xFFEEEEEE)),
+      titleMedium: TextStyle(color: Color(0xFFEEEEEE)),
+      titleSmall: TextStyle(color: Color(0xFFEEEEEE)),
+      bodyLarge: TextStyle(color: Color(0xFFEEEEEE)),
+      bodyMedium: TextStyle(color: Color(0xFFEEEEEE)),
+      bodySmall: TextStyle(color: Color(0xFF76ABAE)),
+      labelLarge: TextStyle(color: Color(0xFFEEEEEE)),
+      labelMedium: TextStyle(color: Color(0xFFEEEEEE)),
+      labelSmall: TextStyle(color: Color(0xFF76ABAE)),
     ),
     extensions: [
       appColors,

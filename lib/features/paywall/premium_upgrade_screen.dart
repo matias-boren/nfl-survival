@@ -36,7 +36,7 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('🎉 Welcome to Premium!'),
-            backgroundColor: Colors.green,
+            backgroundColor: const Color(0xFF76ABAE),
           ),
         );
 
@@ -46,7 +46,7 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: $e'), backgroundColor: const Color(0xFFFF6B6B)),
         );
       }
     } finally {
@@ -91,20 +91,20 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
               ),
               child: Column(
                 children: [
-                  const Icon(Icons.star, size: 64, color: Colors.white),
+                  const Icon(Icons.star, size: 64, color: Color(0xFFEEEEEE)),
                   const SizedBox(height: 16),
                   const Text(
                     'NFL Survival Premium',
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: const Color(0xFFEEEEEE),
                     ),
                   ),
                   const SizedBox(height: 8),
                   const Text(
                     'Unlock all features and remove ads',
-                    style: TextStyle(fontSize: 16, color: Colors.white70),
+                    style: const TextStyle(fontSize: 16, color: Color(0xFFEEEEEE)),
                   ),
                 ],
               ),
@@ -192,7 +192,7 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
                           content: Text(
                             'Restore purchases feature coming soon',
                           ),
-                          backgroundColor: Colors.orange,
+                          backgroundColor: const Color(0xFFFFD93D),
                         ),
                       );
                     },
@@ -218,7 +218,7 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
             // Terms and privacy
             Text(
               'By upgrading, you agree to our Terms of Service and Privacy Policy. Subscription automatically renews unless cancelled at least 24 hours before the end of the current period.',
-              style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+              style: const TextStyle(fontSize: 12, color: Color(0xFF76ABAE)),
               textAlign: TextAlign.center,
             ),
           ],
@@ -269,7 +269,7 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
                 const SizedBox(height: 4),
                 Text(
                   description,
-                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                  style: const TextStyle(fontSize: 14, color: Color(0xFF76ABAE)),
                 ),
               ],
             ),

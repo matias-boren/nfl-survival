@@ -206,7 +206,7 @@ class SettingsScreen extends ConsumerWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Updating profile...'),
-                        backgroundColor: Colors.blue,
+                        backgroundColor: const Color(0xFF76ABAE),
                       ),
                     );
 
@@ -225,7 +225,7 @@ class SettingsScreen extends ConsumerWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Profile updated successfully!'),
-                          backgroundColor: Colors.green,
+                          backgroundColor: const Color(0xFF76ABAE),
                         ),
                       );
                       Navigator.of(context).pop();
@@ -235,7 +235,7 @@ class SettingsScreen extends ConsumerWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Failed to update profile: $e'),
-                          backgroundColor: Colors.red,
+                          backgroundColor: const Color(0xFFFF6B6B),
                         ),
                       );
                     }
@@ -244,7 +244,7 @@ class SettingsScreen extends ConsumerWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Please fill in all fields'),
-                      backgroundColor: Colors.red,
+                      backgroundColor: const Color(0xFFFF6B6B),
                     ),
                   );
                 }
@@ -348,14 +348,14 @@ class SettingsScreen extends ConsumerWidget {
                 height: 8,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isActive ? Colors.green : Colors.red,
+                  color: isActive ? const Color(0xFF76ABAE) : const Color(0xFFFF6B6B),
                 ),
               ),
               const SizedBox(width: 8),
               Text(
                 value,
                 style: TextStyle(
-                  color: isActive ? Colors.green : Colors.red,
+                  color: isActive ? const Color(0xFF76ABAE) : const Color(0xFFFF6B6B),
                   fontWeight: FontWeight.w500,
                 ),
               ),
