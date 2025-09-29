@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nfl_survival/app/providers.dart';
 
-class AppScaffold extends StatelessWidget {
+class AppScaffold extends ConsumerWidget {
   final Widget child;
   final PreferredSizeWidget? appBar;
   final FloatingActionButton? floatingActionButton;
@@ -14,12 +16,16 @@ class AppScaffold extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final uri = GoRouter.of(context).routeInformationProvider.value.uri;
     final location = uri.toString();
+    final currentUser = ref.watch(currentUserProvider);
     
-    // Hide navigation bar on sign-in screen
-    final shouldShowNavigation = !location.contains('/signin') && !location.contains('/sign-in');
+    // Hide navigation bar if user is not authenticated or on sign-in screen
+    final shouldShowNavigation = currentUser != null && 
+                                !location.contains('/signin') && 
+                                !location.contains('/sign-in') &&
+                                !location.contains('/loading');
     
     return Scaffold(
       appBar: appBar,

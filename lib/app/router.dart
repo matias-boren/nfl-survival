@@ -65,7 +65,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/',
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) => const AuthGuard(child: HomeScreen()),
       ),
       GoRoute(
         path: '/signin', 
@@ -164,8 +164,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ),
         ),
       ),
-      GoRoute(path: '/paywall', builder: (context, state) => const PaywallScreen()),
-      GoRoute(path: '/premium-upgrade', builder: (context, state) => const PremiumUpgradeScreen()),
+      GoRoute(path: '/paywall', builder: (context, state) => const AuthGuard(child: PaywallScreen())),
+      GoRoute(path: '/premium-upgrade', builder: (context, state) => const AuthGuard(child: PremiumUpgradeScreen())),
     ],
   );
 });
