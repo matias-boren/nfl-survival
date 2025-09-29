@@ -29974,7 +29974,7 @@ case 3:q=$.aRg().ga2r().i(0,"SUPABASE_URL")
 if(q==null)q="https://yjynojqiyrlnszoiqdgp.supabase.co"
 p=$.aRg().ga2r().i(0,"SUPABASE_ANON_KEY")
 s=4
-return A.n(A.ayo(p==null?"your-anon-key":p,q),$async$BW)
+return A.n(A.ayo(p==null?"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqeW5vanFpeXJsbnN6b2lxZGdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg3MDY1NzUsImV4cCI6MjA3NDI4MjU3NX0.E5jj9ldIXu-5vhy5n-0GxopBJd7L8RvEtuFKHedWNz8":p,q),$async$BW)
 case 4:s=5
 return A.n($.b3c().en(0),$async$BW)
 case 5:if($.a8==null)A.J7()
