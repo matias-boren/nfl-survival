@@ -30,6 +30,7 @@ abstract class League with _$League {
     required List<String> memberIds,
     String? inviteCode,
     @Default({}) Map<String, int> memberPoints, // User ID -> Points
+    @Default({}) Map<String, bool> eliminatedUsers, // User ID -> Is Eliminated
   }) = _League;
 
   factory League.fromJson(Map<String, dynamic> json) => _$LeagueFromJson(json);

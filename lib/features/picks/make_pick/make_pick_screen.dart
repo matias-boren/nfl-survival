@@ -48,6 +48,7 @@ class MakePickScreen extends ConsumerWidget {
     final gamesAsync = ref.watch(gamesForWeekProvider(currentWeek));
     final pickLockedAsync = ref.watch(pickLockedProvider(currentWeek));
     final currentUserAsync = ref.watch(currentUserProvider);
+    final isEliminatedAsync = ref.watch(isUserEliminatedProvider(leagueId));
     final userPickAsync = ref.watch(userPickProvider((leagueId, currentWeek)));
 
     return AppScaffold(
@@ -62,6 +63,39 @@ class MakePickScreen extends ConsumerWidget {
             child: gamesAsync.when(
               data: (games) {
                 final isLocked = pickLockedAsync.valueOrNull ?? false;
+                final isEliminated = isEliminatedAsync.valueOrNull ?? false;
+                
+                if (isEliminated) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.block,
+                          size: 64,
+                          color: Colors.red[400],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'You have been eliminated!',
+                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            color: Colors.red[600],
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'You cannot make any more picks in this league.',
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: Colors.grey[600],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                
                 if (isLocked) {
                   return const Center(
                     child: Text('Picks are locked for this week!'),
@@ -340,6 +374,23 @@ class MakePickScreen extends ConsumerWidget {
           : () async {
               final currentUser = ref.read(currentUserProvider);
               if (currentUser != null) {
+                // Check if user is eliminated before allowing pick submission
+                final isEliminated = await ref.read(eliminationServiceProvider)
+                    .isUserEliminated(
+                      userId: currentUser.id,
+                      leagueId: leagueId,
+                    );
+                
+                if (isEliminated) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('You have been eliminated and cannot make picks!'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+
                 await ref
                     .read(picksRepositoryProvider)
                     .submitPick(
@@ -354,6 +405,7 @@ class MakePickScreen extends ConsumerWidget {
                 ref.invalidate(userPicksForWeekProvider);
                 ref.invalidate(userPickedTeamIdsProvider(leagueId));
                 ref.invalidate(userPreviousPicksProvider(leagueId));
+                ref.invalidate(isUserEliminatedProvider(leagueId));
 
                 ScaffoldMessenger.of(
                   context,

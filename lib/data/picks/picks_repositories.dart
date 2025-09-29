@@ -15,4 +15,9 @@ abstract class PicksRepository {
   });
   Future<List<Pick>> getUserPicksForLeague(String userId, String leagueId);
   Future<List<Pick>> getLeaguePicks(String leagueId);
+  Future<bool> canUserSubmitPick({
+    required String leagueId,
+    required String userId,
+    required int week,
+  });
 }

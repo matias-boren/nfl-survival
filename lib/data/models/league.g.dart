@@ -37,6 +37,11 @@ _League _$LeagueFromJson(Map<String, dynamic> json) => _League(
         (k, e) => MapEntry(k, (e as num).toInt()),
       ) ??
       const {},
+  eliminatedUsers:
+      (json['eliminatedUsers'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as bool),
+      ) ??
+      const {},
 );
 
 Map<String, dynamic> _$LeagueToJson(_League instance) => <String, dynamic>{
@@ -50,6 +55,7 @@ Map<String, dynamic> _$LeagueToJson(_League instance) => <String, dynamic>{
   'memberIds': instance.memberIds,
   'inviteCode': instance.inviteCode,
   'memberPoints': instance.memberPoints,
+  'eliminatedUsers': instance.eliminatedUsers,
 };
 
 const _$LeagueVisibilityEnumMap = {

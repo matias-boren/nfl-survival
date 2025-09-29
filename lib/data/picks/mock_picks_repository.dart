@@ -94,4 +94,17 @@ class MockPicksRepository implements PicksRepository {
 
     return _picks.where((pick) => pick.leagueId == leagueId).toList();
   }
+
+  @override
+  Future<bool> canUserSubmitPick({
+    required String leagueId,
+    required String userId,
+    required int week,
+  }) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    
+    // For mock implementation, always allow picking
+    // In real implementation, this would check elimination status
+    return true;
+  }
 }

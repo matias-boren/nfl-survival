@@ -284,7 +284,8 @@ as bool,
 /// @nodoc
 mixin _$League {
 
- String get id; String get name; String get ownerId; LeagueVisibility get visibility; LeagueSettings get settings; int get season; String get createdAtIso; List<String> get memberIds; String? get inviteCode; Map<String, int> get memberPoints;
+ String get id; String get name; String get ownerId; LeagueVisibility get visibility; LeagueSettings get settings; int get season; String get createdAtIso; List<String> get memberIds; String? get inviteCode; Map<String, int> get memberPoints;// User ID -> Points
+ Map<String, bool> get eliminatedUsers;
 /// Create a copy of League
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -297,16 +298,16 @@ $LeagueCopyWith<League> get copyWith => _$LeagueCopyWithImpl<League>(this as Lea
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is League&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.season, season) || other.season == season)&&(identical(other.createdAtIso, createdAtIso) || other.createdAtIso == createdAtIso)&&const DeepCollectionEquality().equals(other.memberIds, memberIds)&&(identical(other.inviteCode, inviteCode) || other.inviteCode == inviteCode)&&const DeepCollectionEquality().equals(other.memberPoints, memberPoints));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is League&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.season, season) || other.season == season)&&(identical(other.createdAtIso, createdAtIso) || other.createdAtIso == createdAtIso)&&const DeepCollectionEquality().equals(other.memberIds, memberIds)&&(identical(other.inviteCode, inviteCode) || other.inviteCode == inviteCode)&&const DeepCollectionEquality().equals(other.memberPoints, memberPoints)&&const DeepCollectionEquality().equals(other.eliminatedUsers, eliminatedUsers));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,ownerId,visibility,settings,season,createdAtIso,const DeepCollectionEquality().hash(memberIds),inviteCode,const DeepCollectionEquality().hash(memberPoints));
+int get hashCode => Object.hash(runtimeType,id,name,ownerId,visibility,settings,season,createdAtIso,const DeepCollectionEquality().hash(memberIds),inviteCode,const DeepCollectionEquality().hash(memberPoints),const DeepCollectionEquality().hash(eliminatedUsers));
 
 @override
 String toString() {
-  return 'League(id: $id, name: $name, ownerId: $ownerId, visibility: $visibility, settings: $settings, season: $season, createdAtIso: $createdAtIso, memberIds: $memberIds, inviteCode: $inviteCode, memberPoints: $memberPoints)';
+  return 'League(id: $id, name: $name, ownerId: $ownerId, visibility: $visibility, settings: $settings, season: $season, createdAtIso: $createdAtIso, memberIds: $memberIds, inviteCode: $inviteCode, memberPoints: $memberPoints, eliminatedUsers: $eliminatedUsers)';
 }
 
 
@@ -317,7 +318,7 @@ abstract mixin class $LeagueCopyWith<$Res>  {
   factory $LeagueCopyWith(League value, $Res Function(League) _then) = _$LeagueCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String ownerId, LeagueVisibility visibility, LeagueSettings settings, int season, String createdAtIso, List<String> memberIds, String? inviteCode, Map<String, int> memberPoints
+ String id, String name, String ownerId, LeagueVisibility visibility, LeagueSettings settings, int season, String createdAtIso, List<String> memberIds, String? inviteCode, Map<String, int> memberPoints, Map<String, bool> eliminatedUsers
 });
 
 
@@ -334,7 +335,7 @@ class _$LeagueCopyWithImpl<$Res>
 
 /// Create a copy of League
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? ownerId = null,Object? visibility = null,Object? settings = null,Object? season = null,Object? createdAtIso = null,Object? memberIds = null,Object? inviteCode = freezed,Object? memberPoints = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? ownerId = null,Object? visibility = null,Object? settings = null,Object? season = null,Object? createdAtIso = null,Object? memberIds = null,Object? inviteCode = freezed,Object? memberPoints = null,Object? eliminatedUsers = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -346,7 +347,8 @@ as int,createdAtIso: null == createdAtIso ? _self.createdAtIso : createdAtIso //
 as String,memberIds: null == memberIds ? _self.memberIds : memberIds // ignore: cast_nullable_to_non_nullable
 as List<String>,inviteCode: freezed == inviteCode ? _self.inviteCode : inviteCode // ignore: cast_nullable_to_non_nullable
 as String?,memberPoints: null == memberPoints ? _self.memberPoints : memberPoints // ignore: cast_nullable_to_non_nullable
-as Map<String, int>,
+as Map<String, int>,eliminatedUsers: null == eliminatedUsers ? _self.eliminatedUsers : eliminatedUsers // ignore: cast_nullable_to_non_nullable
+as Map<String, bool>,
   ));
 }
 /// Create a copy of League
@@ -440,10 +442,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String ownerId,  LeagueVisibility visibility,  LeagueSettings settings,  int season,  String createdAtIso,  List<String> memberIds,  String? inviteCode,  Map<String, int> memberPoints)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String ownerId,  LeagueVisibility visibility,  LeagueSettings settings,  int season,  String createdAtIso,  List<String> memberIds,  String? inviteCode,  Map<String, int> memberPoints,  Map<String, bool> eliminatedUsers)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _League() when $default != null:
-return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.settings,_that.season,_that.createdAtIso,_that.memberIds,_that.inviteCode,_that.memberPoints);case _:
+return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.settings,_that.season,_that.createdAtIso,_that.memberIds,_that.inviteCode,_that.memberPoints,_that.eliminatedUsers);case _:
   return orElse();
 
 }
@@ -461,10 +463,10 @@ return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.setting
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String ownerId,  LeagueVisibility visibility,  LeagueSettings settings,  int season,  String createdAtIso,  List<String> memberIds,  String? inviteCode,  Map<String, int> memberPoints)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String ownerId,  LeagueVisibility visibility,  LeagueSettings settings,  int season,  String createdAtIso,  List<String> memberIds,  String? inviteCode,  Map<String, int> memberPoints,  Map<String, bool> eliminatedUsers)  $default,) {final _that = this;
 switch (_that) {
 case _League():
-return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.settings,_that.season,_that.createdAtIso,_that.memberIds,_that.inviteCode,_that.memberPoints);case _:
+return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.settings,_that.season,_that.createdAtIso,_that.memberIds,_that.inviteCode,_that.memberPoints,_that.eliminatedUsers);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -481,10 +483,10 @@ return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.setting
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String ownerId,  LeagueVisibility visibility,  LeagueSettings settings,  int season,  String createdAtIso,  List<String> memberIds,  String? inviteCode,  Map<String, int> memberPoints)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String ownerId,  LeagueVisibility visibility,  LeagueSettings settings,  int season,  String createdAtIso,  List<String> memberIds,  String? inviteCode,  Map<String, int> memberPoints,  Map<String, bool> eliminatedUsers)?  $default,) {final _that = this;
 switch (_that) {
 case _League() when $default != null:
-return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.settings,_that.season,_that.createdAtIso,_that.memberIds,_that.inviteCode,_that.memberPoints);case _:
+return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.settings,_that.season,_that.createdAtIso,_that.memberIds,_that.inviteCode,_that.memberPoints,_that.eliminatedUsers);case _:
   return null;
 
 }
@@ -496,7 +498,7 @@ return $default(_that.id,_that.name,_that.ownerId,_that.visibility,_that.setting
 @JsonSerializable()
 
 class _League implements League {
-  const _League({required this.id, required this.name, required this.ownerId, required this.visibility, required this.settings, required this.season, required this.createdAtIso, required final  List<String> memberIds, this.inviteCode, final  Map<String, int> memberPoints = const {}}): _memberIds = memberIds,_memberPoints = memberPoints;
+  const _League({required this.id, required this.name, required this.ownerId, required this.visibility, required this.settings, required this.season, required this.createdAtIso, required final  List<String> memberIds, this.inviteCode, final  Map<String, int> memberPoints = const {}, final  Map<String, bool> eliminatedUsers = const {}}): _memberIds = memberIds,_memberPoints = memberPoints,_eliminatedUsers = eliminatedUsers;
   factory _League.fromJson(Map<String, dynamic> json) => _$LeagueFromJson(json);
 
 @override final  String id;
@@ -521,6 +523,15 @@ class _League implements League {
   return EqualUnmodifiableMapView(_memberPoints);
 }
 
+// User ID -> Points
+ final  Map<String, bool> _eliminatedUsers;
+// User ID -> Points
+@override@JsonKey() Map<String, bool> get eliminatedUsers {
+  if (_eliminatedUsers is EqualUnmodifiableMapView) return _eliminatedUsers;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_eliminatedUsers);
+}
+
 
 /// Create a copy of League
 /// with the given fields replaced by the non-null parameter values.
@@ -535,16 +546,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _League&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.season, season) || other.season == season)&&(identical(other.createdAtIso, createdAtIso) || other.createdAtIso == createdAtIso)&&const DeepCollectionEquality().equals(other._memberIds, _memberIds)&&(identical(other.inviteCode, inviteCode) || other.inviteCode == inviteCode)&&const DeepCollectionEquality().equals(other._memberPoints, _memberPoints));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _League&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerId, ownerId) || other.ownerId == ownerId)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.season, season) || other.season == season)&&(identical(other.createdAtIso, createdAtIso) || other.createdAtIso == createdAtIso)&&const DeepCollectionEquality().equals(other._memberIds, _memberIds)&&(identical(other.inviteCode, inviteCode) || other.inviteCode == inviteCode)&&const DeepCollectionEquality().equals(other._memberPoints, _memberPoints)&&const DeepCollectionEquality().equals(other._eliminatedUsers, _eliminatedUsers));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,ownerId,visibility,settings,season,createdAtIso,const DeepCollectionEquality().hash(_memberIds),inviteCode,const DeepCollectionEquality().hash(_memberPoints));
+int get hashCode => Object.hash(runtimeType,id,name,ownerId,visibility,settings,season,createdAtIso,const DeepCollectionEquality().hash(_memberIds),inviteCode,const DeepCollectionEquality().hash(_memberPoints),const DeepCollectionEquality().hash(_eliminatedUsers));
 
 @override
 String toString() {
-  return 'League(id: $id, name: $name, ownerId: $ownerId, visibility: $visibility, settings: $settings, season: $season, createdAtIso: $createdAtIso, memberIds: $memberIds, inviteCode: $inviteCode, memberPoints: $memberPoints)';
+  return 'League(id: $id, name: $name, ownerId: $ownerId, visibility: $visibility, settings: $settings, season: $season, createdAtIso: $createdAtIso, memberIds: $memberIds, inviteCode: $inviteCode, memberPoints: $memberPoints, eliminatedUsers: $eliminatedUsers)';
 }
 
 
@@ -555,7 +566,7 @@ abstract mixin class _$LeagueCopyWith<$Res> implements $LeagueCopyWith<$Res> {
   factory _$LeagueCopyWith(_League value, $Res Function(_League) _then) = __$LeagueCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String ownerId, LeagueVisibility visibility, LeagueSettings settings, int season, String createdAtIso, List<String> memberIds, String? inviteCode, Map<String, int> memberPoints
+ String id, String name, String ownerId, LeagueVisibility visibility, LeagueSettings settings, int season, String createdAtIso, List<String> memberIds, String? inviteCode, Map<String, int> memberPoints, Map<String, bool> eliminatedUsers
 });
 
 
@@ -572,7 +583,7 @@ class __$LeagueCopyWithImpl<$Res>
 
 /// Create a copy of League
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? ownerId = null,Object? visibility = null,Object? settings = null,Object? season = null,Object? createdAtIso = null,Object? memberIds = null,Object? inviteCode = freezed,Object? memberPoints = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? ownerId = null,Object? visibility = null,Object? settings = null,Object? season = null,Object? createdAtIso = null,Object? memberIds = null,Object? inviteCode = freezed,Object? memberPoints = null,Object? eliminatedUsers = null,}) {
   return _then(_League(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -584,7 +595,8 @@ as int,createdAtIso: null == createdAtIso ? _self.createdAtIso : createdAtIso //
 as String,memberIds: null == memberIds ? _self._memberIds : memberIds // ignore: cast_nullable_to_non_nullable
 as List<String>,inviteCode: freezed == inviteCode ? _self.inviteCode : inviteCode // ignore: cast_nullable_to_non_nullable
 as String?,memberPoints: null == memberPoints ? _self._memberPoints : memberPoints // ignore: cast_nullable_to_non_nullable
-as Map<String, int>,
+as Map<String, int>,eliminatedUsers: null == eliminatedUsers ? _self._eliminatedUsers : eliminatedUsers // ignore: cast_nullable_to_non_nullable
+as Map<String, bool>,
   ));
 }
 

@@ -84,6 +84,11 @@ class ResultProcessingService {
       );
     }
 
+    // Mark eliminated users in the league
+    for (final userId in eliminatedUsers) {
+      await _markUserAsEliminated(leagueId, userId);
+    }
+
     // Calculate and update points for the league
     // For now, we'll calculate points for each individual game result
     Map<String, int> updatedPoints = Map.from(league.memberPoints);
@@ -231,6 +236,28 @@ class ResultProcessingService {
     }
 
     return false;
+  }
+
+  /// Mark a user as eliminated in the league
+  Future<void> _markUserAsEliminated(String leagueId, String userId) async {
+    try {
+      final league = await _leagueRepository.getLeague(leagueId);
+      
+      // Update the eliminated users map
+      final updatedEliminatedUsers = Map<String, bool>.from(league.eliminatedUsers);
+      updatedEliminatedUsers[userId] = true;
+      
+      // Update the league
+      final updatedLeague = league.copyWith(
+        eliminatedUsers: updatedEliminatedUsers,
+      );
+      
+      await _leagueRepository.updateLeague(updatedLeague);
+      print('Marked user $userId as eliminated from league $leagueId');
+    } catch (e) {
+      print('Error marking user as eliminated: $e');
+      rethrow;
+    }
   }
 }
 

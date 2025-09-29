@@ -3,6 +3,7 @@ import 'package:nfl_survival/core/services/result_processing_service.dart';
 import 'package:nfl_survival/core/services/standings_service.dart';
 import 'package:nfl_survival/core/services/automated_result_processor.dart';
 import 'package:nfl_survival/core/services/weekly_data_refresh_service.dart';
+import 'package:nfl_survival/core/services/elimination_service.dart';
 // Live score services removed
 import 'package:nfl_survival/data/ads/ads_service.dart';
 import 'package:nfl_survival/data/ads/mock_ads_service.dart';
@@ -357,4 +358,26 @@ final weeklyDataRefreshServiceProvider = Provider<WeeklyDataRefreshService>((
   );
 
   return service;
+});
+
+// Elimination service provider
+final eliminationServiceProvider = Provider<EliminationService>((ref) {
+  return EliminationService(
+    picksRepository: ref.read(picksRepositoryProvider),
+    leagueRepository: ref.read(leagueRepositoryProvider),
+  );
+});
+
+// Check if current user is eliminated from a league
+final isUserEliminatedProvider = FutureProvider.family<bool, String>((
+  ref,
+  leagueId,
+) async {
+  final currentUser = ref.watch(currentUserProvider);
+  if (currentUser == null) return false;
+
+  return ref.read(eliminationServiceProvider).isUserEliminated(
+    userId: currentUser.id,
+    leagueId: leagueId,
+  );
 });

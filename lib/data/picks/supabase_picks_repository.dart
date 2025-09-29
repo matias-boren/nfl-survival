@@ -216,4 +216,35 @@ class SupabasePicksRepository implements PicksRepository {
         })
         .eq('id', pickId);
   }
+
+  @override
+  Future<bool> canUserSubmitPick({
+    required String leagueId,
+    required String userId,
+    required int week,
+  }) async {
+    try {
+      // Check if user is eliminated from the league
+      final leagueResponse = await _supabase
+          .from('leagues')
+          .select('eliminated_users')
+          .eq('id', leagueId)
+          .single();
+
+      final eliminatedUsers = Map<String, bool>.from(
+        leagueResponse['eliminated_users'] ?? {},
+      );
+
+      // If user is marked as eliminated, they cannot submit picks
+      if (eliminatedUsers[userId] == true) {
+        return false;
+      }
+
+      // Additional checks could be added here (e.g., deadline passed, already picked)
+      return true;
+    } catch (e) {
+      print('Error checking if user can submit pick: $e');
+      return false; // Default to not allowing if there's an error
+    }
+  }
 }
