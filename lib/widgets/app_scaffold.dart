@@ -21,11 +21,15 @@ class AppScaffold extends ConsumerWidget {
     final location = uri.toString();
     final currentUser = ref.watch(currentUserProvider);
     
-    // Hide navigation bar if user is not authenticated or on sign-in screen
-    final shouldShowNavigation = currentUser != null && 
-                                !location.contains('/signin') && 
-                                !location.contains('/sign-in') &&
-                                !location.contains('/loading');
+    // Only show navigation bar if:
+    // 1. User is authenticated (currentUser is not null)
+    // 2. Not on sign-in or loading screens
+    // 3. Not on any auth-related routes
+    final isAuthRoute = location.contains('/signin') || 
+                       location.contains('/sign-in') || 
+                       location.contains('/loading');
+    
+    final shouldShowNavigation = currentUser != null && !isAuthRoute;
     
     return Scaffold(
       appBar: appBar,
