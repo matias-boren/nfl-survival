@@ -24,14 +24,25 @@ class AppScaffold extends ConsumerWidget {
     // Debug logging
     print('🔍 AppScaffold - Location: $location, CurrentUser: ${currentUser?.email ?? "null"}');
     
+    // ALWAYS hide navigation bar if no authenticated user
+    // This is the most important security check
+    if (currentUser == null) {
+      print('🔍 AppScaffold - No authenticated user, hiding navigation bar');
+      return Scaffold(
+        appBar: appBar,
+        body: child,
+        floatingActionButton: floatingActionButton,
+        bottomNavigationBar: null, // Force hide navigation bar
+      );
+    }
+    
     // Define auth routes more explicitly
     final isAuthRoute = location.contains('/signin') || 
                        location.contains('/sign-in') || 
-                       location.contains('/loading') ||
-                       location == '/' && currentUser == null; // Also hide on home if not authenticated
+                       location.contains('/loading');
     
-    // Force hide navigation bar on auth routes regardless of user state
-    final shouldShowNavigation = !isAuthRoute && currentUser != null;
+    // Only show navigation bar if user is authenticated AND not on auth routes
+    final shouldShowNavigation = !isAuthRoute;
     
     print('🔍 AppScaffold - isAuthRoute: $isAuthRoute, shouldShowNavigation: $shouldShowNavigation');
     

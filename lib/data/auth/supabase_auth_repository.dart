@@ -7,6 +7,63 @@ class SupabaseAuthRepository implements AuthRepository {
 
   @override
   Stream<app_user.User?> currentUser() async* {
+    // First, check if there's already a session
+    final currentSession = _supabase.auth.currentSession;
+    print('🔍 Initial auth check - Current session: ${currentSession?.user?.email ?? "null"}');
+    
+    if (currentSession?.user != null && currentSession?.accessToken != null) {
+      print('🔍 Found existing session, loading user data');
+      // Load user data for existing session
+      final supabaseUser = currentSession!.user;
+      List<String> joinedLeagueIds = [];
+      bool isPremium = false;
+      String? favoriteTeam;
+      String displayName = supabaseUser.userMetadata?['full_name'] ?? 
+                          supabaseUser.email?.split('@').first ?? 'User';
+      
+      try {
+        // Load joined leagues
+        final leaguesResponse = await _supabase
+            .from('league_members')
+            .select('league_id')
+            .eq('user_id', supabaseUser.id);
+        
+        joinedLeagueIds = leaguesResponse.map((row) => row['league_id'] as String).toList();
+        
+        // Load user profile
+        final profileResponse = await _supabase
+            .from('user_profiles')
+            .select('display_name, favorite_team, is_premium')
+            .eq('user_id', supabaseUser.id)
+            .maybeSingle();
+        
+        if (profileResponse != null) {
+          displayName = profileResponse['display_name'] ?? displayName;
+          favoriteTeam = profileResponse['favorite_team'];
+          isPremium = profileResponse['is_premium'] ?? false;
+          print('🔍 Loaded user profile - isPremium: $isPremium, displayName: $displayName');
+        } else {
+          print('⚠️ No user profile found for user: ${supabaseUser.id}');
+        }
+      } catch (e) {
+        print('Error loading user data: $e');
+      }
+      
+      yield app_user.User(
+        id: supabaseUser.id,
+        displayName: displayName,
+        email: supabaseUser.email,
+        avatarUrl: supabaseUser.userMetadata?['avatar_url'],
+        isPremium: isPremium,
+        joinedLeagueIds: joinedLeagueIds,
+        favoriteTeam: favoriteTeam,
+      );
+    } else {
+      print('🔍 No existing session, yielding null');
+      yield null;
+    }
+    
+    // Then listen for auth state changes
     await for (final session in _supabase.auth.onAuthStateChange) {
       print('🔍 Auth state change - Session: ${session.session?.user?.email ?? "null"}');
       if (session.session?.user != null && session.session?.accessToken != null) {
