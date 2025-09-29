@@ -30,6 +30,7 @@ dependencies:
   cached_network_image: ^3.3.1
   html: ^0.15.4
   google_mobile_ads: ^5.1.0
+  shared_preferences: ^2.3.2
   
   # Supabase
   supabase_flutter: ^2.3.4

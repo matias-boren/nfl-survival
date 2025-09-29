@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nfl_survival/app/providers.dart';
-import 'package:nfl_survival/widgets/premium_upgrade_interstitial.dart';
+import 'package:nfl_survival/app/theme/theme_extensions.dart';
 
 class PremiumUpgradeScreen extends ConsumerStatefulWidget {
   const PremiumUpgradeScreen({super.key});
@@ -18,8 +17,6 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
   @override
   void initState() {
     super.initState();
-    // Preload ads for better user experience
-    PremiumUpgradeInterstitial.preloadAds();
   }
 
   Future<void> _upgradeToPremium() async {
@@ -28,9 +25,6 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
     });
 
     try {
-      // Show interstitial ad before upgrade
-      await PremiumUpgradeInterstitial.showBeforeUpgrade();
-      
       // Simulate premium upgrade (replace with real payment processing)
       await Future.delayed(const Duration(seconds: 2));
       
@@ -66,54 +60,17 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
     }
   }
 
-  Future<void> _watchAdForFeature() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      final rewardEarned = await PremiumUpgradeInterstitial.showRewardedForFeature();
-      
-      if (rewardEarned && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('🎉 Feature unlocked! Enjoy your premium feature.'),
-            backgroundColor: Colors.green,
-          ),
-        );
-      } else if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Ad not available. Please try again later.'),
-            backgroundColor: Colors.orange,
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final appColors = theme.extension<AppColors>()!;
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Upgrade to Premium'),
-        backgroundColor: Colors.purple,
-        foregroundColor: Colors.white,
+        backgroundColor: appColors.premium ?? theme.colorScheme.tertiary,
+        foregroundColor: appColors.onTertiary ?? theme.colorScheme.onTertiary,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -125,7 +82,10 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.purple.shade400, Colors.purple.shade600],
+                  colors: [
+                    (appColors.premium ?? theme.colorScheme.tertiary).withOpacity(0.8),
+                    (appColors.premium ?? theme.colorScheme.tertiary),
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -196,6 +156,11 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
               title: 'Ad-Free Experience',
               description: 'Enjoy the app without any advertisements',
             ),
+            _buildFeatureItem(
+              icon: Icons.palette,
+              title: 'Premium Themes',
+              description: 'Access to Dark Grey and Dark themes',
+            ),
             
             const SizedBox(height: 32),
             
@@ -203,20 +168,22 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
             ElevatedButton(
               onPressed: _isLoading ? null : _upgradeToPremium,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
-                foregroundColor: Colors.white,
+                backgroundColor: appColors.premium ?? theme.colorScheme.tertiary,
+                foregroundColor: appColors.onTertiary ?? theme.colorScheme.onTertiary,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
               child: _isLoading
-                  ? const SizedBox(
+                  ? SizedBox(
                       height: 20,
                       width: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          appColors.onTertiary ?? theme.colorScheme.onTertiary,
+                        ),
                       ),
                     )
                   : const Text(
@@ -230,19 +197,26 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
             
             const SizedBox(height: 16),
             
-            // Watch ad for temporary access
+            // Restore purchases button
             OutlinedButton(
-              onPressed: _isLoading ? null : _watchAdForFeature,
+              onPressed: _isLoading ? null : () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Restore purchases feature coming soon'),
+                    backgroundColor: Colors.orange,
+                  ),
+                );
+              },
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.purple,
-                side: const BorderSide(color: Colors.purple),
+                foregroundColor: appColors.premium ?? theme.colorScheme.tertiary,
+                side: BorderSide(color: appColors.premium ?? theme.colorScheme.tertiary),
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
               child: const Text(
-                'Watch Ad for 1 Hour Premium Access',
+                'Restore Purchases',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -272,6 +246,9 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
     required String title,
     required String description,
   }) {
+    final theme = Theme.of(context);
+    final appColors = theme.extension<AppColors>()!;
+    
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Row(
@@ -279,12 +256,12 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.purple.shade100,
+              color: (appColors.premiumContainer ?? theme.colorScheme.tertiaryContainer).withOpacity(0.3),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
               icon,
-              color: Colors.purple,
+              color: appColors.premium ?? theme.colorScheme.tertiary,
               size: 24,
             ),
           ),

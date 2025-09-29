@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/providers.dart';
+import '../../app/theme/theme_extensions.dart';
 
 class PaywallScreen extends ConsumerWidget {
   const PaywallScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final appColors = theme.extension<AppColors>()!;
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Go Premium'),
-        backgroundColor: Colors.purple,
-        foregroundColor: Colors.white,
+        backgroundColor: appColors.premium ?? theme.colorScheme.tertiary,
+        foregroundColor: appColors.onTertiary ?? theme.colorScheme.onTertiary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -29,8 +33,8 @@ class PaywallScreen extends ConsumerWidget {
             ElevatedButton(
               onPressed: () => context.push('/premium-upgrade'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
-                foregroundColor: Colors.white,
+                backgroundColor: appColors.premium ?? theme.colorScheme.tertiary,
+                foregroundColor: appColors.onTertiary ?? theme.colorScheme.onTertiary,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -54,6 +58,10 @@ class PaywallScreen extends ConsumerWidget {
                 if (!context.mounted) return;
                 if (ok) Navigator.of(context).pop();
               },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: appColors.premium ?? theme.colorScheme.tertiary,
+                side: BorderSide(color: appColors.premium ?? theme.colorScheme.tertiary),
+              ),
               child: const Text('Start monthly subscription (Legacy)'),
             ),
           ],

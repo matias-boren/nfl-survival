@@ -31,6 +31,7 @@ class AppScaffold extends StatelessWidget {
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home), label: 'Home'),
           NavigationDestination(icon: Icon(Icons.group_outlined), selectedIcon: Icon(Icons.group), label: 'Leagues'),
+          NavigationDestination(icon: Icon(Icons.sports_football_outlined), selectedIcon: Icon(Icons.sports_football), label: 'Picks'),
           NavigationDestination(icon: Icon(Icons.newspaper_outlined), selectedIcon: Icon(Icons.newspaper), label: 'News'),
           NavigationDestination(icon: Icon(Icons.settings_outlined), selectedIcon: Icon(Icons.settings), label: 'Settings'),
         ],
@@ -40,8 +41,9 @@ class AppScaffold extends StatelessWidget {
 
   int _indexForLocation(String location) {
     if (location.startsWith('/leagues') || location.contains('/league/')) return 1;
-    if (location.startsWith('/news')) return 2;
-    if (location.startsWith('/settings')) return 3;
+    if (location.startsWith('/select-league') || location.startsWith('/make-pick')) return 2;
+    if (location.startsWith('/news')) return 3;
+    if (location.startsWith('/settings')) return 4;
     return 0; // Home
   }
 
@@ -54,9 +56,12 @@ class AppScaffold extends StatelessWidget {
         context.go('/leagues');
         break;
       case 2:
-        context.go('/news');
+        context.go('/select-league');
         break;
       case 3:
+        context.go('/news');
+        break;
+      case 4:
         context.go('/settings');
         break;
     }

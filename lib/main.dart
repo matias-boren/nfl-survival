@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:nfl_survival/app/router.dart';
 import 'package:nfl_survival/app/theme/theme.dart';
 import 'package:nfl_survival/app/providers.dart';
+import 'package:nfl_survival/app/providers/theme_provider.dart';
 import 'package:nfl_survival/core/services/ad_service.dart';
 
 Future<void> main() async {
@@ -35,6 +36,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final goRouter = ref.watch(appRouterProvider);
+    final currentTheme = ref.watch(currentThemeProvider);
     
     // Initialize automated result processing
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -48,7 +50,7 @@ class MyApp extends ConsumerWidget {
     
     return MaterialApp.router(
       title: 'NFL Survival',
-      theme: buildAppTheme(),
+      theme: currentTheme,
       routerConfig: goRouter,
     );
   }

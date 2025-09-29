@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nfl_survival/app/providers.dart';
+import 'package:nfl_survival/app/providers/theme_provider.dart';
 import 'package:nfl_survival/data/billing/mock_billing_repository.dart';
 import 'package:nfl_survival/data/auth/supabase_auth_repository.dart';
 import 'package:nfl_survival/widgets/app_scaffold.dart';
+import 'package:nfl_survival/widgets/design_system/paywall_modal.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -33,6 +35,23 @@ class SettingsScreen extends ConsumerWidget {
             subtitle: Text('Display Name: ${currentUser?.displayName ?? 'Not set'}\nFavorite Team: ${currentUser?.favoriteTeam ?? 'Not set'}\nEmail: ${currentUser?.email ?? 'Not set'}'),
             leading: const Icon(Icons.person),
             onTap: () => _showEditProfileDialog(context, ref, currentUser),
+          ),
+          const Divider(),
+          
+          // App Settings Section
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'App Settings',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+          ),
+          ListTile(
+            title: const Text('Theme'),
+            subtitle: const Text('Choose your preferred theme'),
+            leading: const Icon(Icons.palette),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => _showThemeSelector(context, ref),
           ),
           const Divider(),
           
@@ -327,6 +346,83 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showThemeSelector(BuildContext context, WidgetRef ref) {
+    final themeNotifier = ref.read(themeProvider.notifier);
+    final currentTheme = ref.read(themeProvider);
+    final isPremium = ref.read(premiumStatusProvider);
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Choose Theme'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.light_mode),
+              title: const Text('Light'),
+              subtitle: const Text('Clean and bright interface'),
+              trailing: currentTheme == AppThemeMode.light ? const Icon(Icons.check, color: Colors.green) : null,
+              onTap: () {
+                themeNotifier.setTheme(AppThemeMode.light);
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Switched to Light theme')),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.palette),
+              title: const Text('Dark Grey'),
+              subtitle: const Text('Premium only - Elegant dark theme'),
+              trailing: currentTheme == AppThemeMode.darkGrey ? const Icon(Icons.check, color: Colors.green) : null,
+              enabled: isPremium,
+              onTap: isPremium ? () {
+                themeNotifier.setTheme(AppThemeMode.darkGrey);
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Switched to Dark Grey theme')),
+                );
+              } : () {
+                Navigator.of(context).pop();
+                PaywallModal.show(
+                  context: context,
+                  featureName: 'Dark Grey Theme',
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.dark_mode),
+              title: const Text('Dark'),
+              subtitle: const Text('Premium only - Pure dark theme'),
+              trailing: currentTheme == AppThemeMode.dark ? const Icon(Icons.check, color: Colors.green) : null,
+              enabled: isPremium,
+              onTap: isPremium ? () {
+                themeNotifier.setTheme(AppThemeMode.dark);
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Switched to Dark theme')),
+                );
+              } : () {
+                Navigator.of(context).pop();
+                PaywallModal.show(
+                  context: context,
+                  featureName: 'Dark Theme',
+                );
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
           ),
         ],
       ),
