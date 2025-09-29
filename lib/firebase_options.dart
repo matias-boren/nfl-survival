@@ -44,38 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBvQvQvQvQvQvQvQvQvQvQvQvQvQvQvQvQ',
-    appId: '1:123456789:web:abcdef123456789',
-    messagingSenderId: '123456789',
-    projectId: 'nfl-survival',
-    authDomain: 'nfl-survival.firebaseapp.com',
-    storageBucket: 'nfl-survival.appspot.com',
-    measurementId: 'G-XXXXXXXXXX',
+    apiKey: 'AIzaSyBa2IdzHI5InM4-ZmpOfFr4sldbyvYbfyM',
+    appId: '1:95620296373:web:d0d3803d7b9d46ef9398fc',
+    messagingSenderId: '95620296373',
+    projectId: 'pick1-34708',
+    authDomain: 'pick1-34708.firebaseapp.com',
+    storageBucket: 'pick1-34708.firebasestorage.app',
+    measurementId: 'G-32ZMCYRYZ3',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBvQvQvQvQvQvQvQvQvQvQvQvQvQvQvQvQ',
-    appId: '1:123456789:android:abcdef123456789',
-    messagingSenderId: '123456789',
-    projectId: 'nfl-survival',
-    storageBucket: 'nfl-survival.appspot.com',
+    apiKey: 'AIzaSyBa2IdzHI5InM4-ZmpOfFr4sldbyvYbfyM',
+    appId: '1:95620296373:android:d0d3803d7b9d46ef9398fc',
+    messagingSenderId: '95620296373',
+    projectId: 'pick1-34708',
+    storageBucket: 'pick1-34708.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBvQvQvQvQvQvQvQvQvQvQvQvQvQvQvQvQ',
-    appId: '1:123456789:ios:abcdef123456789',
-    messagingSenderId: '123456789',
-    projectId: 'nfl-survival',
-    storageBucket: 'nfl-survival.appspot.com',
+    apiKey: 'AIzaSyBa2IdzHI5InM4-ZmpOfFr4sldbyvYbfyM',
+    appId: '1:95620296373:ios:d0d3803d7b9d46ef9398fc',
+    messagingSenderId: '95620296373',
+    projectId: 'pick1-34708',
+    storageBucket: 'pick1-34708.firebasestorage.app',
     iosBundleId: 'com.example.nflSurvival',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBvQvQvQvQvQvQvQvQvQvQvQvQvQvQvQvQ',
-    appId: '1:123456789:ios:abcdef123456789',
-    messagingSenderId: '123456789',
-    projectId: 'nfl-survival',
-    storageBucket: 'nfl-survival.appspot.com',
+    apiKey: 'AIzaSyBa2IdzHI5InM4-ZmpOfFr4sldbyvYbfyM',
+    appId: '1:95620296373:ios:d0d3803d7b9d46ef9398fc',
+    messagingSenderId: '95620296373',
+    projectId: 'pick1-34708',
+    storageBucket: 'pick1-34708.firebasestorage.app',
     iosBundleId: 'com.example.nflSurvival',
   );
 }
