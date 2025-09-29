@@ -31,7 +31,6 @@ class ApiConfig {
     }
   }
 
-
   /// Check if we should use server sync
   static bool shouldUseServerSync() {
     return USE_SERVER_SYNC;
