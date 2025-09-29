@@ -34,12 +34,12 @@ Future<void> main() async {
 
   // Initialize Supabase with production credentials
   await Supabase.initialize(
-    url:
-        dotenv.env['SUPABASE_URL'] ??
-        'https://yjynojqiyrlnszoiqdgp.supabase.co',
-    anonKey:
-        dotenv.env['SUPABASE_ANON_KEY'] ??
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqeW5vanFpeXJsbnN6b2lxZGdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg3MDY1NzUsImV4cCI6MjA3NDI4MjU3NX0.E5jj9ldIXu-5vhy5n-0GxopBJd7L8RvEtuFKHedWNz8',
+    url: dotenv.env['SUPABASE_URL'] ?? 
+         const String.fromEnvironment('SUPABASE_URL', 
+           defaultValue: 'https://yjynojqiyrlnszoiqdgp.supabase.co'),
+    anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? 
+             const String.fromEnvironment('SUPABASE_ANON_KEY',
+               defaultValue: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqeW5vanFpeXJsbnN6b2lxZGdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg3MDY1NzUsImV4cCI6MjA3NDI4MjU3NX0.E5jj9ldIXu-5vhy5n-0GxopBJd7L8RvEtuFKHedWNz8'),
   );
 
   // Initialize AdMob

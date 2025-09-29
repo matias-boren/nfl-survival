@@ -1,11 +1,10 @@
 name: Flutter CI
 
-# Temporarily disabled due to GitHub Actions billing limits
-# on:
-#   pull_request:
-#     branches: [ main, master ]
-#   push:
-#     branches: [ main ]
+on:
+  pull_request:
+    branches: [ main, master ]
+  push:
+    branches: [ main ]
 
 jobs:
   build:
