@@ -35,6 +35,11 @@ See `lib/` feature-first layout and `lib/data/*` repositories. Models in `lib/da
 ## CI
 GitHub Actions runs format, analyze, and tests.
 
+## Recent Updates
+- Repository is now public with unlimited GitHub Actions minutes
+- Environment variables configured for secure deployment
+- Firebase Hosting with automated CI/CD pipeline
+
 ## Notes
 - No NFL trademarks/logos included.
 - Replace mocks with real backends later (Firebase Auth, RevenueCat, AdMob, etc.).
