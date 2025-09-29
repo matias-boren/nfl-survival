@@ -386,8 +386,8 @@ class SettingsScreen extends ConsumerWidget {
 
   void _showThemeSelector(BuildContext context, WidgetRef ref) {
     final themeNotifier = ref.read(themeProvider.notifier);
-    final currentTheme = ref.read(themeProvider);
-    final isPremium = ref.read(premiumStatusProvider);
+    final currentTheme = ref.watch(themeProvider);
+    final isPremium = ref.watch(premiumStatusProvider);
 
     showDialog(
       context: context,

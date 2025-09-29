@@ -27,6 +27,7 @@ class ThemeNotifier extends StateNotifier<AppThemeMode> {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setInt(_themeKey, theme.index);
+      // Force a state change to trigger rebuilds
       state = theme;
       print('Theme changed to: $theme');
     } catch (e) {
@@ -60,6 +61,7 @@ final currentThemeProvider = Provider<ThemeData>((ref) {
   final themeMode = ref.watch(themeProvider);
   print('Current theme provider called with mode: $themeMode');
 
+  // Force rebuild by creating new ThemeData each time
   switch (themeMode) {
     case AppThemeMode.light:
       return buildAppTheme();

@@ -8,6 +8,7 @@ import 'package:nfl_survival/widgets/banner_ad_slot.dart';
 import 'package:nfl_survival/features/league/table/league_list_screen.dart';
 import 'package:nfl_survival/features/league/join/league_options_dialog.dart';
 import 'package:nfl_survival/core/services/team_logo_service.dart';
+import 'package:nfl_survival/widgets/debug/theme_debug_widget.dart';
 
 final nextWeekGamesProvider = FutureProvider<List<Game>>((ref) async {
   print('nextWeekGamesProvider called');
@@ -83,6 +84,9 @@ class HomeScreen extends ConsumerWidget {
                           ),
                         ),
                         const SizedBox(height: 24),
+                        
+                        // Debug widget for theme testing
+                        const ThemeDebugWidget(),
 
                         // Your Picks Section
                         Row(
