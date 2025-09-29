@@ -16,6 +16,7 @@ import 'package:nfl_survival/data/leagues/league_repositories.dart';
 import 'package:nfl_survival/data/leagues/supabase_league_repository.dart';
 import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
 import 'package:nfl_survival/data/nfl/hybrid_nfl_repository.dart';
+import 'package:nfl_survival/data/nfl/server_sync_nfl_repository.dart';
 import 'package:nfl_survival/data/picks/supabase_picks_repository.dart';
 import 'package:nfl_survival/data/picks/picks_repositories.dart';
 import 'package:nfl_survival/data/news/news_repositories.dart';
@@ -46,7 +47,14 @@ final billingRepositoryProvider = Provider<BillingRepository>(
 );
 final adsServiceProvider = Provider<AdsService>((ref) => MockAdsService());
 final nflRepositoryProvider = Provider<NflRepository>(
-  (ref) => HybridNflRepository(),
+  (ref) {
+    // Use server sync if configured, otherwise use hybrid repository
+    if (ApiConfig.shouldUseServerSync()) {
+      return ServerSyncNflRepository();
+    } else {
+      return HybridNflRepository();
+    }
+  },
 );
 final leagueRepositoryProvider = Provider<LeagueRepository>(
   (ref) => SupabaseLeagueRepository(),
