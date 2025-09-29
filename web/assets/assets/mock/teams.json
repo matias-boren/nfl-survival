@@ -1,0 +1,162 @@
+[
+  {
+    "id": "ARI",
+    "name": "Arizona Cardinals",
+    "abbr": "ARI"
+  },
+  {
+    "id": "ATL", 
+    "name": "Atlanta Falcons",
+    "abbr": "ATL"
+  },
+  {
+    "id": "BAL",
+    "name": "Baltimore Ravens", 
+    "abbr": "BAL"
+  },
+  {
+    "id": "BUF",
+    "name": "Buffalo Bills",
+    "abbr": "BUF"
+  },
+  {
+    "id": "CAR",
+    "name": "Carolina Panthers",
+    "abbr": "CAR"
+  },
+  {
+    "id": "CHI",
+    "name": "Chicago Bears",
+    "abbr": "CHI"
+  },
+  {
+    "id": "CIN",
+    "name": "Cincinnati Bengals",
+    "abbr": "CIN"
+  },
+  {
+    "id": "CLE",
+    "name": "Cleveland Browns",
+    "abbr": "CLE"
+  },
+  {
+    "id": "DAL",
+    "name": "Dallas Cowboys",
+    "abbr": "DAL"
+  },
+  {
+    "id": "DEN",
+    "name": "Denver Broncos",
+    "abbr": "DEN"
+  },
+  {
+    "id": "DET",
+    "name": "Detroit Lions",
+    "abbr": "DET"
+  },
+  {
+    "id": "GB",
+    "name": "Green Bay Packers",
+    "abbr": "GB"
+  },
+  {
+    "id": "HOU",
+    "name": "Houston Texans",
+    "abbr": "HOU"
+  },
+  {
+    "id": "IND",
+    "name": "Indianapolis Colts",
+    "abbr": "IND"
+  },
+  {
+    "id": "JAX",
+    "name": "Jacksonville Jaguars",
+    "abbr": "JAX"
+  },
+  {
+    "id": "KC",
+    "name": "Kansas City Chiefs",
+    "abbr": "KC"
+  },
+  {
+    "id": "LV",
+    "name": "Las Vegas Raiders",
+    "abbr": "LV"
+  },
+  {
+    "id": "LAC",
+    "name": "Los Angeles Chargers",
+    "abbr": "LAC"
+  },
+  {
+    "id": "LAR",
+    "name": "Los Angeles Rams",
+    "abbr": "LAR"
+  },
+  {
+    "id": "MIA",
+    "name": "Miami Dolphins",
+    "abbr": "MIA"
+  },
+  {
+    "id": "MIN",
+    "name": "Minnesota Vikings",
+    "abbr": "MIN"
+  },
+  {
+    "id": "NE",
+    "name": "New England Patriots",
+    "abbr": "NE"
+  },
+  {
+    "id": "NO",
+    "name": "New Orleans Saints",
+    "abbr": "NO"
+  },
+  {
+    "id": "NYG",
+    "name": "New York Giants",
+    "abbr": "NYG"
+  },
+  {
+    "id": "NYJ",
+    "name": "New York Jets",
+    "abbr": "NYJ"
+  },
+  {
+    "id": "PHI",
+    "name": "Philadelphia Eagles",
+    "abbr": "PHI"
+  },
+  {
+    "id": "PIT",
+    "name": "Pittsburgh Steelers",
+    "abbr": "PIT"
+  },
+  {
+    "id": "SF",
+    "name": "San Francisco 49ers",
+    "abbr": "SF"
+  },
+  {
+    "id": "SEA",
+    "name": "Seattle Seahawks",
+    "abbr": "SEA"
+  },
+  {
+    "id": "TB",
+    "name": "Tampa Bay Buccaneers",
+    "abbr": "TB"
+  },
+  {
+    "id": "TEN",
+    "name": "Tennessee Titans",
+    "abbr": "TEN"
+  },
+  {
+    "id": "WAS",
+    "name": "Washington Commanders",
+    "abbr": "WAS"
+  }
+]

@@ -1,6 +1,6 @@
 {
   "buildCommand": "echo 'Using pre-built Flutter web app'",
-  "outputDirectory": "build/web",
+  "outputDirectory": "web",
   "installCommand": "echo 'No installation needed for pre-built app'",
   "rewrites": [
     {
