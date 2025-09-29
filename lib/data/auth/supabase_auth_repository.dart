@@ -133,17 +133,33 @@ class SupabaseAuthRepository implements AuthRepository {
       throw Exception('Sign up failed');
     }
     
-    // Create user profile in database
-    try {
-      await _supabase.from('user_profiles').insert({
-        'user_id': response.user!.id,
-        'display_name': displayName,
-        'favorite_team': favoriteTeam,
-        'is_premium': false, // New users start as freemium
-      });
-    } catch (e) {
-      print('Error creating user profile: $e');
-      // Continue anyway - the user is created in auth, profile can be created later
+    // Create user profile in database with retry logic
+    bool profileCreated = false;
+    int retryCount = 0;
+    const maxRetries = 3;
+    
+    while (!profileCreated && retryCount < maxRetries) {
+      try {
+        await _supabase.from('user_profiles').insert({
+          'user_id': response.user!.id,
+          'display_name': displayName,
+          'favorite_team': favoriteTeam,
+          'is_premium': false, // New users start as freemium
+        });
+        profileCreated = true;
+        print('✅ User profile created successfully for: ${response.user!.id}');
+      } catch (e) {
+        retryCount++;
+        print('⚠️ Error creating user profile (attempt $retryCount/$maxRetries): $e');
+        
+        if (retryCount < maxRetries) {
+          // Wait a bit before retrying
+          await Future.delayed(Duration(seconds: 1));
+        } else {
+          print('❌ Failed to create user profile after $maxRetries attempts. User will be created by database trigger.');
+          // Don't throw error - the database trigger will handle it
+        }
+      }
     }
     
     return _userFromSupabaseUser(response.user!);
