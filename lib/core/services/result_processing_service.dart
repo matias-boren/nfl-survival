@@ -25,7 +25,7 @@ class ResultProcessingService {
     required int week,
   }) async {
     print('Processing results for league $leagueId, week $week');
-    
+
     // Get league settings
     final league = await _leagueRepository.getLeague(leagueId);
     if (league == null) {
@@ -37,7 +37,10 @@ class ResultProcessingService {
     print('Found ${picks.length} picks for week $week');
 
     // Get game results for this week
-    final games = await _nflRepository.listGames(season: league.season, week: week);
+    final games = await _nflRepository.listGames(
+      season: league.season,
+      week: week,
+    );
     print('Found ${games.length} games for week $week');
 
     // Create a map of game results for quick lookup
@@ -67,9 +70,9 @@ class ResultProcessingService {
         gameResults: gameResults,
         league: league,
       );
-      
+
       processedPicks.add(pickResult);
-      
+
       // Check if user should be eliminated
       if (pickResult.shouldEliminate) {
         eliminatedUsers.add(pick.userId);
@@ -87,12 +90,16 @@ class ResultProcessingService {
     // Calculate and update points for the league
     // For now, we'll calculate points for each individual game result
     Map<String, int> updatedPoints = Map.from(league.memberPoints);
-    
+
     for (final gameResult in gameResults.values) {
-      final gamePicks = picks.where((pick) => 
-        pick.teamId == gameResult.homeTeam || pick.teamId == gameResult.awayTeam
-      ).toList();
-      
+      final gamePicks = picks
+          .where(
+            (pick) =>
+                pick.teamId == gameResult.homeTeam ||
+                pick.teamId == gameResult.awayTeam,
+          )
+          .toList();
+
       if (gamePicks.isNotEmpty) {
         final gamePoints = PointsCalculationService.updateLeaguePoints(
           currentPoints: updatedPoints,
@@ -121,14 +128,16 @@ class ResultProcessingService {
   }
 
   /// Process results for all active leagues for a specific week
-  Future<List<ResultProcessingSummary>> processAllLeaguesForWeek(int week) async {
+  Future<List<ResultProcessingSummary>> processAllLeaguesForWeek(
+    int week,
+  ) async {
     // This would typically get all active leagues
     // For now, we'll process the leagues that have picks for this week
     final summaries = <ResultProcessingSummary>[];
-    
+
     // Get all leagues (in a real app, you'd filter for active leagues)
     final leagues = await _leagueRepository.listLeagues();
-    
+
     for (final league in leagues) {
       try {
         final summary = await processWeekResults(
@@ -140,7 +149,7 @@ class ResultProcessingService {
         print('Error processing results for league ${league.id}: $e');
       }
     }
-    
+
     return summaries;
   }
 
@@ -151,13 +160,15 @@ class ResultProcessingService {
   }) async {
     // Find the game this pick was for
     final gameResult = gameResults.values.firstWhere(
-      (result) => result.homeTeam == pick.teamId || result.awayTeam == pick.teamId,
-      orElse: () => throw Exception('Game result not found for pick ${pick.teamId}'),
+      (result) =>
+          result.homeTeam == pick.teamId || result.awayTeam == pick.teamId,
+      orElse: () =>
+          throw Exception('Game result not found for pick ${pick.teamId}'),
     );
 
     // Determine if the pick won or lost
     final pickResult = _determinePickResult(pick, gameResult);
-    
+
     // Check if user should be eliminated based on league rules
     final shouldEliminate = await _shouldEliminateUser(
       userId: pick.userId,
@@ -186,7 +197,7 @@ class ResultProcessingService {
   String? _determineWinner(Game game) {
     if (game.status != GameStatus.FINAL) return null;
     if (game.homeScore == null || game.awayScore == null) return null;
-    
+
     if (game.homeScore! > game.awayScore!) {
       return game.homeTeam.abbreviation;
     } else {
@@ -201,22 +212,28 @@ class ResultProcessingService {
     required League league,
   }) async {
     // Get user's current record
-    final userPicks = await _picksRepository.getUserPicksForLeague(userId, leagueId);
-    final losses = userPicks.where((pick) => pick.result == PickResult.LOSE).length;
-    
+    final userPicks = await _picksRepository.getUserPicksForLeague(
+      userId,
+      leagueId,
+    );
+    final losses = userPicks
+        .where((pick) => pick.result == PickResult.LOSE)
+        .length;
+
     // Add current pick result to losses count
     final totalLosses = losses + (pickResult == PickResult.LOSE ? 1 : 0);
-    
+
     // Check if user exceeds max losses
     if (totalLosses > league.settings.maxLosses) {
       return true;
     }
-    
+
     // Check auto-eliminate on no pick rule
-    if (league.settings.autoEliminateOnNoPick && pickResult == PickResult.PENDING) {
+    if (league.settings.autoEliminateOnNoPick &&
+        pickResult == PickResult.PENDING) {
       return true;
     }
-    
+
     return false;
   }
 }

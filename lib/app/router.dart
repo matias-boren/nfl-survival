@@ -30,78 +30,84 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     initialLocation: '/loading',
     redirect: (context, state) {
       final currentUser = ref.watch(currentUserProvider);
-      final isSignInRoute = state.uri.path == '/signin' || state.uri.path == '/sign-in';
+      final isSignInRoute =
+          state.uri.path == '/signin' || state.uri.path == '/sign-in';
       final isLoadingRoute = state.uri.path == '/loading';
-      
+
       // If user is authenticated and on signin page, redirect to home
       if (currentUser != null && isSignInRoute) {
         return '/';
       }
-      
+
       // If user is not authenticated and not on signin page, redirect to signin
       if (currentUser == null && !isSignInRoute && !isLoadingRoute) {
         return '/signin';
       }
-      
+
       // If user is authenticated and not on loading page, go to home
       if (currentUser != null && isLoadingRoute) {
         return '/';
       }
-      
+
       // If user is not authenticated and on loading page, go to signin
       if (currentUser == null && isLoadingRoute) {
         return '/signin';
       }
-      
+
       // No redirect needed
       return null;
     },
     routes: [
       GoRoute(
         path: '/loading',
-        builder: (context, state) => const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        ),
+        builder: (context, state) =>
+            const Scaffold(body: Center(child: CircularProgressIndicator())),
       ),
       GoRoute(
         path: '/',
         builder: (context, state) => const AuthGuard(child: HomeScreen()),
       ),
       GoRoute(
-        path: '/signin', 
+        path: '/signin',
         builder: (context, state) => const SignInScreen(),
       ),
       GoRoute(
-        path: '/sign-in', 
+        path: '/sign-in',
         builder: (context, state) => const SignInScreen(),
       ),
       GoRoute(
-        path: '/leagues', 
+        path: '/leagues',
         builder: (context, state) => const AuthGuard(child: LeagueListScreen()),
       ),
       GoRoute(
         path: '/create-league',
-        builder: (context, state) => const AuthGuard(child: LeagueCreateScreen()),
+        builder: (context, state) =>
+            const AuthGuard(child: LeagueCreateScreen()),
       ),
-        GoRoute(
-          path: '/join-leagues',
-          builder: (context, state) => const AuthGuard(child: JoinLeaguesScreen()),
-        ),
-        GoRoute(
-          path: '/admin/result-processing',
-          builder: (context, state) => const AuthGuard(child: ResultProcessingScreen()),
-        ),
-        GoRoute(
-          path: '/admin/automated-processing',
-          builder: (context, state) => const AuthGuard(child: AutomatedProcessingScreen()),
-        ),
-        GoRoute(
-          path: '/admin/live-scores',
-          builder: (context, state) => const AuthGuard(child: LiveScoresMonitorScreen()),
-        ),
       GoRoute(
-        path: '/select-league', 
-        builder: (context, state) => const AuthGuard(child: LeagueSelectionScreen()),
+        path: '/join-leagues',
+        builder: (context, state) =>
+            const AuthGuard(child: JoinLeaguesScreen()),
+      ),
+      GoRoute(
+        path: '/admin/result-processing',
+        builder: (context, state) =>
+            const AuthGuard(child: ResultProcessingScreen()),
+      ),
+      GoRoute(
+        path: '/admin/automated-processing',
+        builder: (context, state) =>
+            const AuthGuard(child: AutomatedProcessingScreen()),
+      ),
+      GoRoute(
+        path: '/admin/live-scores',
+        builder: (context, state) =>
+            const AuthGuard(child: LiveScoresMonitorScreen()),
+      ),
+      GoRoute(
+        path: '/select-league',
+        builder: (context, state) =>
+            const AuthGuard(child: LeagueSelectionScreen()),
       ),
       GoRoute(
         path: '/league/:id',
@@ -112,7 +118,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: 'standings',
             builder: (context, state) => AuthGuard(
-              child: LeagueStandingsScreen(leagueId: state.pathParameters['id']!),
+              child: LeagueStandingsScreen(
+                leagueId: state.pathParameters['id']!,
+              ),
             ),
           ),
           GoRoute(
@@ -124,9 +132,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: 'pick',
             builder: (context, state) => AuthGuard(
-              child: MakePickScreen(
-                leagueId: state.pathParameters['id']!,
-              ),
+              child: MakePickScreen(leagueId: state.pathParameters['id']!),
             ),
           ),
           GoRoute(
@@ -149,11 +155,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         ],
       ),
       GoRoute(
-        path: '/news', 
+        path: '/news',
         builder: (context, state) => const AuthGuard(child: NewsFeedScreen()),
       ),
       GoRoute(
-        path: '/settings', 
+        path: '/settings',
         builder: (context, state) => const AuthGuard(child: SettingsScreen()),
       ),
       GoRoute(
@@ -164,8 +170,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ),
         ),
       ),
-      GoRoute(path: '/paywall', builder: (context, state) => const AuthGuard(child: PaywallScreen())),
-      GoRoute(path: '/premium-upgrade', builder: (context, state) => const AuthGuard(child: PremiumUpgradeScreen())),
+      GoRoute(
+        path: '/paywall',
+        builder: (context, state) => const AuthGuard(child: PaywallScreen()),
+      ),
+      GoRoute(
+        path: '/premium-upgrade',
+        builder: (context, state) =>
+            const AuthGuard(child: PremiumUpgradeScreen()),
+      ),
     ],
   );
 });

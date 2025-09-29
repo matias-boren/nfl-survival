@@ -4,9 +4,13 @@ import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
 class MockNflDataRepository implements NflRepository {
   @override
   Future<List<Game>> listGames({required int season, required int week}) async {
-    print('MockNflDataRepository.listGames called with season=$season, week=$week');
-    await Future.delayed(const Duration(milliseconds: 500)); // Simulate network delay
-    
+    print(
+      'MockNflDataRepository.listGames called with season=$season, week=$week',
+    );
+    await Future.delayed(
+      const Duration(milliseconds: 500),
+    ); // Simulate network delay
+
     // Mock games data
     final games = [
       Game(
@@ -108,8 +112,10 @@ class MockNflDataRepository implements NflRepository {
 
   @override
   Future<List<Team>> listTeams() async {
-    await Future.delayed(const Duration(milliseconds: 300)); // Simulate network delay
-    
+    await Future.delayed(
+      const Duration(milliseconds: 300),
+    ); // Simulate network delay
+
     // Mock teams data
     return [
       Team(
@@ -166,7 +172,7 @@ class MockNflDataRepository implements NflRepository {
   @override
   Future<List<LiveScore>> getLiveScores() async {
     await Future.delayed(const Duration(milliseconds: 300));
-    
+
     // Mock live scores
     return [
       LiveScore(

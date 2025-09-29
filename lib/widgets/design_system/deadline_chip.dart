@@ -18,16 +18,16 @@ class DeadlineChip extends StatelessWidget {
     final now = DateTime.now();
     final timeUntilDeadline = deadline.difference(now);
     final status = _getDeadlineStatus(timeUntilDeadline);
-    
+
     final theme = Theme.of(context);
     final appSizes = theme.extension<AppSizes>()!;
-    
+
     final chipHeight = _getChipHeight(appSizes);
     final textStyle = _getTextStyle(theme);
     final colors = _getStatusColors(status, theme);
     final displayText = _getDisplayText(timeUntilDeadline, status);
     final icon = _getStatusIcon(status);
-    
+
     Widget content = Container(
       height: chipHeight,
       padding: EdgeInsets.symmetric(
@@ -37,18 +37,14 @@ class DeadlineChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.backgroundColor,
         borderRadius: BorderRadius.circular(chipHeight / 2),
-        border: colors.borderColor != null 
-          ? Border.all(color: colors.borderColor!, width: 1)
-          : null,
+        border: colors.borderColor != null
+            ? Border.all(color: colors.borderColor!, width: 1)
+            : null,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            size: chipHeight * 0.6,
-            color: colors.textColor,
-          ),
+          Icon(icon, size: chipHeight * 0.6, color: colors.textColor),
           SizedBox(width: chipHeight * 0.2),
           Text(
             displayText,
@@ -90,15 +86,15 @@ class DeadlineChip extends StatelessWidget {
     if (status == DeadlineStatus.locked) {
       return 'Picks locked';
     }
-    
+
     if (timeUntil.isNegative) {
       return 'Week complete';
     }
-    
+
     final days = timeUntil.inDays;
     final hours = timeUntil.inHours % 24;
     final minutes = timeUntil.inMinutes % 60;
-    
+
     if (days > 0) {
       return 'Picks lock in ${days}d ${hours}h';
     } else if (hours > 0) {
@@ -147,21 +143,24 @@ class DeadlineChip extends StatelessWidget {
 
   _DeadlineColors _getStatusColors(DeadlineStatus status, ThemeData theme) {
     final appColors = theme.extension<AppColors>()!;
-    
+
     switch (status) {
       case DeadlineStatus.upcoming:
         return _DeadlineColors(
-          backgroundColor: appColors.successContainer ?? theme.colorScheme.tertiaryContainer,
+          backgroundColor:
+              appColors.successContainer ?? theme.colorScheme.tertiaryContainer,
           textColor: appColors.onTertiary ?? theme.colorScheme.onTertiary,
         );
       case DeadlineStatus.approaching:
         return _DeadlineColors(
-          backgroundColor: appColors.primaryContainer ?? theme.colorScheme.primaryContainer,
+          backgroundColor:
+              appColors.primaryContainer ?? theme.colorScheme.primaryContainer,
           textColor: appColors.onPrimary ?? theme.colorScheme.onPrimary,
         );
       case DeadlineStatus.warning:
         return _DeadlineColors(
-          backgroundColor: appColors.warningContainer ?? theme.colorScheme.errorContainer,
+          backgroundColor:
+              appColors.warningContainer ?? theme.colorScheme.errorContainer,
           textColor: appColors.onError ?? theme.colorScheme.onError,
         );
       case DeadlineStatus.critical:
@@ -171,7 +170,8 @@ class DeadlineChip extends StatelessWidget {
         );
       case DeadlineStatus.locked:
         return _DeadlineColors(
-          backgroundColor: appColors.lockedContainer ?? theme.colorScheme.surfaceVariant,
+          backgroundColor:
+              appColors.lockedContainer ?? theme.colorScheme.surfaceVariant,
           textColor: appColors.locked ?? theme.colorScheme.onSurfaceVariant,
         );
     }
@@ -190,16 +190,6 @@ class _DeadlineColors {
   });
 }
 
-enum DeadlineStatus {
-  upcoming,
-  approaching,
-  warning,
-  critical,
-  locked,
-}
+enum DeadlineStatus { upcoming, approaching, warning, critical, locked }
 
-enum DeadlineChipSize {
-  small,
-  medium,
-  large,
-}
+enum DeadlineChipSize { small, medium, large }

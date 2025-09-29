@@ -7,11 +7,8 @@ import 'package:nfl_survival/widgets/app_scaffold.dart';
 
 class LeagueInvitationsScreen extends ConsumerWidget {
   final String leagueId;
-  
-  const LeagueInvitationsScreen({
-    super.key,
-    required this.leagueId,
-  });
+
+  const LeagueInvitationsScreen({super.key, required this.leagueId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,7 +20,8 @@ class LeagueInvitationsScreen extends ConsumerWidget {
         title: const Text('League Invitations'),
         actions: [
           IconButton(
-            onPressed: () => _createAndShowInvitationUrl(context, ref, leagueId),
+            onPressed: () =>
+                _createAndShowInvitationUrl(context, ref, leagueId),
             icon: const Icon(Icons.share),
             tooltip: 'Create Invitation Link',
           ),
@@ -36,11 +34,7 @@ class LeagueInvitationsScreen extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.group_add,
-                    size: 64,
-                    color: Colors.grey,
-                  ),
+                  const Icon(Icons.group_add, size: 64, color: Colors.grey),
                   const SizedBox(height: 16),
                   const Text(
                     'No invitation links yet',
@@ -57,7 +51,8 @@ class LeagueInvitationsScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton.icon(
-                    onPressed: () => _createAndShowInvitationUrl(context, ref, leagueId),
+                    onPressed: () =>
+                        _createAndShowInvitationUrl(context, ref, leagueId),
                     icon: const Icon(Icons.share),
                     label: const Text('Create Invitation Link'),
                   ),
@@ -89,7 +84,9 @@ class LeagueInvitationsScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Code: ${invitation.invitationCode}'),
-                      Text('URL: ${_getInvitationUrl(invitation.invitationCode)}'),
+                      Text(
+                        'URL: ${_getInvitationUrl(invitation.invitationCode)}',
+                      ),
                       Text('Created: ${_formatDate(invitation.createdAt)}'),
                       if (invitation.expiresAt != null)
                         Text('Expires: ${_formatDate(invitation.expiresAt!)}'),
@@ -100,13 +97,17 @@ class LeagueInvitationsScreen extends ConsumerWidget {
                     children: [
                       if (invitation.status == InvitationStatus.pending) ...[
                         IconButton(
-                          onPressed: () => _cancelInvitation(context, ref, invitation.id),
+                          onPressed: () =>
+                              _cancelInvitation(context, ref, invitation.id),
                           icon: const Icon(Icons.cancel, color: Colors.red),
                           tooltip: 'Cancel',
                         ),
                       ],
                       IconButton(
-                        onPressed: () => _copyInvitationUrl(context, invitation.invitationCode),
+                        onPressed: () => _copyInvitationUrl(
+                          context,
+                          invitation.invitationCode,
+                        ),
                         icon: const Icon(Icons.copy),
                         tooltip: 'Copy Link',
                       ),
@@ -127,7 +128,8 @@ class LeagueInvitationsScreen extends ConsumerWidget {
               Text('Error loading invitations: $error'),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () => ref.invalidate(leagueInvitationsProvider(leagueId)),
+                onPressed: () =>
+                    ref.invalidate(leagueInvitationsProvider(leagueId)),
                 child: const Text('Retry'),
               ),
             ],
@@ -167,7 +169,11 @@ class LeagueInvitationsScreen extends ConsumerWidget {
     return '${date.day}/${date.month}/${date.year}';
   }
 
-  void _createAndShowInvitationUrl(BuildContext context, WidgetRef ref, String leagueId) async {
+  void _createAndShowInvitationUrl(
+    BuildContext context,
+    WidgetRef ref,
+    String leagueId,
+  ) async {
     try {
       // Show loading
       ScaffoldMessenger.of(context).showSnackBar(
@@ -178,10 +184,12 @@ class LeagueInvitationsScreen extends ConsumerWidget {
       );
 
       // Create invitation
-      final invitation = await ref.read(invitationRepositoryProvider).createInvitation(
-        leagueId: leagueId,
-        invitedByUserId: ref.read(currentUserProvider)!.id,
-      );
+      final invitation = await ref
+          .read(invitationRepositoryProvider)
+          .createInvitation(
+            leagueId: leagueId,
+            invitedByUserId: ref.read(currentUserProvider)!.id,
+          );
 
       // Show invitation URL dialog
       if (context.mounted) {
@@ -202,7 +210,7 @@ class LeagueInvitationsScreen extends ConsumerWidget {
 
   void _showInvitationUrlDialog(BuildContext context, String invitationCode) {
     final invitationUrl = _getInvitationUrl(invitationCode);
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -242,10 +250,7 @@ class LeagueInvitationsScreen extends ConsumerWidget {
             const SizedBox(height: 12),
             const Text(
               'You can share this link via WhatsApp, SMS, or any other platform.',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey,
-              ),
+              style: TextStyle(fontSize: 12, color: Colors.grey),
             ),
           ],
         ),
@@ -264,9 +269,15 @@ class LeagueInvitationsScreen extends ConsumerWidget {
     );
   }
 
-  void _cancelInvitation(BuildContext context, WidgetRef ref, String invitationId) async {
+  void _cancelInvitation(
+    BuildContext context,
+    WidgetRef ref,
+    String invitationId,
+  ) async {
     try {
-      await ref.read(invitationRepositoryProvider).cancelInvitation(invitationId);
+      await ref
+          .read(invitationRepositoryProvider)
+          .cancelInvitation(invitationId);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -311,6 +322,12 @@ class LeagueInvitationsScreen extends ConsumerWidget {
 }
 
 // Provider for league invitations
-final leagueInvitationsProvider = FutureProvider.family<List<LeagueInvitation>, String>((ref, leagueId) async {
-  return ref.read(invitationRepositoryProvider).getInvitationsForLeague(leagueId);
-});
+final leagueInvitationsProvider =
+    FutureProvider.family<List<LeagueInvitation>, String>((
+      ref,
+      leagueId,
+    ) async {
+      return ref
+          .read(invitationRepositoryProvider)
+          .getInvitationsForLeague(leagueId);
+    });

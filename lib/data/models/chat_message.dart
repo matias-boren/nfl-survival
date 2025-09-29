@@ -15,5 +15,6 @@ abstract class ChatMessage with _$ChatMessage {
     @Default(false) bool isSystemMessage,
   }) = _ChatMessage;
 
-  factory ChatMessage.fromJson(Map<String, dynamic> json) => _$ChatMessageFromJson(json);
+  factory ChatMessage.fromJson(Map<String, dynamic> json) =>
+      _$ChatMessageFromJson(json);
 }

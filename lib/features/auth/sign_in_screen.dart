@@ -87,27 +87,27 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             const SizedBox(height: 24),
             Text(
               'NFL Survival Pool',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
-              _isSignUp 
-                ? 'Create your account to get started'
-                : 'Sign in to continue your survival journey',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Colors.grey[600],
-              ),
+              _isSignUp
+                  ? 'Create your account to get started'
+                  : 'Sign in to continue your survival journey',
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
               textAlign: TextAlign.center,
             ),
             if (_isSignUp) ...[
               const SizedBox(height: 8),
               Text(
                 'All fields marked with * are required',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[500],
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.grey[500]),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -143,10 +143,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 Expanded(child: Divider(color: Colors.grey[300])),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'or',
-                    style: TextStyle(color: Colors.grey[600]),
-                  ),
+                  child: Text('or', style: TextStyle(color: Colors.grey[600])),
                 ),
                 Expanded(child: Divider(color: Colors.grey[300])),
               ],
@@ -217,7 +214,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 prefixIcon: const Icon(Icons.lock),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                    _isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
                   ),
                   onPressed: () {
                     setState(() {
@@ -254,13 +253,19 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(_isSignUp ? "Already have an account? " : "Don't have an account? "),
+                Text(
+                  _isSignUp
+                      ? "Already have an account? "
+                      : "Don't have an account? ",
+                ),
                 TextButton(
-                  onPressed: _isLoading ? null : () {
-                    setState(() {
-                      _isSignUp = !_isSignUp;
-                    });
-                  },
+                  onPressed: _isLoading
+                      ? null
+                      : () {
+                          setState(() {
+                            _isSignUp = !_isSignUp;
+                          });
+                        },
                   child: Text(_isSignUp ? 'Sign In' : 'Sign Up'),
                 ),
               ],
@@ -290,9 +295,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Google Sign In Error: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Google Sign In Error: $e')));
       }
     } finally {
       if (mounted) {
@@ -324,7 +329,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     }
 
     // Validate email format
-    if (!_emailController.text.contains('@') || !_emailController.text.contains('.')) {
+    if (!_emailController.text.contains('@') ||
+        !_emailController.text.contains('.')) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please enter a valid email address'),
@@ -382,7 +388,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     setState(() => _isLoading = true);
     try {
       if (_isSignUp) {
-        await ref.read(authRepositoryProvider).signUpWithEmail(
+        await ref
+            .read(authRepositoryProvider)
+            .signUpWithEmail(
               _emailController.text,
               _passwordController.text,
               _displayNameController.text,
@@ -390,23 +398,26 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             );
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Account created! Please check your email to verify.')),
+            const SnackBar(
+              content: Text(
+                'Account created! Please check your email to verify.',
+              ),
+            ),
           );
         }
       } else {
-        await ref.read(currentUserProvider.notifier).signIn(
-              _emailController.text,
-              _passwordController.text,
-            );
+        await ref
+            .read(currentUserProvider.notifier)
+            .signIn(_emailController.text, _passwordController.text);
         if (mounted) {
           context.go('/');
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     } finally {
       if (mounted) {
@@ -424,7 +435,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Enter your email address and we\'ll send you a reset link.'),
+            const Text(
+              'Enter your email address and we\'ll send you a reset link.',
+            ),
             const SizedBox(height: 16),
             TextField(
               controller: emailController,
@@ -444,7 +457,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           ElevatedButton(
             onPressed: () async {
               try {
-                await ref.read(authRepositoryProvider).resetPassword(emailController.text);
+                await ref
+                    .read(authRepositoryProvider)
+                    .resetPassword(emailController.text);
                 if (mounted) {
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -453,9 +468,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 }
               } catch (e) {
                 if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error: $e')),
-                  );
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('Error: $e')));
                 }
               }
             },

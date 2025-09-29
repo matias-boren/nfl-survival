@@ -20,4 +20,3 @@ abstract class Pick with _$Pick {
 
   factory Pick.fromJson(Map<String, dynamic> json) => _$PickFromJson(json);
 }
-

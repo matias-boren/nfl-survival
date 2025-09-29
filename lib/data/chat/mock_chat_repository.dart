@@ -4,18 +4,20 @@ import 'package:nfl_survival/data/models/chat_message.dart';
 
 class MockChatRepository implements ChatRepository {
   static final Map<String, List<ChatMessage>> _messages = {};
-  static final Map<String, StreamController<List<ChatMessage>>> _streamControllers = {};
+  static final Map<String, StreamController<List<ChatMessage>>>
+  _streamControllers = {};
 
   @override
   Stream<List<ChatMessage>> getChatMessages(String leagueId) {
     if (!_streamControllers.containsKey(leagueId)) {
-      _streamControllers[leagueId] = StreamController<List<ChatMessage>>.broadcast();
+      _streamControllers[leagueId] =
+          StreamController<List<ChatMessage>>.broadcast();
       _messages[leagueId] = [];
-      
+
       // Add some mock messages
       _addMockMessages(leagueId);
     }
-    
+
     return _streamControllers[leagueId]!.stream;
   }
 
@@ -35,7 +37,7 @@ class MockChatRepository implements ChatRepository {
       createdAt: DateTime.now(),
       isSystemMessage: false,
     );
-    
+
     _messages[leagueId]?.add(newMessage);
     _streamControllers[leagueId]?.add(List.from(_messages[leagueId]!));
   }
@@ -54,7 +56,7 @@ class MockChatRepository implements ChatRepository {
       createdAt: DateTime.now(),
       isSystemMessage: true,
     );
-    
+
     _messages[leagueId]?.add(systemMessage);
     _streamControllers[leagueId]?.add(List.from(_messages[leagueId]!));
   }
@@ -63,12 +65,16 @@ class MockChatRepository implements ChatRepository {
   Future<void> deleteMessage(String messageId, String userId) async {
     // Find and remove the message
     for (final leagueMessages in _messages.values) {
-      leagueMessages.removeWhere((msg) => msg.id == messageId && msg.userId == userId);
+      leagueMessages.removeWhere(
+        (msg) => msg.id == messageId && msg.userId == userId,
+      );
     }
-    
+
     // Update all streams
     for (final controller in _streamControllers.values) {
-      controller.add(List.from(_messages[controller.hashCode.toString()] ?? []));
+      controller.add(
+        List.from(_messages[controller.hashCode.toString()] ?? []),
+      );
     }
   }
 
@@ -83,17 +89,19 @@ class MockChatRepository implements ChatRepository {
       final messageIndex = leagueMessages.indexWhere(
         (msg) => msg.id == messageId && msg.userId == userId,
       );
-      
+
       if (messageIndex != -1) {
         leagueMessages[messageIndex] = leagueMessages[messageIndex].copyWith(
           message: newMessage,
         );
       }
     }
-    
+
     // Update all streams
     for (final controller in _streamControllers.values) {
-      controller.add(List.from(_messages[controller.hashCode.toString()] ?? []));
+      controller.add(
+        List.from(_messages[controller.hashCode.toString()] ?? []),
+      );
     }
   }
 
@@ -114,7 +122,9 @@ class MockChatRepository implements ChatRepository {
         userId: 'user2',
         userName: 'Bob',
         message: 'Who are you picking this week?',
-        createdAt: DateTime.now().subtract(const Duration(hours: 1, minutes: 30)),
+        createdAt: DateTime.now().subtract(
+          const Duration(hours: 1, minutes: 30),
+        ),
         isSystemMessage: false,
       ),
       ChatMessage(
@@ -145,7 +155,7 @@ class MockChatRepository implements ChatRepository {
         isSystemMessage: false,
       ),
     ];
-    
+
     _messages[leagueId] = mockMessages;
     _streamControllers[leagueId]?.add(List.from(mockMessages));
   }

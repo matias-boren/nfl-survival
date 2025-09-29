@@ -4,11 +4,13 @@ import 'package:nfl_survival/data/nfl/api_models.dart';
 import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
 
 class RealNflRepository implements NflRepository {
-  static const String _baseUrl = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl';
-  static const String _apiKey = 'your-espn-api-key'; // Replace with actual API key if needed
-  
+  static const String _baseUrl =
+      'https://site.api.espn.com/apis/site/v2/sports/football/nfl';
+  static const String _apiKey =
+      'your-espn-api-key'; // Replace with actual API key if needed
+
   final http.Client _client;
-  
+
   RealNflRepository({http.Client? client}) : _client = client ?? http.Client();
 
   @override
@@ -66,20 +68,24 @@ class RealNflRepository implements NflRepository {
       final currentDate = DateTime.now();
       final season = currentDate.year;
       final week = _getCurrentWeek(currentDate);
-      
+
       final games = await listGames(season: season, week: week);
-      
-      return games.map((game) => LiveScore(
-        gameId: game.id,
-        homeTeam: game.homeTeam,
-        awayTeam: game.awayTeam,
-        homeScore: game.homeScore,
-        awayScore: game.awayScore,
-        status: _convertGameStatus(game.status),
-        quarter: game.quarter,
-        timeRemaining: game.timeRemaining,
-        isLive: game.status == GameStatus.IN_PROGRESS,
-      )).toList();
+
+      return games
+          .map(
+            (game) => LiveScore(
+              gameId: game.id,
+              homeTeam: game.homeTeam,
+              awayTeam: game.awayTeam,
+              homeScore: game.homeScore,
+              awayScore: game.awayScore,
+              status: _convertGameStatus(game.status),
+              quarter: game.quarter,
+              timeRemaining: game.timeRemaining,
+              isLive: game.status == GameStatus.IN_PROGRESS,
+            ),
+          )
+          .toList();
     } catch (e) {
       throw Exception('Error fetching live scores: $e');
     }
@@ -87,15 +93,15 @@ class RealNflRepository implements NflRepository {
 
   List<Game> _convertEspnGamesToGames(List<EspnGame> espnGames) {
     return espnGames.map((espnGame) {
-      final competition = espnGame.competitions.isNotEmpty 
-          ? espnGame.competitions.first 
+      final competition = espnGame.competitions.isNotEmpty
+          ? espnGame.competitions.first
           : throw Exception('No competition found');
-      
+
       final competitors = competition.competitors;
       if (competitors.length < 2) {
         throw Exception('Invalid game: not enough competitors');
       }
-      
+
       final homeCompetitor = competitors.firstWhere(
         (c) => c.homeAway == 'home',
         orElse: () => competitors.first,
@@ -104,7 +110,7 @@ class RealNflRepository implements NflRepository {
         (c) => c.homeAway == 'away',
         orElse: () => competitors.last,
       );
-      
+
       return Game(
         id: espnGame.id,
         homeTeam: _convertEspnTeamToTeam(homeCompetitor.team),
@@ -122,7 +128,9 @@ class RealNflRepository implements NflRepository {
   }
 
   List<Team> _convertEspnTeamsToTeams(List<EspnTeam> espnTeams) {
-    return espnTeams.map((espnTeam) => _convertEspnTeamToTeam(espnTeam)).toList();
+    return espnTeams
+        .map((espnTeam) => _convertEspnTeamToTeam(espnTeam))
+        .toList();
   }
 
   Team _convertEspnTeamToTeam(EspnTeam espnTeam) {
@@ -140,11 +148,14 @@ class RealNflRepository implements NflRepository {
   GameStatus _convertEspnStatusToGameStatus(EspnStatus status) {
     if (status.completed) {
       return GameStatus.FINAL;
-    } else if (status.type.id == '1') { // Scheduled
+    } else if (status.type.id == '1') {
+      // Scheduled
       return GameStatus.SCHEDULED;
-    } else if (status.type.id == '2') { // In Progress
+    } else if (status.type.id == '2') {
+      // In Progress
       return GameStatus.IN_PROGRESS;
-    } else if (status.type.id == '3') { // Final
+    } else if (status.type.id == '3') {
+      // Final
       return GameStatus.FINAL;
     } else {
       return GameStatus.SCHEDULED;

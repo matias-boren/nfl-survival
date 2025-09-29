@@ -41,12 +41,11 @@ class NewsFeedScreen extends ConsumerWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'Latest News',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  
+
                   // News Articles
                   newsAsync.when(
                     data: (articles) {
@@ -55,20 +54,28 @@ class NewsFeedScreen extends ConsumerWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.newspaper_outlined, size: 64, color: Colors.grey),
+                              Icon(
+                                Icons.newspaper_outlined,
+                                size: 64,
+                                color: Colors.grey,
+                              ),
                               SizedBox(height: 16),
                               Text('No news available'),
                             ],
                           ),
                         );
                       }
-                      
+
                       return Column(
-                        children: articles.map((article) => _buildNewsCard(context, article)).toList(),
+                        children: articles
+                            .map((article) => _buildNewsCard(context, article))
+                            .toList(),
                       );
                     },
-                    loading: () => const Center(child: CircularProgressIndicator()),
-                    error: (e, st) => Center(child: Text('Error loading news: $e')),
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (e, st) =>
+                        Center(child: Text('Error loading news: $e')),
                   ),
                 ],
               ),
@@ -79,7 +86,6 @@ class NewsFeedScreen extends ConsumerWidget {
       ),
     );
   }
-
 
   Widget _buildNewsCard(BuildContext context, NewsArticle article) {
     return Card(
@@ -104,7 +110,10 @@ class NewsFeedScreen extends ConsumerWidget {
                   ),
                   if (article.tags != null && article.tags!.isNotEmpty)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
@@ -225,7 +234,8 @@ class NewsFeedScreen extends ConsumerWidget {
                               width: double.infinity,
                               height: 200,
                               fit: BoxFit.cover,
-                              memCacheWidth: 400, // Cache at reasonable resolution
+                              memCacheWidth:
+                                  400, // Cache at reasonable resolution
                               memCacheHeight: 200,
                               placeholder: (context, url) {
                                 return Container(
@@ -280,7 +290,11 @@ class NewsFeedScreen extends ConsumerWidget {
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.person, size: 16, color: Colors.grey[600]),
+                            Icon(
+                              Icons.person,
+                              size: 16,
+                              color: Colors.grey[600],
+                            ),
                             const SizedBox(width: 8),
                             Text(
                               'By ${article.author ?? 'Unknown'}',
@@ -290,11 +304,18 @@ class NewsFeedScreen extends ConsumerWidget {
                               ),
                             ),
                             const Spacer(),
-                            Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
+                            Icon(
+                              Icons.access_time,
+                              size: 16,
+                              color: Colors.grey[600],
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               _formatTime(DateTime.parse(article.publishedAt)),
-                              style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 12,
+                              ),
                             ),
                           ],
                         ),
@@ -320,17 +341,23 @@ class NewsFeedScreen extends ConsumerWidget {
                         Wrap(
                           spacing: 8,
                           runSpacing: 4,
-                          children: article.tags!.map((tag) => Chip(
-                            label: Text(
-                              tag.toUpperCase(),
-                              style: const TextStyle(fontSize: 10),
-                            ),
-                            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
-                            labelStyle: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )).toList(),
+                          children: article.tags!
+                              .map(
+                                (tag) => Chip(
+                                  label: Text(
+                                    tag.toUpperCase(),
+                                    style: const TextStyle(fontSize: 10),
+                                  ),
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).primaryColor.withOpacity(0.1),
+                                  labelStyle: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )
+                              .toList(),
                         ),
                       ],
                     ],
@@ -347,7 +374,7 @@ class NewsFeedScreen extends ConsumerWidget {
   String _formatTime(DateTime dateTime) {
     final now = DateTime.now();
     final difference = now.difference(dateTime);
-    
+
     if (difference.inDays > 0) {
       return '${difference.inDays}d ago';
     } else if (difference.inHours > 0) {
@@ -358,5 +385,4 @@ class NewsFeedScreen extends ConsumerWidget {
       return 'Just now';
     }
   }
-
 }

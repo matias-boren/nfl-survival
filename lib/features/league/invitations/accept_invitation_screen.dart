@@ -8,17 +8,16 @@ import 'package:nfl_survival/widgets/app_scaffold.dart';
 
 class AcceptInvitationScreen extends ConsumerStatefulWidget {
   final String invitationCode;
-  
-  const AcceptInvitationScreen({
-    super.key,
-    required this.invitationCode,
-  });
+
+  const AcceptInvitationScreen({super.key, required this.invitationCode});
 
   @override
-  ConsumerState<AcceptInvitationScreen> createState() => _AcceptInvitationScreenState();
+  ConsumerState<AcceptInvitationScreen> createState() =>
+      _AcceptInvitationScreenState();
 }
 
-class _AcceptInvitationScreenState extends ConsumerState<AcceptInvitationScreen> {
+class _AcceptInvitationScreenState
+    extends ConsumerState<AcceptInvitationScreen> {
   bool _isLoading = false;
   LeagueInvitation? _invitation;
   League? _league;
@@ -32,16 +31,22 @@ class _AcceptInvitationScreenState extends ConsumerState<AcceptInvitationScreen>
 
   Future<void> _loadInvitation() async {
     setState(() => _isLoading = true);
-    
+
     try {
-      final invitation = await ref.read(invitationRepositoryProvider).getInvitationByCode(widget.invitationCode);
+      final invitation = await ref
+          .read(invitationRepositoryProvider)
+          .getInvitationByCode(widget.invitationCode);
       if (invitation != null) {
-        final league = await ref.read(leagueRepositoryProvider).getLeague(invitation.leagueId);
-        
+        final league = await ref
+            .read(leagueRepositoryProvider)
+            .getLeague(invitation.leagueId);
+
         // Get inviter's display name (in a real app, this would fetch from user service)
         // For now, we'll use a mock approach
-        final inviterDisplayName = await _getInviterDisplayName(invitation.invitedByUserId);
-        
+        final inviterDisplayName = await _getInviterDisplayName(
+          invitation.invitedByUserId,
+        );
+
         setState(() {
           _invitation = invitation;
           _league = league;
@@ -80,18 +85,11 @@ class _AcceptInvitationScreenState extends ConsumerState<AcceptInvitationScreen>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.error_outline,
-                size: 64,
-                color: Colors.red,
-              ),
+              const Icon(Icons.error_outline, size: 64, color: Colors.red),
               const SizedBox(height: 16),
               const Text(
                 'Invalid Invitation',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text(
@@ -154,9 +152,9 @@ class _AcceptInvitationScreenState extends ConsumerState<AcceptInvitationScreen>
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Invitation Details
             Card(
               child: Padding(
@@ -173,17 +171,26 @@ class _AcceptInvitationScreenState extends ConsumerState<AcceptInvitationScreen>
                     ),
                     const SizedBox(height: 12),
                     _buildDetailRow('Code', _invitation!.invitationCode),
-                    _buildDetailRow('Created', _formatDate(_invitation!.createdAt)),
+                    _buildDetailRow(
+                      'Created',
+                      _formatDate(_invitation!.createdAt),
+                    ),
                     if (_invitation!.expiresAt != null)
-                      _buildDetailRow('Expires', _formatDate(_invitation!.expiresAt!)),
-                    _buildDetailRow('Status', _getStatusText(_invitation!.status)),
+                      _buildDetailRow(
+                        'Expires',
+                        _formatDate(_invitation!.expiresAt!),
+                      ),
+                    _buildDetailRow(
+                      'Status',
+                      _getStatusText(_invitation!.status),
+                    ),
                   ],
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Action Buttons
             if (_invitation!.status == InvitationStatus.pending) ...[
               SizedBox(
@@ -219,7 +226,9 @@ class _AcceptInvitationScreenState extends ConsumerState<AcceptInvitationScreen>
                 decoration: BoxDecoration(
                   color: _getStatusColor(_invitation!.status).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: _getStatusColor(_invitation!.status)),
+                  border: Border.all(
+                    color: _getStatusColor(_invitation!.status),
+                  ),
                 ),
                 child: Text(
                   _getStatusMessage(_invitation!.status),
@@ -241,9 +250,18 @@ class _AcceptInvitationScreenState extends ConsumerState<AcceptInvitationScreen>
     return Column(
       children: [
         _buildDetailRow('Max Losses', _league!.settings.maxLosses.toString()),
-        _buildDetailRow('Tiebreaker', 'Points For (total points scored by picked teams)'),
-        _buildDetailRow('Visibility', _league!.visibility == LeagueVisibility.PUBLIC ? 'Public' : 'Private'),
-        _buildDetailRow('Allow Team Reuse', _league!.settings.allowTeamReuse ? 'Yes' : 'No'),
+        _buildDetailRow(
+          'Tiebreaker',
+          'Points For (total points scored by picked teams)',
+        ),
+        _buildDetailRow(
+          'Visibility',
+          _league!.visibility == LeagueVisibility.PUBLIC ? 'Public' : 'Private',
+        ),
+        _buildDetailRow(
+          'Allow Team Reuse',
+          _league!.settings.allowTeamReuse ? 'Yes' : 'No',
+        ),
       ],
     );
   }
@@ -261,9 +279,7 @@ class _AcceptInvitationScreenState extends ConsumerState<AcceptInvitationScreen>
               style: const TextStyle(fontWeight: FontWeight.w500),
             ),
           ),
-          Expanded(
-            child: Text(value),
-          ),
+          Expanded(child: Text(value)),
         ],
       ),
     );
@@ -317,19 +333,18 @@ class _AcceptInvitationScreenState extends ConsumerState<AcceptInvitationScreen>
     if (currentUser == null) return;
 
     setState(() => _isLoading = true);
-    
+
     try {
-      await ref.read(invitationRepositoryProvider).acceptInvitation(
-        _invitation!.id,
-        currentUser.id,
-      );
-      
+      await ref
+          .read(invitationRepositoryProvider)
+          .acceptInvitation(_invitation!.id, currentUser.id);
+
       // Add user to league
       final updatedUser = currentUser.copyWith(
         joinedLeagueIds: [...currentUser.joinedLeagueIds, _league!.id],
       );
       ref.read(currentUserProvider.notifier).state = updatedUser;
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -355,10 +370,12 @@ class _AcceptInvitationScreenState extends ConsumerState<AcceptInvitationScreen>
 
   Future<void> _declineInvitation() async {
     setState(() => _isLoading = true);
-    
+
     try {
-      await ref.read(invitationRepositoryProvider).declineInvitation(_invitation!.id);
-      
+      await ref
+          .read(invitationRepositoryProvider)
+          .declineInvitation(_invitation!.id);
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

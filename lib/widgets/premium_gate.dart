@@ -51,7 +51,9 @@ class PremiumGate extends ConsumerWidget {
                   Text(
                     'Unlock $featureName with Premium!',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.headlineSmall?.copyWith(color: Colors.white),
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(

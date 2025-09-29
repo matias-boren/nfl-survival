@@ -21,19 +21,16 @@ class SupabasePicksRepository implements PicksRepository {
         .eq('week', week);
 
     final now = DateTime.now().toIso8601String();
-    
+
     if (existingPicks.isNotEmpty) {
       // Update existing pick
       await _supabase
           .from('picks')
-          .update({
-            'team_id': teamId,
-            'updated_at': now,
-          })
+          .update({'team_id': teamId, 'updated_at': now})
           .eq('user_id', userId)
           .eq('league_id', leagueId)
           .eq('week', week);
-      
+
       // Return the updated pick
       return Pick(
         id: existingPicks.first['id'],
@@ -60,7 +57,7 @@ class SupabasePicksRepository implements PicksRepository {
           })
           .select()
           .single();
-      
+
       return Pick(
         id: response['id'],
         leagueId: leagueId,
@@ -115,19 +112,23 @@ class SupabasePicksRepository implements PicksRepository {
           .eq('league_id', leagueId)
           .eq('week', week);
 
-      return response.map<Pick>((data) => Pick(
-        id: data['id'],
-        leagueId: data['league_id'],
-        userId: data['user_id'],
-        week: data['week'],
-        teamId: data['team_id'],
-        madeAtIso: data['created_at'],
-        locked: false,
-        result: PickResult.values.firstWhere(
-          (r) => r.name == data['result'],
-          orElse: () => PickResult.PENDING,
-        ),
-      )).toList();
+      return response
+          .map<Pick>(
+            (data) => Pick(
+              id: data['id'],
+              leagueId: data['league_id'],
+              userId: data['user_id'],
+              week: data['week'],
+              teamId: data['team_id'],
+              madeAtIso: data['created_at'],
+              locked: false,
+              result: PickResult.values.firstWhere(
+                (r) => r.name == data['result'],
+                orElse: () => PickResult.PENDING,
+              ),
+            ),
+          )
+          .toList();
     } catch (e) {
       print('Error listing picks: $e');
       return [];
@@ -135,7 +136,10 @@ class SupabasePicksRepository implements PicksRepository {
   }
 
   @override
-  Future<List<Pick>> getUserPicksForLeague(String userId, String leagueId) async {
+  Future<List<Pick>> getUserPicksForLeague(
+    String userId,
+    String leagueId,
+  ) async {
     try {
       final response = await _supabase
           .from('picks')
@@ -144,19 +148,23 @@ class SupabasePicksRepository implements PicksRepository {
           .eq('user_id', userId)
           .order('week');
 
-      return response.map<Pick>((data) => Pick(
-        id: data['id'],
-        leagueId: data['league_id'],
-        userId: data['user_id'],
-        week: data['week'],
-        teamId: data['team_id'],
-        madeAtIso: data['created_at'],
-        locked: false,
-        result: PickResult.values.firstWhere(
-          (r) => r.name == data['result'],
-          orElse: () => PickResult.PENDING,
-        ),
-      )).toList();
+      return response
+          .map<Pick>(
+            (data) => Pick(
+              id: data['id'],
+              leagueId: data['league_id'],
+              userId: data['user_id'],
+              week: data['week'],
+              teamId: data['team_id'],
+              madeAtIso: data['created_at'],
+              locked: false,
+              result: PickResult.values.firstWhere(
+                (r) => r.name == data['result'],
+                orElse: () => PickResult.PENDING,
+              ),
+            ),
+          )
+          .toList();
     } catch (e) {
       print('Error getting user picks for league: $e');
       return [];
@@ -172,19 +180,23 @@ class SupabasePicksRepository implements PicksRepository {
           .eq('league_id', leagueId)
           .order('week');
 
-      return response.map<Pick>((data) => Pick(
-        id: data['id'],
-        leagueId: data['league_id'],
-        userId: data['user_id'],
-        week: data['week'],
-        teamId: data['team_id'],
-        madeAtIso: data['created_at'],
-        locked: false,
-        result: PickResult.values.firstWhere(
-          (r) => r.name == data['result'],
-          orElse: () => PickResult.PENDING,
-        ),
-      )).toList();
+      return response
+          .map<Pick>(
+            (data) => Pick(
+              id: data['id'],
+              leagueId: data['league_id'],
+              userId: data['user_id'],
+              week: data['week'],
+              teamId: data['team_id'],
+              madeAtIso: data['created_at'],
+              locked: false,
+              result: PickResult.values.firstWhere(
+                (r) => r.name == data['result'],
+                orElse: () => PickResult.PENDING,
+              ),
+            ),
+          )
+          .toList();
     } catch (e) {
       print('Error getting league picks: $e');
       return [];

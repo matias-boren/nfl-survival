@@ -5,11 +5,8 @@ import 'package:nfl_survival/app/providers.dart';
 
 class AuthGuard extends ConsumerWidget {
   final Widget child;
-  
-  const AuthGuard({
-    super.key,
-    required this.child,
-  });
+
+  const AuthGuard({super.key, required this.child});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,13 +18,9 @@ class AuthGuard extends ConsumerWidget {
           context.go('/signin');
         }
       });
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-    
+
     return child;
   }
 }

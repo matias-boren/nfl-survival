@@ -5,4 +5,3 @@ class Env {
   static String get defaultTimezone =>
       dotenv.maybeGet('DEFAULT_TIMEZONE') ?? 'Europe/Helsinki';
 }
-

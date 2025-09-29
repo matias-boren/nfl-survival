@@ -9,10 +9,12 @@ class ResultProcessingScreen extends ConsumerStatefulWidget {
   const ResultProcessingScreen({super.key});
 
   @override
-  ConsumerState<ResultProcessingScreen> createState() => _ResultProcessingScreenState();
+  ConsumerState<ResultProcessingScreen> createState() =>
+      _ResultProcessingScreenState();
 }
 
-class _ResultProcessingScreenState extends ConsumerState<ResultProcessingScreen> {
+class _ResultProcessingScreenState
+    extends ConsumerState<ResultProcessingScreen> {
   String? _selectedLeagueId;
   int _selectedWeek = 4;
   bool _isProcessing = false;
@@ -21,8 +23,10 @@ class _ResultProcessingScreenState extends ConsumerState<ResultProcessingScreen>
   @override
   Widget build(BuildContext context) {
     final leaguesAsync = ref.watch(userLeaguesProvider);
-    final processResultsAsync = _selectedLeagueId != null 
-        ? ref.watch(processWeekResultsProvider((_selectedLeagueId!, _selectedWeek)))
+    final processResultsAsync = _selectedLeagueId != null
+        ? ref.watch(
+            processWeekResultsProvider((_selectedLeagueId!, _selectedWeek)),
+          )
         : null;
 
     return AppScaffold(
@@ -33,7 +37,12 @@ class _ResultProcessingScreenState extends ConsumerState<ResultProcessingScreen>
             icon: const Icon(Icons.refresh),
             onPressed: () {
               if (_selectedLeagueId != null) {
-                ref.invalidate(processWeekResultsProvider((_selectedLeagueId!, _selectedWeek)));
+                ref.invalidate(
+                  processWeekResultsProvider((
+                    _selectedLeagueId!,
+                    _selectedWeek,
+                  )),
+                );
               }
             },
           ),
@@ -47,9 +56,9 @@ class _ResultProcessingScreenState extends ConsumerState<ResultProcessingScreen>
             // League Selection
             Text(
               'Select League',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             leaguesAsync.when(
@@ -57,7 +66,7 @@ class _ResultProcessingScreenState extends ConsumerState<ResultProcessingScreen>
                 if (leagues.isEmpty) {
                   return const Text('No leagues available');
                 }
-                
+
                 return DropdownButtonFormField<String>(
                   value: _selectedLeagueId,
                   decoration: const InputDecoration(
@@ -80,15 +89,15 @@ class _ResultProcessingScreenState extends ConsumerState<ResultProcessingScreen>
               loading: () => const CircularProgressIndicator(),
               error: (e, st) => Text('Error: $e'),
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Week Selection
             Text(
               'Week',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Row(
@@ -110,9 +119,9 @@ class _ResultProcessingScreenState extends ConsumerState<ResultProcessingScreen>
                 Text('Week $_selectedWeek'),
               ],
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Process Results Button
             SizedBox(
               width: double.infinity,
@@ -120,29 +129,31 @@ class _ResultProcessingScreenState extends ConsumerState<ResultProcessingScreen>
                 onPressed: _selectedLeagueId != null && !_isProcessing
                     ? () => _processResults()
                     : null,
-                icon: _isProcessing 
+                icon: _isProcessing
                     ? const SizedBox(
                         width: 16,
                         height: 16,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.play_arrow),
-                label: Text(_isProcessing ? 'Processing...' : 'Process Results'),
+                label: Text(
+                  _isProcessing ? 'Processing...' : 'Process Results',
+                ),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Results Display
             if (processResultsAsync != null) ...[
               Text(
                 'Processing Results',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               processResultsAsync.when(
@@ -160,23 +171,35 @@ class _ResultProcessingScreenState extends ConsumerState<ResultProcessingScreen>
                           Text('Week: ${summary.week}'),
                           Text('Total Picks: ${summary.totalPicks}'),
                           Text('Completed Games: ${summary.completedGames}'),
-                          Text('Eliminated Users: ${summary.eliminatedUsers.length}'),
-                          
+                          Text(
+                            'Eliminated Users: ${summary.eliminatedUsers.length}',
+                          ),
+
                           if (summary.eliminatedUsers.isNotEmpty) ...[
                             const SizedBox(height: 8),
-                            const Text('Eliminated Users:', style: TextStyle(fontWeight: FontWeight.bold)),
-                            ...summary.eliminatedUsers.map((userId) => Text('• $userId')),
+                            const Text(
+                              'Eliminated Users:',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            ...summary.eliminatedUsers.map(
+                              (userId) => Text('• $userId'),
+                            ),
                           ],
-                          
+
                           const SizedBox(height: 8),
-                          const Text('Processed Picks:', style: TextStyle(fontWeight: FontWeight.bold)),
+                          const Text(
+                            'Processed Picks:',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           ...summary.processedPicks.map((processedPick) {
                             return Padding(
                               padding: const EdgeInsets.only(left: 16, top: 4),
                               child: Text(
                                 '${processedPick.pick.userId}: ${processedPick.pick.teamId} → ${processedPick.pickResult.name}',
                                 style: TextStyle(
-                                  color: _getResultColor(processedPick.pickResult),
+                                  color: _getResultColor(
+                                    processedPick.pickResult,
+                                  ),
                                 ),
                               ),
                             );
@@ -206,9 +229,9 @@ class _ResultProcessingScreenState extends ConsumerState<ResultProcessingScreen>
                 ),
               ),
             ],
-            
+
             const SizedBox(height: 24),
-            
+
             // View Standings Button
             if (_selectedLeagueId != null) ...[
               SizedBox(
@@ -239,38 +262,34 @@ class _ResultProcessingScreenState extends ConsumerState<ResultProcessingScreen>
 
   Future<void> _processResults() async {
     if (_selectedLeagueId == null) return;
-    
+
     setState(() {
       _isProcessing = true;
     });
-    
+
     try {
       // Trigger the result processing
-      await ref.read(processWeekResultsProvider((_selectedLeagueId!, _selectedWeek)).future);
-      
+      await ref.read(
+        processWeekResultsProvider((_selectedLeagueId!, _selectedWeek)).future,
+      );
+
       setState(() {
         _lastResult = 'Results processed successfully for Week $_selectedWeek';
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(_lastResult),
-            backgroundColor: Colors.green,
-          ),
+          SnackBar(content: Text(_lastResult), backgroundColor: Colors.green),
         );
       }
     } catch (e) {
       setState(() {
         _lastResult = 'Error processing results: $e';
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(_lastResult),
-            backgroundColor: Colors.red,
-          ),
+          SnackBar(content: Text(_lastResult), backgroundColor: Colors.red),
         );
       }
     } finally {

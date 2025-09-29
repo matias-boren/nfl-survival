@@ -3,11 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/theme.dart';
 
-enum AppThemeMode {
-  light,
-  darkGrey,
-  dark,
-}
+enum AppThemeMode { light, darkGrey, dark }
 
 class ThemeNotifier extends StateNotifier<AppThemeMode> {
   ThemeNotifier() : super(AppThemeMode.light) {
@@ -63,7 +59,7 @@ final themeProvider = StateNotifierProvider<ThemeNotifier, AppThemeMode>((ref) {
 final currentThemeProvider = Provider<ThemeData>((ref) {
   final themeMode = ref.watch(themeProvider);
   print('Current theme provider called with mode: $themeMode');
-  
+
   switch (themeMode) {
     case AppThemeMode.light:
       return buildAppTheme();

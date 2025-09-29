@@ -10,12 +10,7 @@ class BannerAdSlot extends ConsumerWidget {
   final EdgeInsets? margin;
   final AdSize? adSize;
 
-  const BannerAdSlot({
-    super.key,
-    this.height,
-    this.margin,
-    this.adSize,
-  });
+  const BannerAdSlot({super.key, this.height, this.margin, this.adSize});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -32,12 +32,14 @@ class SettingsScreen extends ConsumerWidget {
           ),
           ListTile(
             title: const Text('Edit Profile'),
-            subtitle: Text('Display Name: ${currentUser?.displayName ?? 'Not set'}\nFavorite Team: ${currentUser?.favoriteTeam ?? 'Not set'}\nEmail: ${currentUser?.email ?? 'Not set'}'),
+            subtitle: Text(
+              'Display Name: ${currentUser?.displayName ?? 'Not set'}\nFavorite Team: ${currentUser?.favoriteTeam ?? 'Not set'}\nEmail: ${currentUser?.email ?? 'Not set'}',
+            ),
             leading: const Icon(Icons.person),
             onTap: () => _showEditProfileDialog(context, ref, currentUser),
           ),
           const Divider(),
-          
+
           // App Settings Section
           const Padding(
             padding: EdgeInsets.all(16.0),
@@ -54,7 +56,7 @@ class SettingsScreen extends ConsumerWidget {
             onTap: () => _showThemeSelector(context, ref),
           ),
           const Divider(),
-          
+
           // Account Section
           const Padding(
             padding: EdgeInsets.all(16.0),
@@ -101,9 +103,9 @@ class SettingsScreen extends ConsumerWidget {
               title: const Text('Go Premium'),
               onTap: () => context.go('/paywall'),
             ),
-          
+
           const Divider(),
-          
+
           // Admin Section (for premium users or testing)
           const Padding(
             padding: EdgeInsets.all(16.0),
@@ -118,16 +120,23 @@ class SettingsScreen extends ConsumerWidget {
             leading: const Icon(Icons.schedule),
             onTap: () => _showWeeklyRefreshStatus(context, ref),
           ),
-          
         ],
       ),
     );
   }
 
-  void _showEditProfileDialog(BuildContext context, WidgetRef ref, currentUser) {
-    final displayNameController = TextEditingController(text: currentUser?.displayName ?? '');
-    String? selectedFavoriteTeam = currentUser?.favoriteTeam ?? 'Kansas City Chiefs'; // Default or from user data
-    
+  void _showEditProfileDialog(
+    BuildContext context,
+    WidgetRef ref,
+    currentUser,
+  ) {
+    final displayNameController = TextEditingController(
+      text: currentUser?.displayName ?? '',
+    );
+    String? selectedFavoriteTeam =
+        currentUser?.favoriteTeam ??
+        'Kansas City Chiefs'; // Default or from user data
+
     // NFL Teams list (same as in sign-in screen)
     const List<String> nflTeams = [
       'Arizona Cardinals',
@@ -209,7 +218,8 @@ class SettingsScreen extends ConsumerWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                if (displayNameController.text.trim().isNotEmpty && selectedFavoriteTeam != null) {
+                if (displayNameController.text.trim().isNotEmpty &&
+                    selectedFavoriteTeam != null) {
                   try {
                     // Show loading state
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -220,10 +230,12 @@ class SettingsScreen extends ConsumerWidget {
                     );
 
                     // Update user profile
-                    final updatedUser = await ref.read(authRepositoryProvider).updateUser(
-                      displayName: displayNameController.text.trim(),
-                      favoriteTeam: selectedFavoriteTeam,
-                    );
+                    final updatedUser = await ref
+                        .read(authRepositoryProvider)
+                        .updateUser(
+                          displayName: displayNameController.text.trim(),
+                          favoriteTeam: selectedFavoriteTeam,
+                        );
 
                     // Update the current user in the provider
                     ref.read(currentUserProvider.notifier).state = updatedUser;
@@ -267,7 +279,7 @@ class SettingsScreen extends ConsumerWidget {
   void _showWeeklyRefreshStatus(BuildContext context, WidgetRef ref) {
     final weeklyRefreshService = ref.read(weeklyDataRefreshServiceProvider);
     final status = weeklyRefreshService.getStatus();
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -276,11 +288,31 @@ class SettingsScreen extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildStatusRow('Service Running', status['isRunning'] ? 'Active' : 'Inactive', status['isRunning']),
-            _buildStatusRow('Currently Processing', status['isProcessing'] ? 'Yes' : 'No', status['isProcessing']),
-            _buildStatusRow('Processing Week', status['currentProcessingWeek']?.toString() ?? 'None', status['currentProcessingWeek'] != null),
-            _buildStatusRow('Check Timer', status['nextCheckTime'] ?? 'Inactive', status['nextCheckTime'] == 'Active'),
-            _buildStatusRow('Refresh Timer', status['nextRefreshTime'] ?? 'Inactive', status['nextRefreshTime'] == 'Active'),
+            _buildStatusRow(
+              'Service Running',
+              status['isRunning'] ? 'Active' : 'Inactive',
+              status['isRunning'],
+            ),
+            _buildStatusRow(
+              'Currently Processing',
+              status['isProcessing'] ? 'Yes' : 'No',
+              status['isProcessing'],
+            ),
+            _buildStatusRow(
+              'Processing Week',
+              status['currentProcessingWeek']?.toString() ?? 'None',
+              status['currentProcessingWeek'] != null,
+            ),
+            _buildStatusRow(
+              'Check Timer',
+              status['nextCheckTime'] ?? 'Inactive',
+              status['nextCheckTime'] == 'Active',
+            ),
+            _buildStatusRow(
+              'Refresh Timer',
+              status['nextRefreshTime'] ?? 'Inactive',
+              status['nextRefreshTime'] == 'Active',
+            ),
           ],
         ),
         actions: [
@@ -296,7 +328,9 @@ class SettingsScreen extends ConsumerWidget {
                 weeklyRefreshService.stopService();
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Weekly refresh service stopped')),
+                  const SnackBar(
+                    content: Text('Weekly refresh service stopped'),
+                  ),
                 );
               },
               child: const Text('Stop Service'),
@@ -307,7 +341,9 @@ class SettingsScreen extends ConsumerWidget {
                 weeklyRefreshService.startService();
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Weekly refresh service started')),
+                  const SnackBar(
+                    content: Text('Weekly refresh service started'),
+                  ),
                 );
               },
               child: const Text('Start Service'),
@@ -323,10 +359,7 @@ class SettingsScreen extends ConsumerWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.w500),
-          ),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
           Row(
             children: [
               Container(
@@ -356,7 +389,7 @@ class SettingsScreen extends ConsumerWidget {
     final themeNotifier = ref.read(themeProvider.notifier);
     final currentTheme = ref.read(themeProvider);
     final isPremium = ref.read(premiumStatusProvider);
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -368,7 +401,9 @@ class SettingsScreen extends ConsumerWidget {
               leading: const Icon(Icons.light_mode),
               title: const Text('Light'),
               subtitle: const Text('Clean and bright interface'),
-              trailing: currentTheme == AppThemeMode.light ? const Icon(Icons.check, color: Colors.green) : null,
+              trailing: currentTheme == AppThemeMode.light
+                  ? const Icon(Icons.check, color: Colors.green)
+                  : null,
               onTap: () {
                 print('Switching to Light theme');
                 themeNotifier.setTheme(AppThemeMode.light);
@@ -382,43 +417,53 @@ class SettingsScreen extends ConsumerWidget {
               leading: const Icon(Icons.palette),
               title: const Text('Dark Grey'),
               subtitle: const Text('Premium only - Elegant dark theme'),
-              trailing: currentTheme == AppThemeMode.darkGrey ? const Icon(Icons.check, color: Colors.green) : null,
+              trailing: currentTheme == AppThemeMode.darkGrey
+                  ? const Icon(Icons.check, color: Colors.green)
+                  : null,
               enabled: isPremium,
-              onTap: isPremium ? () {
-                print('Switching to Dark Grey theme');
-                themeNotifier.setTheme(AppThemeMode.darkGrey);
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Switched to Dark Grey theme')),
-                );
-              } : () {
-                Navigator.of(context).pop();
-                PaywallModal.show(
-                  context: context,
-                  featureName: 'Dark Grey Theme',
-                );
-              },
+              onTap: isPremium
+                  ? () {
+                      print('Switching to Dark Grey theme');
+                      themeNotifier.setTheme(AppThemeMode.darkGrey);
+                      Navigator.of(context).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Switched to Dark Grey theme'),
+                        ),
+                      );
+                    }
+                  : () {
+                      Navigator.of(context).pop();
+                      PaywallModal.show(
+                        context: context,
+                        featureName: 'Dark Grey Theme',
+                      );
+                    },
             ),
             ListTile(
               leading: const Icon(Icons.dark_mode),
               title: const Text('Dark'),
               subtitle: const Text('Premium only - Pure dark theme'),
-              trailing: currentTheme == AppThemeMode.dark ? const Icon(Icons.check, color: Colors.green) : null,
+              trailing: currentTheme == AppThemeMode.dark
+                  ? const Icon(Icons.check, color: Colors.green)
+                  : null,
               enabled: isPremium,
-              onTap: isPremium ? () {
-                print('Switching to Dark theme');
-                themeNotifier.setTheme(AppThemeMode.dark);
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Switched to Dark theme')),
-                );
-              } : () {
-                Navigator.of(context).pop();
-                PaywallModal.show(
-                  context: context,
-                  featureName: 'Dark Theme',
-                );
-              },
+              onTap: isPremium
+                  ? () {
+                      print('Switching to Dark theme');
+                      themeNotifier.setTheme(AppThemeMode.dark);
+                      Navigator.of(context).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Switched to Dark theme')),
+                      );
+                    }
+                  : () {
+                      Navigator.of(context).pop();
+                      PaywallModal.show(
+                        context: context,
+                        featureName: 'Dark Theme',
+                      );
+                    },
             ),
           ],
         ),

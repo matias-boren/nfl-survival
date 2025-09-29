@@ -9,8 +9,9 @@ class LiveScoresService {
 
   Timer? _timer;
   bool _isRunning = false;
-  final StreamController<List<LiveScore>> _scoresController = StreamController<List<LiveScore>>.broadcast();
-  
+  final StreamController<List<LiveScore>> _scoresController =
+      StreamController<List<LiveScore>>.broadcast();
+
   // Dependencies
   NflRepository? _nflRepository;
   int _currentWeek = 4;
@@ -30,13 +31,13 @@ class LiveScoresService {
   /// Start real-time live scores polling
   void startPolling() {
     if (_isRunning) return;
-    
+
     print('Starting live scores polling every 15 seconds...');
     _isRunning = true;
-    
+
     // Poll immediately
     _pollScores();
-    
+
     // Then poll every 15 seconds
     _timer = Timer.periodic(const Duration(seconds: 15), (timer) {
       _pollScores();
@@ -75,26 +76,30 @@ class LiveScoresService {
 
     try {
       print('Polling live scores for week $_currentWeek...');
-      
+
       // Get games for current week
       final games = await _nflRepository!.listGames(
-        season: _currentSeason, 
-        week: _currentWeek
+        season: _currentSeason,
+        week: _currentWeek,
       );
-      
+
       // Convert to live scores
-      final liveScores = games.map((game) => LiveScore(
-        gameId: game.id,
-        homeTeam: game.homeTeam,
-        awayTeam: game.awayTeam,
-        homeScore: game.homeScore,
-        awayScore: game.awayScore,
-        status: _convertGameStatusToString(game.status),
-        quarter: game.quarter,
-        timeRemaining: game.timeRemaining,
-        isLive: game.status == GameStatus.IN_PROGRESS,
-        gameDate: game.date,
-      )).toList();
+      final liveScores = games
+          .map(
+            (game) => LiveScore(
+              gameId: game.id,
+              homeTeam: game.homeTeam,
+              awayTeam: game.awayTeam,
+              homeScore: game.homeScore,
+              awayScore: game.awayScore,
+              status: _convertGameStatusToString(game.status),
+              quarter: game.quarter,
+              timeRemaining: game.timeRemaining,
+              isLive: game.status == GameStatus.IN_PROGRESS,
+              gameDate: game.date,
+            ),
+          )
+          .toList();
 
       // Check if there are any live games
       final liveGames = liveScores.where((score) => score.isLive).length;
@@ -104,7 +109,6 @@ class LiveScoresService {
 
       // Emit the scores
       _scoresController.add(liveScores);
-      
     } catch (e) {
       print('Error polling live scores: $e');
       // Don't emit error to stream, just log it
@@ -131,22 +135,26 @@ class LiveScoresService {
 
     try {
       final games = await _nflRepository!.listGames(
-        season: _currentSeason, 
-        week: _currentWeek
+        season: _currentSeason,
+        week: _currentWeek,
       );
-      
-      return games.map((game) => LiveScore(
-        gameId: game.id,
-        homeTeam: game.homeTeam,
-        awayTeam: game.awayTeam,
-        homeScore: game.homeScore,
-        awayScore: game.awayScore,
-        status: _convertGameStatusToString(game.status),
-        quarter: game.quarter,
-        timeRemaining: game.timeRemaining,
-        isLive: game.status == GameStatus.IN_PROGRESS,
-        gameDate: game.date,
-      )).toList();
+
+      return games
+          .map(
+            (game) => LiveScore(
+              gameId: game.id,
+              homeTeam: game.homeTeam,
+              awayTeam: game.awayTeam,
+              homeScore: game.homeScore,
+              awayScore: game.awayScore,
+              status: _convertGameStatusToString(game.status),
+              quarter: game.quarter,
+              timeRemaining: game.timeRemaining,
+              isLive: game.status == GameStatus.IN_PROGRESS,
+              gameDate: game.date,
+            ),
+          )
+          .toList();
     } catch (e) {
       print('Error getting current scores: $e');
       return [];

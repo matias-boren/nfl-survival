@@ -23,10 +23,10 @@ class EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final appSizes = theme.extension<AppSizes>()!;
-    
+
     final iconSize = _getIconSize(appSizes);
     final spacing = _getSpacing(appSizes);
-    
+
     return Center(
       child: Padding(
         padding: EdgeInsets.all(spacing.lg),
@@ -88,11 +88,7 @@ class EmptyState extends StatelessWidget {
   }
 }
 
-enum EmptyStateSize {
-  small,
-  medium,
-  large,
-}
+enum EmptyStateSize { small, medium, large }
 
 // Predefined empty states for common scenarios
 class EmptyStates {

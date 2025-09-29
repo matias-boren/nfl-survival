@@ -15,4 +15,3 @@ class HttpNflDataRepository {
   HttpNflDataRepository(this.dio);
   // TODO: map API models to domain models
 }
-

@@ -11,19 +11,17 @@ class ServerSyncService {
 
   Timer? _timer;
   bool _isRunning = false;
-  final StreamController<List<LiveScore>> _scoresController = StreamController<List<LiveScore>>.broadcast();
-  
+  final StreamController<List<LiveScore>> _scoresController =
+      StreamController<List<LiveScore>>.broadcast();
+
   // Server configuration
-  String _serverBaseUrl = 'https://your-backend-server.com/api'; // Replace with your server
+  String _serverBaseUrl =
+      'https://your-backend-server.com/api'; // Replace with your server
   int _currentWeek = 4;
   int _currentSeason = 2025;
 
   /// Initialize the service
-  void initialize({
-    String? serverBaseUrl,
-    int season = 2025,
-    int week = 4,
-  }) {
+  void initialize({String? serverBaseUrl, int season = 2025, int week = 4}) {
     if (serverBaseUrl != null) {
       _serverBaseUrl = serverBaseUrl;
     }
@@ -34,13 +32,13 @@ class ServerSyncService {
   /// Start syncing with server
   void startSyncing() {
     if (_isRunning) return;
-    
+
     print('Starting server sync every 15 seconds...');
     _isRunning = true;
-    
+
     // Sync immediately
     _syncWithServer();
-    
+
     // Then sync every 15 seconds
     _timer = Timer.periodic(const Duration(seconds: 15), (timer) {
       _syncWithServer();
@@ -74,10 +72,12 @@ class ServerSyncService {
   Future<void> _syncWithServer() async {
     try {
       print('Syncing with server for week $_currentWeek...');
-      
+
       // Call our backend API instead of ESPN directly
       final response = await http.get(
-        Uri.parse('$_serverBaseUrl/live-scores?week=$_currentWeek&season=$_currentSeason'),
+        Uri.parse(
+          '$_serverBaseUrl/live-scores?week=$_currentWeek&season=$_currentSeason',
+        ),
         headers: {
           'Content-Type': 'application/json',
           // Add authentication headers if needed
@@ -88,7 +88,7 @@ class ServerSyncService {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final liveScores = _parseServerResponse(data);
-        
+
         // Check if there are any live games
         final liveGames = liveScores.where((score) => score.isLive).length;
         if (liveGames > 0) {
@@ -101,7 +101,6 @@ class ServerSyncService {
         print('Server sync failed: ${response.statusCode}');
         // Don't emit error to stream, just log it
       }
-      
     } catch (e) {
       print('Error syncing with server: $e');
       // Don't emit error to stream, just log it
@@ -112,34 +111,40 @@ class ServerSyncService {
   List<LiveScore> _parseServerResponse(Map<String, dynamic> data) {
     try {
       final List<dynamic> scoresData = data['scores'] ?? [];
-      return scoresData.map((scoreData) => LiveScore(
-        gameId: scoreData['gameId'] ?? '',
-        homeTeam: Team(
-          id: scoreData['homeTeam']['id'] ?? '',
-          name: scoreData['homeTeam']['name'] ?? '',
-          abbreviation: scoreData['homeTeam']['abbreviation'] ?? '',
-          city: scoreData['homeTeam']['city'] ?? '',
-          logoUrl: scoreData['homeTeam']['logoUrl'] ?? '',
-          color: scoreData['homeTeam']['color'] ?? '',
-          alternateColor: scoreData['homeTeam']['alternateColor'] ?? '',
-        ),
-        awayTeam: Team(
-          id: scoreData['awayTeam']['id'] ?? '',
-          name: scoreData['awayTeam']['name'] ?? '',
-          abbreviation: scoreData['awayTeam']['abbreviation'] ?? '',
-          city: scoreData['awayTeam']['city'] ?? '',
-          logoUrl: scoreData['awayTeam']['logoUrl'] ?? '',
-          color: scoreData['awayTeam']['color'] ?? '',
-          alternateColor: scoreData['awayTeam']['alternateColor'] ?? '',
-        ),
-        homeScore: scoreData['homeScore'],
-        awayScore: scoreData['awayScore'],
-        status: scoreData['status'] ?? 'SCHEDULED',
-        quarter: scoreData['quarter'] ?? 0,
-        timeRemaining: scoreData['timeRemaining'],
-        isLive: scoreData['isLive'] ?? false,
-        gameDate: DateTime.parse(scoreData['gameDate'] ?? DateTime.now().toIso8601String()),
-      )).toList();
+      return scoresData
+          .map(
+            (scoreData) => LiveScore(
+              gameId: scoreData['gameId'] ?? '',
+              homeTeam: Team(
+                id: scoreData['homeTeam']['id'] ?? '',
+                name: scoreData['homeTeam']['name'] ?? '',
+                abbreviation: scoreData['homeTeam']['abbreviation'] ?? '',
+                city: scoreData['homeTeam']['city'] ?? '',
+                logoUrl: scoreData['homeTeam']['logoUrl'] ?? '',
+                color: scoreData['homeTeam']['color'] ?? '',
+                alternateColor: scoreData['homeTeam']['alternateColor'] ?? '',
+              ),
+              awayTeam: Team(
+                id: scoreData['awayTeam']['id'] ?? '',
+                name: scoreData['awayTeam']['name'] ?? '',
+                abbreviation: scoreData['awayTeam']['abbreviation'] ?? '',
+                city: scoreData['awayTeam']['city'] ?? '',
+                logoUrl: scoreData['awayTeam']['logoUrl'] ?? '',
+                color: scoreData['awayTeam']['color'] ?? '',
+                alternateColor: scoreData['awayTeam']['alternateColor'] ?? '',
+              ),
+              homeScore: scoreData['homeScore'],
+              awayScore: scoreData['awayScore'],
+              status: scoreData['status'] ?? 'SCHEDULED',
+              quarter: scoreData['quarter'] ?? 0,
+              timeRemaining: scoreData['timeRemaining'],
+              isLive: scoreData['isLive'] ?? false,
+              gameDate: DateTime.parse(
+                scoreData['gameDate'] ?? DateTime.now().toIso8601String(),
+              ),
+            ),
+          )
+          .toList();
     } catch (e) {
       print('Error parsing server response: $e');
       return [];
@@ -150,10 +155,10 @@ class ServerSyncService {
   Future<List<LiveScore>> getCurrentScores() async {
     try {
       final response = await http.get(
-        Uri.parse('$_serverBaseUrl/live-scores?week=$_currentWeek&season=$_currentSeason'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        Uri.parse(
+          '$_serverBaseUrl/live-scores?week=$_currentWeek&season=$_currentSeason',
+        ),
+        headers: {'Content-Type': 'application/json'},
       );
 
       if (response.statusCode == 200) {

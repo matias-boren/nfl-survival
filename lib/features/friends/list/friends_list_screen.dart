@@ -27,7 +27,9 @@ class FriendsListScreen extends ConsumerWidget {
             icon: const Icon(Icons.person_add),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Add friend feature coming soon!')),
+                const SnackBar(
+                  content: Text('Add friend feature coming soon!'),
+                ),
               );
             },
           ),
@@ -43,7 +45,11 @@ class FriendsListScreen extends ConsumerWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.people_outline, size: 64, color: Colors.grey),
+                        Icon(
+                          Icons.people_outline,
+                          size: 64,
+                          color: Colors.grey,
+                        ),
                         SizedBox(height: 16),
                         Text('No friends yet'),
                         SizedBox(height: 8),
@@ -63,13 +69,17 @@ class FriendsListScreen extends ConsumerWidget {
                         child: Text(friend.displayName[0].toUpperCase()),
                       ),
                       title: Text(friend.displayName),
-                      subtitle: Text(friend.isPremium ? 'Premium User' : 'Free User'),
+                      subtitle: Text(
+                        friend.isPremium ? 'Premium User' : 'Free User',
+                      ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.circle,
-                            color: friend.isPremium ? Colors.amber : Colors.grey,
+                            color: friend.isPremium
+                                ? Colors.amber
+                                : Colors.grey,
                             size: 12,
                           ),
                           const SizedBox(width: 8),
@@ -77,7 +87,9 @@ class FriendsListScreen extends ConsumerWidget {
                             icon: const Icon(Icons.message),
                             onPressed: () {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Messaging coming soon!')),
+                                const SnackBar(
+                                  content: Text('Messaging coming soon!'),
+                                ),
                               );
                             },
                           ),

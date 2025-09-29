@@ -75,30 +75,47 @@ class MockLeagueRepository implements LeagueRepository {
       ),
       season: 2025,
       createdAtIso: '2025-01-05T00:00:00Z',
-      memberIds: ['owner_5', 'member_11', 'member_12', 'member_13', 'member_14', 'member_15'],
+      memberIds: [
+        'owner_5',
+        'member_11',
+        'member_12',
+        'member_13',
+        'member_14',
+        'member_15',
+      ],
     ),
   ];
 
   @override
   Future<League> createLeague(League draft) async {
-    await Future.delayed(const Duration(milliseconds: 500)); // Simulate network delay
-    
-    final newLeague = draft.copyWith(id: DateTime.now().millisecondsSinceEpoch.toString());
+    await Future.delayed(
+      const Duration(milliseconds: 500),
+    ); // Simulate network delay
+
+    final newLeague = draft.copyWith(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+    );
     _leagues.add(newLeague);
     return newLeague;
   }
 
   @override
   Future<List<League>> listLeaguesForUser(String userId) async {
-    await Future.delayed(const Duration(milliseconds: 300)); // Simulate network delay
-    
-    return _leagues.where((league) => league.memberIds.contains(userId)).toList();
+    await Future.delayed(
+      const Duration(milliseconds: 300),
+    ); // Simulate network delay
+
+    return _leagues
+        .where((league) => league.memberIds.contains(userId))
+        .toList();
   }
 
   @override
   Future<League> getLeague(String leagueId) async {
-    await Future.delayed(const Duration(milliseconds: 300)); // Simulate network delay
-    
+    await Future.delayed(
+      const Duration(milliseconds: 300),
+    ); // Simulate network delay
+
     try {
       return _leagues.firstWhere((league) => league.id == leagueId);
     } catch (e) {
@@ -121,17 +138,17 @@ class MockLeagueRepository implements LeagueRepository {
   @override
   Future<void> joinLeague(String leagueId, String userId) async {
     await Future.delayed(const Duration(milliseconds: 500));
-    
+
     final leagueIndex = _leagues.indexWhere((league) => league.id == leagueId);
     if (leagueIndex == -1) {
       throw Exception('League not found');
     }
-    
+
     final league = _leagues[leagueIndex];
     if (league.memberIds.contains(userId)) {
       throw Exception('User is already a member of this league');
     }
-    
+
     // Add user to league members
     final updatedLeague = league.copyWith(
       memberIds: [...league.memberIds, userId],
@@ -142,17 +159,17 @@ class MockLeagueRepository implements LeagueRepository {
   @override
   Future<void> leaveLeague(String leagueId, String userId) async {
     await Future.delayed(const Duration(milliseconds: 500));
-    
+
     final leagueIndex = _leagues.indexWhere((league) => league.id == leagueId);
     if (leagueIndex == -1) {
       throw Exception('League not found');
     }
-    
+
     final league = _leagues[leagueIndex];
     if (!league.memberIds.contains(userId)) {
       throw Exception('User is not a member of this league');
     }
-    
+
     // Remove user from league members
     final updatedLeague = league.copyWith(
       memberIds: league.memberIds.where((id) => id != userId).toList(),
@@ -163,19 +180,21 @@ class MockLeagueRepository implements LeagueRepository {
   @override
   Future<List<League>> getPublicLeagues() async {
     await Future.delayed(const Duration(milliseconds: 300));
-    
-    return _leagues.where((league) => league.visibility == LeagueVisibility.PUBLIC).toList();
+
+    return _leagues
+        .where((league) => league.visibility == LeagueVisibility.PUBLIC)
+        .toList();
   }
 
   @override
   Future<List<League>> listLeagues([String? userId]) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    
+
     if (userId != null) {
       // Get leagues for a specific user
       return listLeaguesForUser(userId);
     }
-    
+
     // Get all leagues (for system processing)
     return List.from(_leagues);
   }
@@ -189,7 +208,7 @@ class MockLeagueRepository implements LeagueRepository {
   @override
   Future<void> updateLeague(League league) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    
+
     final index = _leagues.indexWhere((l) => l.id == league.id);
     if (index != -1) {
       _leagues[index] = league;
@@ -201,7 +220,7 @@ class MockLeagueRepository implements LeagueRepository {
   @override
   Future<void> deleteLeague(String leagueId) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    
+
     _leagues.removeWhere((league) => league.id == leagueId);
   }
 }

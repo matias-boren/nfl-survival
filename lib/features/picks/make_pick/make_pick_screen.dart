@@ -5,7 +5,10 @@ import 'package:nfl_survival/data/models/nfl.dart';
 import 'package:nfl_survival/widgets/app_scaffold.dart';
 import 'package:nfl_survival/core/services/team_logo_service.dart';
 
-final gamesForWeekProvider = FutureProvider.family<List<Game>, int>((ref, week) async {
+final gamesForWeekProvider = FutureProvider.family<List<Game>, int>((
+  ref,
+  week,
+) async {
   return ref.read(nflRepositoryProvider).listGames(season: 2025, week: week);
 });
 
@@ -14,15 +17,17 @@ final pickLockedProvider = FutureProvider.family<bool, int>((ref, week) async {
     // Get the deadline from the NFL repository (first game kickoff time)
     final nflRepo = ref.read(nflRepositoryProvider);
     final deadline = await nflRepo.getPickDeadline(week);
-    
+
     if (deadline == null) {
       print('No deadline found for week $week, picks are locked');
       return true;
     }
-    
+
     final now = DateTime.now();
     final isPassed = now.isAfter(deadline);
-    print('Pick deadline for week $week: $deadline, now: $now, passed: $isPassed');
+    print(
+      'Pick deadline for week $week: $deadline, now: $now, passed: $isPassed',
+    );
     return isPassed;
   } catch (e) {
     print('Error checking pick deadline: $e');
@@ -39,7 +44,7 @@ class MakePickScreen extends ConsumerWidget {
     // Always use current week from provider
     final currentWeekAsync = ref.watch(currentWeekProvider);
     final currentWeek = currentWeekAsync.valueOrNull ?? 4; // Default to week 4
-    
+
     final gamesAsync = ref.watch(gamesForWeekProvider(currentWeek));
     final pickLockedAsync = ref.watch(pickLockedProvider(currentWeek));
     final currentUserAsync = ref.watch(currentUserProvider);
@@ -51,7 +56,7 @@ class MakePickScreen extends ConsumerWidget {
         children: [
           // Show previously picked teams
           _buildPreviousPicksSection(ref, currentWeek),
-          
+
           // Games list
           Expanded(
             child: gamesAsync.when(
@@ -62,30 +67,46 @@ class MakePickScreen extends ConsumerWidget {
                     child: Text('Picks are locked for this week!'),
                   );
                 }
-                
+
                 return Column(
                   children: [
                     // Show deadline information
                     Consumer(
                       builder: (context, ref, child) {
-                        final deadlineStatusAsync = ref.watch(deadlineStatusProvider(currentWeek));
-                        final deadlineStatus = deadlineStatusAsync.valueOrNull ?? 'Loading...';
-                        final pickLockedAsync = ref.watch(pickLockedProvider(currentWeek));
-                        final isDeadlinePassed = pickLockedAsync.valueOrNull ?? true;
-                        
+                        final deadlineStatusAsync = ref.watch(
+                          deadlineStatusProvider(currentWeek),
+                        );
+                        final deadlineStatus =
+                            deadlineStatusAsync.valueOrNull ?? 'Loading...';
+                        final pickLockedAsync = ref.watch(
+                          pickLockedProvider(currentWeek),
+                        );
+                        final isDeadlinePassed =
+                            pickLockedAsync.valueOrNull ?? true;
+
                         return Container(
                           margin: const EdgeInsets.all(8.0),
                           padding: const EdgeInsets.all(16.0),
                           decoration: BoxDecoration(
-                            color: isDeadlinePassed ? Colors.red.withOpacity(0.1) : Colors.blue.withOpacity(0.1),
+                            color: isDeadlinePassed
+                                ? Colors.red.withOpacity(0.1)
+                                : Colors.blue.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(color: isDeadlinePassed ? Colors.red : Colors.blue),
+                            border: Border.all(
+                              color: isDeadlinePassed
+                                  ? Colors.red
+                                  : Colors.blue,
+                            ),
                           ),
                           child: Row(
                             children: [
                               Icon(
-                                isDeadlinePassed ? Icons.lock : Icons.access_time,
-                                color: isDeadlinePassed ? Colors.red : Colors.blue,
+                                isDeadlinePassed
+                                    ? Icons.lock
+                                    : Icons.access_time,
+                                color: isDeadlinePassed
+                                    ? Colors.red
+                                    : Colors.blue,
                                 size: 24,
                               ),
                               const SizedBox(width: 12),
@@ -94,16 +115,22 @@ class MakePickScreen extends ConsumerWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      isDeadlinePassed ? 'Pick Deadline Passed' : 'Pick Deadline',
+                                      isDeadlinePassed
+                                          ? 'Pick Deadline Passed'
+                                          : 'Pick Deadline',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: isDeadlinePassed ? Colors.red : Colors.blue,
+                                        color: isDeadlinePassed
+                                            ? Colors.red
+                                            : Colors.blue,
                                       ),
                                     ),
                                     Text(
                                       deadlineStatus,
                                       style: TextStyle(
-                                        color: isDeadlinePassed ? Colors.red[700] : Colors.blue[700],
+                                        color: isDeadlinePassed
+                                            ? Colors.red[700]
+                                            : Colors.blue[700],
                                       ),
                                     ),
                                   ],
@@ -146,13 +173,17 @@ class MakePickScreen extends ConsumerWidget {
                       ),
                     Expanded(
                       child: ListView.builder(
-                        itemExtent: 200.0, // Fixed height for better performance
-                        cacheExtent: 1000.0, // Cache more items for smooth scrolling
+                        itemExtent:
+                            200.0, // Fixed height for better performance
+                        cacheExtent:
+                            1000.0, // Cache more items for smooth scrolling
                         itemCount: games.length,
                         itemBuilder: (context, index) {
                           final game = games[index];
                           return Card(
-                            key: ValueKey(game.id), // Stable key for better widget recycling
+                            key: ValueKey(
+                              game.id,
+                            ), // Stable key for better widget recycling
                             margin: const EdgeInsets.all(8.0),
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
@@ -231,7 +262,9 @@ class MakePickScreen extends ConsumerWidget {
                                         game.status.name,
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: game.status == GameStatus.FINAL ? Colors.green : Colors.orange,
+                                          color: game.status == GameStatus.FINAL
+                                              ? Colors.green
+                                              : Colors.orange,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -279,83 +312,96 @@ class MakePickScreen extends ConsumerWidget {
     final isOpponentSelected = selectedTeamId == opponentId;
     final pickLockedAsync = ref.watch(pickLockedProvider(currentWeek));
     final isDeadlinePassed = pickLockedAsync.valueOrNull ?? true;
-    
+
     // Check if this team was already picked in previous weeks
     final userPickedTeamsAsync = ref.watch(userPickedTeamIdsProvider(leagueId));
     final userPickedTeams = userPickedTeamsAsync.valueOrNull ?? <String>{};
     final isAlreadyPicked = userPickedTeams.contains(teamId);
-    
-    print('_buildTeamSelection: teamId=$teamId, selectedTeamId=$selectedTeamId, isSelected=$isSelected, deadlinePassed=$isDeadlinePassed, alreadyPicked=$isAlreadyPicked');
-    
+
+    print(
+      '_buildTeamSelection: teamId=$teamId, selectedTeamId=$selectedTeamId, isSelected=$isSelected, deadlinePassed=$isDeadlinePassed, alreadyPicked=$isAlreadyPicked',
+    );
+
     return GestureDetector(
-      onTap: (isDeadlinePassed || isAlreadyPicked) 
-        ? () {
-            // Show helpful message for disabled teams
-            if (isAlreadyPicked) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('$teamId was already picked in a previous week!'),
-                  backgroundColor: Colors.red,
-                ),
-              );
+      onTap: (isDeadlinePassed || isAlreadyPicked)
+          ? () {
+              // Show helpful message for disabled teams
+              if (isAlreadyPicked) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      '$teamId was already picked in a previous week!',
+                    ),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
             }
-          }
-        : () async {
-        final currentUser = ref.read(currentUserProvider);
-        if (currentUser != null) {
-          await ref.read(picksRepositoryProvider).submitPick(
-                leagueId: leagueId,
-                userId: currentUser.id,
-                week: currentWeek,
-                teamId: teamId,
-              );
-          
-          // Invalidate providers to refresh data
-          ref.invalidate(userPickProvider);
-          ref.invalidate(userPicksForWeekProvider);
-          ref.invalidate(userPickedTeamIdsProvider(leagueId));
-          ref.invalidate(userPreviousPicksProvider(leagueId));
-          
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Picked $teamId!')),
-          );
-        }
-      },
+          : () async {
+              final currentUser = ref.read(currentUserProvider);
+              if (currentUser != null) {
+                await ref
+                    .read(picksRepositoryProvider)
+                    .submitPick(
+                      leagueId: leagueId,
+                      userId: currentUser.id,
+                      week: currentWeek,
+                      teamId: teamId,
+                    );
+
+                // Invalidate providers to refresh data
+                ref.invalidate(userPickProvider);
+                ref.invalidate(userPicksForWeekProvider);
+                ref.invalidate(userPickedTeamIdsProvider(leagueId));
+                ref.invalidate(userPreviousPicksProvider(leagueId));
+
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text('Picked $teamId!')));
+              }
+            },
       child: Container(
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: isDeadlinePassed 
-            ? Colors.grey.withOpacity(0.3)
-            : isAlreadyPicked
-              ? Colors.red.withOpacity(0.3)
-              : (isSelected ? Colors.green : (isOpponentSelected ? Colors.grey.withOpacity(0.3) : Colors.blue.withOpacity(0.1))),
-          border: Border.all(
-            color: isDeadlinePassed 
-              ? Colors.grey
+          color: isDeadlinePassed
+              ? Colors.grey.withOpacity(0.3)
               : isAlreadyPicked
+              ? Colors.red.withOpacity(0.3)
+              : (isSelected
+                    ? Colors.green
+                    : (isOpponentSelected
+                          ? Colors.grey.withOpacity(0.3)
+                          : Colors.blue.withOpacity(0.1))),
+          border: Border.all(
+            color: isDeadlinePassed
+                ? Colors.grey
+                : isAlreadyPicked
                 ? Colors.red
-                : (isSelected ? Colors.green : (isOpponentSelected ? Colors.grey : Colors.blue)),
+                : (isSelected
+                      ? Colors.green
+                      : (isOpponentSelected ? Colors.grey : Colors.blue)),
             width: isSelected ? 3 : 1,
           ),
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Column(
           children: [
-            TeamLogoService.buildTeamLogo(
-              teamAbbreviation: teamId,
-              size: 48,
-            ),
+            TeamLogoService.buildTeamLogo(teamAbbreviation: teamId, size: 48),
             const SizedBox(height: 8),
             Text(
               teamId,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: isDeadlinePassed 
-                  ? Colors.grey[600]
-                  : isAlreadyPicked
+                color: isDeadlinePassed
+                    ? Colors.grey[600]
+                    : isAlreadyPicked
                     ? Colors.red[700]
-                    : (isSelected ? Colors.white : (isOpponentSelected ? Colors.grey[600] : Colors.blue)),
+                    : (isSelected
+                          ? Colors.white
+                          : (isOpponentSelected
+                                ? Colors.grey[600]
+                                : Colors.blue)),
               ),
             ),
             if (isDeadlinePassed) ...[
@@ -406,21 +452,25 @@ class MakePickScreen extends ConsumerWidget {
   }
 
   Widget _buildPreviousPicksSection(WidgetRef ref, int currentWeek) {
-    final userPreviousPicksAsync = ref.watch(userPreviousPicksProvider(leagueId));
-    
+    final userPreviousPicksAsync = ref.watch(
+      userPreviousPicksProvider(leagueId),
+    );
+
     return userPreviousPicksAsync.when(
       data: (previousPicks) {
         if (previousPicks.isEmpty) {
           return const SizedBox.shrink(); // Don't show anything if no previous picks
         }
-        
+
         // Filter out current week's pick
-        final pastPicks = previousPicks.where((pick) => pick.week < currentWeek).toList();
-        
+        final pastPicks = previousPicks
+            .where((pick) => pick.week < currentWeek)
+            .toList();
+
         if (pastPicks.isEmpty) {
           return const SizedBox.shrink();
         }
-        
+
         return Container(
           margin: const EdgeInsets.all(16.0),
           padding: const EdgeInsets.all(12.0),
@@ -444,32 +494,41 @@ class MakePickScreen extends ConsumerWidget {
               Wrap(
                 spacing: 8.0,
                 runSpacing: 4.0,
-                children: pastPicks.map((pick) => Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.2),
-                    border: Border.all(color: Colors.red.withOpacity(0.5)),
-                    borderRadius: BorderRadius.circular(4.0),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TeamLogoService.buildTeamLogo(
-                        teamAbbreviation: pick.teamId,
-                        size: 16,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        '${pick.teamId} (Week ${pick.week})',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.red[700],
+                children: pastPicks
+                    .map(
+                      (pick) => Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.red.withOpacity(0.2),
+                          border: Border.all(
+                            color: Colors.red.withOpacity(0.5),
+                          ),
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TeamLogoService.buildTeamLogo(
+                              teamAbbreviation: pick.teamId,
+                              size: 16,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '${pick.teamId} (Week ${pick.week})',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.red[700],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                )).toList(),
+                    )
+                    .toList(),
               ),
             ],
           ),

@@ -86,7 +86,7 @@ class TeamLogoService {
     bool showFallback = true,
   }) {
     final logoUrl = getTeamLogoUrl(teamAbbreviation);
-    
+
     if (logoUrl == null && !showFallback) {
       return SizedBox(width: size, height: size);
     }
@@ -116,9 +116,7 @@ class TeamLogoService {
                 },
                 placeholder: (context, url) {
                   return Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
+                    child: CircularProgressIndicator(strokeWidth: 2),
                   );
                 },
               ),

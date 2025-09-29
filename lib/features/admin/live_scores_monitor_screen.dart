@@ -12,7 +12,7 @@ class LiveScoresMonitorScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final liveScoresAsync = ref.watch(liveScoresProvider);
     final service = ref.watch(liveScoresServiceProvider);
-    
+
     return AppScaffold(
       appBar: AppBar(
         title: const Text('Live Scores Monitor'),
@@ -53,11 +53,13 @@ class LiveScoresMonitorScreen extends ConsumerWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          service.isRunning 
-                              ? 'Polling every 15 seconds' 
+                          service.isRunning
+                              ? 'Polling every 15 seconds'
                               : 'Stopped',
                           style: TextStyle(
-                            color: service.isRunning ? Colors.green : Colors.grey,
+                            color: service.isRunning
+                                ? Colors.green
+                                : Colors.grey,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -79,7 +81,7 @@ class LiveScoresMonitorScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             // Controls Card
             Card(
               child: Padding(
@@ -98,8 +100,8 @@ class LiveScoresMonitorScreen extends ConsumerWidget {
                       children: [
                         Expanded(
                           child: ElevatedButton.icon(
-                            onPressed: service.isRunning 
-                                ? null 
+                            onPressed: service.isRunning
+                                ? null
                                 : () => service.startPolling(),
                             icon: const Icon(Icons.play_arrow),
                             label: const Text('Start Polling'),
@@ -112,7 +114,7 @@ class LiveScoresMonitorScreen extends ConsumerWidget {
                         const SizedBox(width: 16),
                         Expanded(
                           child: ElevatedButton.icon(
-                            onPressed: service.isRunning 
+                            onPressed: service.isRunning
                                 ? () => service.stopPolling()
                                 : null,
                             icon: const Icon(Icons.stop),
@@ -130,7 +132,7 @@ class LiveScoresMonitorScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             // Live Scores Display
             Card(
               child: Padding(
@@ -152,11 +154,17 @@ class LiveScoresMonitorScreen extends ConsumerWidget {
                             child: Text('No scores available'),
                           );
                         }
-                        
-                        final liveGames = scores.where((score) => score.isLive).toList();
-                        final completedGames = scores.where((score) => score.status == 'FINAL').toList();
-                        final scheduledGames = scores.where((score) => score.status == 'SCHEDULED').toList();
-                        
+
+                        final liveGames = scores
+                            .where((score) => score.isLive)
+                            .toList();
+                        final completedGames = scores
+                            .where((score) => score.status == 'FINAL')
+                            .toList();
+                        final scheduledGames = scores
+                            .where((score) => score.status == 'SCHEDULED')
+                            .toList();
+
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -168,43 +176,67 @@ class LiveScoresMonitorScreen extends ConsumerWidget {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
-                                  _buildStatItem('Live', liveGames.length, Colors.red),
-                                  _buildStatItem('Final', completedGames.length, Colors.green),
-                                  _buildStatItem('Scheduled', scheduledGames.length, Colors.blue),
+                                  _buildStatItem(
+                                    'Live',
+                                    liveGames.length,
+                                    Colors.red,
+                                  ),
+                                  _buildStatItem(
+                                    'Final',
+                                    completedGames.length,
+                                    Colors.green,
+                                  ),
+                                  _buildStatItem(
+                                    'Scheduled',
+                                    scheduledGames.length,
+                                    Colors.blue,
+                                  ),
                                 ],
                               ),
                             ),
                             const SizedBox(height: 16),
-                            
+
                             // Live Games
                             if (liveGames.isNotEmpty) ...[
                               Text(
                                 'Live Games (${liveGames.length})',
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               const SizedBox(height: 8),
-                              ...liveGames.map((score) => _buildScoreCard(score, isLive: true)),
+                              ...liveGames.map(
+                                (score) => _buildScoreCard(score, isLive: true),
+                              ),
                               const SizedBox(height: 16),
                             ],
-                            
+
                             // Recent Final Games
                             if (completedGames.isNotEmpty) ...[
                               Text(
                                 'Recent Final Games (${completedGames.length})',
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               const SizedBox(height: 8),
-                              ...completedGames.take(3).map((score) => _buildScoreCard(score, isLive: false)),
+                              ...completedGames
+                                  .take(3)
+                                  .map(
+                                    (score) =>
+                                        _buildScoreCard(score, isLive: false),
+                                  ),
                             ],
                           ],
                         );
                       },
-                      loading: () => const Center(child: CircularProgressIndicator()),
-                      error: (error, stack) => Center(
-                        child: Text('Error loading scores: $error'),
-                      ),
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
+                      error: (error, stack) =>
+                          Center(child: Text('Error loading scores: $error')),
                     ),
                   ],
                 ),
@@ -227,13 +259,7 @@ class LiveScoresMonitorScreen extends ConsumerWidget {
             color: color,
           ),
         ),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: color,
-          ),
-        ),
+        Text(label, style: TextStyle(fontSize: 12, color: color)),
       ],
     );
   }
@@ -241,7 +267,9 @@ class LiveScoresMonitorScreen extends ConsumerWidget {
   Widget _buildScoreCard(LiveScore score, {required bool isLive}) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
-      color: isLive ? Colors.red.withOpacity(0.1) : Colors.grey.withOpacity(0.1),
+      color: isLive
+          ? Colors.red.withOpacity(0.1)
+          : Colors.grey.withOpacity(0.1),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(
@@ -256,7 +284,7 @@ class LiveScoresMonitorScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(width: 12),
-            
+
             // Teams and score
             Expanded(
               child: Column(
@@ -269,12 +297,15 @@ class LiveScoresMonitorScreen extends ConsumerWidget {
                   if (score.homeScore != null && score.awayScore != null)
                     Text(
                       '${score.awayScore} - ${score.homeScore}',
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                 ],
               ),
             ),
-            
+
             // Status and time
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -286,7 +317,8 @@ class LiveScoresMonitorScreen extends ConsumerWidget {
                     color: isLive ? Colors.red : Colors.grey,
                   ),
                 ),
-                if (score.timeRemaining != null && score.timeRemaining!.isNotEmpty)
+                if (score.timeRemaining != null &&
+                    score.timeRemaining!.isNotEmpty)
                   Text(
                     score.timeRemaining!,
                     style: const TextStyle(fontSize: 12),

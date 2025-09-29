@@ -158,9 +158,17 @@ class AppColors extends ThemeExtension<AppColors> {
       primary: Color.lerp(primary, other.primary, t),
       primaryContainer: Color.lerp(primaryContainer, other.primaryContainer, t),
       secondary: Color.lerp(secondary, other.secondary, t),
-      secondaryContainer: Color.lerp(secondaryContainer, other.secondaryContainer, t),
+      secondaryContainer: Color.lerp(
+        secondaryContainer,
+        other.secondaryContainer,
+        t,
+      ),
       tertiary: Color.lerp(tertiary, other.tertiary, t),
-      tertiaryContainer: Color.lerp(tertiaryContainer, other.tertiaryContainer, t),
+      tertiaryContainer: Color.lerp(
+        tertiaryContainer,
+        other.tertiaryContainer,
+        t,
+      ),
       error: Color.lerp(error, other.error, t),
       errorContainer: Color.lerp(errorContainer, other.errorContainer, t),
       warning: Color.lerp(warning, other.warning, t),
@@ -314,8 +322,10 @@ class AppSizes extends ThemeExtension<AppSizes> {
       avatarSm: lerpDouble(avatarSm, other.avatarSm, t) ?? avatarSm,
       avatarMd: lerpDouble(avatarMd, other.avatarMd, t) ?? avatarMd,
       avatarLg: lerpDouble(avatarLg, other.avatarLg, t) ?? avatarLg,
-      bannerHeight: lerpDouble(bannerHeight, other.bannerHeight, t) ?? bannerHeight,
-      bannerHeightLg: lerpDouble(bannerHeightLg, other.bannerHeightLg, t) ?? bannerHeightLg,
+      bannerHeight:
+          lerpDouble(bannerHeight, other.bannerHeight, t) ?? bannerHeight,
+      bannerHeightLg:
+          lerpDouble(bannerHeightLg, other.bannerHeightLg, t) ?? bannerHeightLg,
     );
   }
 }

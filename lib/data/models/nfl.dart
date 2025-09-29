@@ -54,6 +54,6 @@ abstract class LiveScore with _$LiveScore {
     DateTime? gameDate, // Add game date for kickoff time
   }) = _LiveScore;
 
-  factory LiveScore.fromJson(Map<String, dynamic> json) => _$LiveScoreFromJson(json);
+  factory LiveScore.fromJson(Map<String, dynamic> json) =>
+      _$LiveScoreFromJson(json);
 }
-

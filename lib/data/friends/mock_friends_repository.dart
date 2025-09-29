@@ -6,8 +6,18 @@ class MockFriendsRepository implements FriendsRepository {
   Future<List<User>> listFriends(String userId) async {
     await Future.delayed(const Duration(milliseconds: 500));
     return [
-      const User(id: 'friend1', displayName: 'Friend One', isPremium: false, joinedLeagueIds: []),
-      const User(id: 'friend2', displayName: 'Friend Two', isPremium: true, joinedLeagueIds: []),
+      const User(
+        id: 'friend1',
+        displayName: 'Friend One',
+        isPremium: false,
+        joinedLeagueIds: [],
+      ),
+      const User(
+        id: 'friend2',
+        displayName: 'Friend Two',
+        isPremium: true,
+        joinedLeagueIds: [],
+      ),
     ];
   }
 

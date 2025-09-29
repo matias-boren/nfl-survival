@@ -10,7 +10,7 @@ class AutomatedProcessingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final processor = ref.watch(automatedResultProcessorProvider);
-    
+
     return AppScaffold(
       appBar: AppBar(
         title: const Text('Automated Processing'),
@@ -50,15 +50,19 @@ class AutomatedProcessingScreen extends ConsumerWidget {
                       children: [
                         Icon(
                           Icons.schedule,
-                          color: processor.timer != null ? Colors.green : Colors.grey,
+                          color: processor.timer != null
+                              ? Colors.green
+                              : Colors.grey,
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          processor.timer != null 
-                              ? 'Running (every 15 minutes)' 
+                          processor.timer != null
+                              ? 'Running (every 15 minutes)'
                               : 'Stopped',
                           style: TextStyle(
-                            color: processor.timer != null ? Colors.green : Colors.grey,
+                            color: processor.timer != null
+                                ? Colors.green
+                                : Colors.grey,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -69,15 +73,19 @@ class AutomatedProcessingScreen extends ConsumerWidget {
                       children: [
                         Icon(
                           Icons.sync,
-                          color: processor.isProcessing ? Colors.orange : Colors.grey,
+                          color: processor.isProcessing
+                              ? Colors.orange
+                              : Colors.grey,
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          processor.isProcessing 
-                              ? 'Currently Processing...' 
+                          processor.isProcessing
+                              ? 'Currently Processing...'
                               : 'Idle',
                           style: TextStyle(
-                            color: processor.isProcessing ? Colors.orange : Colors.grey,
+                            color: processor.isProcessing
+                                ? Colors.orange
+                                : Colors.grey,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -105,7 +113,7 @@ class AutomatedProcessingScreen extends ConsumerWidget {
                       children: [
                         Expanded(
                           child: ElevatedButton.icon(
-                            onPressed: processor.timer == null 
+                            onPressed: processor.timer == null
                                 ? () => processor.startProcessing()
                                 : null,
                             icon: const Icon(Icons.play_arrow),
@@ -119,7 +127,7 @@ class AutomatedProcessingScreen extends ConsumerWidget {
                         const SizedBox(width: 16),
                         Expanded(
                           child: ElevatedButton.icon(
-                            onPressed: processor.timer != null 
+                            onPressed: processor.timer != null
                                 ? () => processor.stopProcessing()
                                 : null,
                             icon: const Icon(Icons.stop),
@@ -168,7 +176,9 @@ class AutomatedProcessingScreen extends ConsumerWidget {
                     const SizedBox(height: 8),
                     Text('Processed Games: ${processor.processedGames.length}'),
                     const SizedBox(height: 4),
-                    Text('Last Processed: ${processor.processedGames.isNotEmpty ? processor.processedGames.last : 'None'}'),
+                    Text(
+                      'Last Processed: ${processor.processedGames.isNotEmpty ? processor.processedGames.last : 'None'}',
+                    ),
                   ],
                 ),
               ),

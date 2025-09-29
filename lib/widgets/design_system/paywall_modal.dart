@@ -8,11 +8,7 @@ class PaywallModal extends ConsumerWidget {
   final String? featureName;
   final Widget? customContent;
 
-  const PaywallModal({
-    super.key,
-    this.featureName,
-    this.customContent,
-  });
+  const PaywallModal({super.key, this.featureName, this.customContent});
 
   static Future<void> show({
     required BuildContext context,
@@ -23,10 +19,8 @@ class PaywallModal extends ConsumerWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => PaywallModal(
-        featureName: featureName,
-        customContent: customContent,
-      ),
+      builder: (context) =>
+          PaywallModal(featureName: featureName, customContent: customContent),
     );
   }
 
@@ -34,7 +28,7 @@ class PaywallModal extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final appColors = theme.extension<AppColors>()!;
-    
+
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
@@ -56,14 +50,16 @@ class PaywallModal extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              
+
               // Header
               Row(
                 children: [
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: appColors.premiumContainer ?? theme.colorScheme.tertiaryContainer,
+                      color:
+                          appColors.premiumContainer ??
+                          theme.colorScheme.tertiaryContainer,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
@@ -99,17 +95,17 @@ class PaywallModal extends ConsumerWidget {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Content
               if (customContent != null)
                 customContent!
               else
                 _buildDefaultContent(context, appColors),
-              
+
               const SizedBox(height: 24),
-              
+
               // Action buttons
               Row(
                 children: [
@@ -134,8 +130,11 @@ class PaywallModal extends ConsumerWidget {
                         context.go('/premium-upgrade');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: appColors.premium ?? theme.colorScheme.tertiary,
-                        foregroundColor: appColors.onTertiary ?? theme.colorScheme.onTertiary,
+                        backgroundColor:
+                            appColors.premium ?? theme.colorScheme.tertiary,
+                        foregroundColor:
+                            appColors.onTertiary ??
+                            theme.colorScheme.onTertiary,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -158,7 +157,7 @@ class PaywallModal extends ConsumerWidget {
 
   Widget _buildDefaultContent(BuildContext context, AppColors appColors) {
     final theme = Theme.of(context);
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -169,7 +168,7 @@ class PaywallModal extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 16),
-        
+
         _buildFeatureItem(
           context,
           appColors,
@@ -217,7 +216,7 @@ class PaywallModal extends ConsumerWidget {
     String description,
   ) {
     final theme = Theme.of(context);
-    
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -225,8 +224,9 @@ class PaywallModal extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: appColors.premiumContainer?.withOpacity(0.3) ?? 
-                     theme.colorScheme.tertiaryContainer.withOpacity(0.3),
+              color:
+                  appColors.premiumContainer?.withOpacity(0.3) ??
+                  theme.colorScheme.tertiaryContainer.withOpacity(0.3),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(

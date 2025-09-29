@@ -6,10 +6,15 @@ import 'package:nfl_survival/data/models/league.dart';
 import 'package:nfl_survival/widgets/app_scaffold.dart';
 import 'package:nfl_survival/features/league/table/league_list_screen.dart';
 
-final leagueProvider = FutureProvider.family<League, String>((ref, leagueId) async {
+final leagueProvider = FutureProvider.family<League, String>((
+  ref,
+  leagueId,
+) async {
   print('leagueProvider: Fetching league $leagueId');
   final league = await ref.read(leagueRepositoryProvider).getLeague(leagueId);
-  print('leagueProvider: Got league ${league.name} with ${league.memberIds.length} members');
+  print(
+    'leagueProvider: Got league ${league.name} with ${league.memberIds.length} members',
+  );
   return league;
 });
 
@@ -21,181 +26,202 @@ class LeagueDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final leagueAsync = ref.watch(leagueProvider(leagueId));
     final currentUser = ref.watch(currentUserProvider);
-    
+
     return leagueAsync.when(
       data: (league) {
         // Check if user is still a member of this league
-        if (currentUser != null && !currentUser.joinedLeagueIds.contains(leagueId)) {
+        if (currentUser != null &&
+            !currentUser.joinedLeagueIds.contains(leagueId)) {
           // User is no longer a member, redirect to leagues list
           WidgetsBinding.instance.addPostFrameCallback((_) {
             context.go('/leagues');
           });
-          return const AppScaffold(child: Center(child: CircularProgressIndicator()));
+          return const AppScaffold(
+            child: Center(child: CircularProgressIndicator()),
+          );
         }
-        
+
         return AppScaffold(
-        appBar: AppBar(
-          title: Text(league.name),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: () {
-                ref.invalidate(leagueProvider(leagueId));
-              },
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // League Info Card
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'League Information',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
+          appBar: AppBar(
+            title: Text(league.name),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: () {
+                  ref.invalidate(leagueProvider(leagueId));
+                },
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // League Info Card
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'League Information',
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Icon(Icons.calendar_today, size: 16, color: Colors.grey[600]),
-                          const SizedBox(width: 8),
-                          Text('Season ${league.season}'),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Icon(
-                            league.visibility == LeagueVisibility.PUBLIC 
-                                ? Icons.public 
-                                : Icons.lock,
-                            size: 16, 
-                            color: Colors.grey[600],
-                          ),
-                          const SizedBox(width: 8),
-                          Text(league.visibility == LeagueVisibility.PUBLIC ? 'Public' : 'Private'),
-                        ],
-                      ),
-                    ],
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.calendar_today,
+                              size: 16,
+                              color: Colors.grey[600],
+                            ),
+                            const SizedBox(width: 8),
+                            Text('Season ${league.season}'),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Icon(
+                              league.visibility == LeagueVisibility.PUBLIC
+                                  ? Icons.public
+                                  : Icons.lock,
+                              size: 16,
+                              color: Colors.grey[600],
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              league.visibility == LeagueVisibility.PUBLIC
+                                  ? 'Public'
+                                  : 'Private',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 24),
-              
-              // Action Buttons
-              Text(
-                'Actions',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
+                const SizedBox(height: 24),
+
+                // Action Buttons
+                Text(
+                  'Actions',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
-              ),
-              const SizedBox(height: 16),
-              
-              // Make Pick Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () => context.go('/league/$leagueId/pick'),
-                  icon: const Icon(Icons.sports_football),
-                  label: const Text('Make Pick'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                const SizedBox(height: 16),
+
+                // Make Pick Button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () => context.go('/league/$leagueId/pick'),
+                    icon: const Icon(Icons.sports_football),
+                    label: const Text('Make Pick'),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              
-              // View Picks History Button
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: () => context.go('/league/$leagueId/picks-history'),
-                  icon: const Icon(Icons.history),
-                  label: const Text('View Picks History'),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              
-              // View Standings Button
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: () => context.go('/league/$leagueId/standings'),
-                  icon: const Icon(Icons.leaderboard),
-                  label: const Text('View Standings'),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              
-              // League Chat Button
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: () => context.go('/league/$leagueId/chat'),
-                  icon: const Icon(Icons.chat),
-                  label: const Text('League Chat'),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              
-              // Manage Invitations Button (only for private leagues)
-              if (league.visibility == LeagueVisibility.PRIVATE) ...[
+                const SizedBox(height: 12),
+
+                // View Picks History Button
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton.icon(
-                    onPressed: () => context.go('/league/$leagueId/invitations'),
-                    icon: const Icon(Icons.group_add),
-                    label: const Text('Manage Invitations'),
+                    onPressed: () =>
+                        context.go('/league/$leagueId/picks-history'),
+                    icon: const Icon(Icons.history),
+                    label: const Text('View Picks History'),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
                   ),
                 ),
                 const SizedBox(height: 12),
-              ],
-              
-              // Leave League Button
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: () => _showLeaveLeagueDialog(context, ref, leagueId),
-                  icon: const Icon(Icons.exit_to_app, color: Colors.red),
-                  label: const Text('Leave League', style: TextStyle(color: Colors.red)),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    side: const BorderSide(color: Colors.red),
+
+                // View Standings Button
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () => context.go('/league/$leagueId/standings'),
+                    icon: const Icon(Icons.leaderboard),
+                    label: const Text('View Standings'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 12),
+
+                // League Chat Button
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () => context.go('/league/$leagueId/chat'),
+                    icon: const Icon(Icons.chat),
+                    label: const Text('League Chat'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // Manage Invitations Button (only for private leagues)
+                if (league.visibility == LeagueVisibility.PRIVATE) ...[
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () =>
+                          context.go('/league/$leagueId/invitations'),
+                      icon: const Icon(Icons.group_add),
+                      label: const Text('Manage Invitations'),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                ],
+
+                // Leave League Button
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () =>
+                        _showLeaveLeagueDialog(context, ref, leagueId),
+                    icon: const Icon(Icons.exit_to_app, color: Colors.red),
+                    label: const Text(
+                      'Leave League',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      side: const BorderSide(color: Colors.red),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
         );
       },
-      loading: () => const AppScaffold(child: Center(child: CircularProgressIndicator())),
+      loading: () =>
+          const AppScaffold(child: Center(child: CircularProgressIndicator())),
       error: (e, st) => AppScaffold(child: Center(child: Text('Error: $e'))),
     );
   }
 
-  void _showLeaveLeagueDialog(BuildContext context, WidgetRef ref, String leagueId) {
+  void _showLeaveLeagueDialog(
+    BuildContext context,
+    WidgetRef ref,
+    String leagueId,
+  ) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -224,7 +250,11 @@ class LeagueDetailScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _leaveLeague(BuildContext context, WidgetRef ref, String leagueId) async {
+  Future<void> _leaveLeague(
+    BuildContext context,
+    WidgetRef ref,
+    String leagueId,
+  ) async {
     final currentUser = ref.read(currentUserProvider);
     if (currentUser == null) return;
 
@@ -238,11 +268,15 @@ class LeagueDetailScreen extends ConsumerWidget {
       );
 
       // Leave the league
-      await ref.read(leagueRepositoryProvider).leaveLeague(leagueId, currentUser.id);
+      await ref
+          .read(leagueRepositoryProvider)
+          .leaveLeague(leagueId, currentUser.id);
 
       // Update user's joined leagues
       final updatedUser = currentUser.copyWith(
-        joinedLeagueIds: currentUser.joinedLeagueIds.where((id) => id != leagueId).toList(),
+        joinedLeagueIds: currentUser.joinedLeagueIds
+            .where((id) => id != leagueId)
+            .toList(),
       );
       ref.read(currentUserProvider.notifier).state = updatedUser;
 

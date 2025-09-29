@@ -9,11 +9,8 @@ class AppSpacings extends ThemeExtension<AppSpacings> {
   const AppSpacings({this.sm = 8, this.md = 16, this.lg = 24});
 
   @override
-  AppSpacings copyWith({double? sm, double? md, double? lg}) => AppSpacings(
-        sm: sm ?? this.sm,
-        md: md ?? this.md,
-        lg: lg ?? this.lg,
-      );
+  AppSpacings copyWith({double? sm, double? md, double? lg}) =>
+      AppSpacings(sm: sm ?? this.sm, md: md ?? this.md, lg: lg ?? this.lg);
 
   @override
   AppSpacings lerp(ThemeExtension<AppSpacings>? other, double t) {
@@ -25,4 +22,3 @@ class AppSpacings extends ThemeExtension<AppSpacings> {
     );
   }
 }
-

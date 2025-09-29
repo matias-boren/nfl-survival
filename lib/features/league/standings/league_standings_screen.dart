@@ -39,7 +39,7 @@ class LeagueStandingsScreen extends ConsumerWidget {
                     child: Text('No standings data available'),
                   );
                 }
-                
+
                 // Sort by wins (descending), then by points (descending), then by win percentage
                 standings.sort((a, b) {
                   if (a.wins != b.wins) return b.wins.compareTo(a.wins);
@@ -53,10 +53,15 @@ class LeagueStandingsScreen extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final standing = standings[index];
                     final rank = index + 1;
-                    
+
                     return Card(
-                      key: ValueKey(standing.userId), // Stable key for standings
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      key: ValueKey(
+                        standing.userId,
+                      ), // Stable key for standings
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 4,
+                      ),
                       child: ListTile(
                         leading: CircleAvatar(
                           backgroundColor: _getRankColor(rank),
@@ -75,12 +80,16 @@ class LeagueStandingsScreen extends ConsumerWidget {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('${standing.wins}W - ${standing.losses}L (${(standing.winPercentage * 100).toStringAsFixed(1)}%) • ${standing.points} PF'),
+                            Text(
+                              '${standing.wins}W - ${standing.losses}L (${(standing.winPercentage * 100).toStringAsFixed(1)}%) • ${standing.points} PF',
+                            ),
                             if (standing.lastPickTeam != null)
                               Text(
                                 'Last pick: ${standing.lastPickTeam} (${standing.lastPickResult?.name ?? 'PENDING'})',
                                 style: TextStyle(
-                                  color: _getResultColor(standing.lastPickResult),
+                                  color: _getResultColor(
+                                    standing.lastPickResult,
+                                  ),
                                   fontSize: 12,
                                 ),
                               ),
@@ -157,14 +166,24 @@ class LeagueStandingsScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Record: ${standing.wins}W - ${standing.losses}L'),
-            Text('Win %: ${(standing.winPercentage * 100).toStringAsFixed(1)}%'),
+            Text(
+              'Win %: ${(standing.winPercentage * 100).toStringAsFixed(1)}%',
+            ),
             const SizedBox(height: 8),
-            const Text('Teams Used:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              'Teams Used:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             Text(standing.usedTeams.join(', ')),
             if (standing.lastPickTeam != null) ...[
               const SizedBox(height: 8),
-              const Text('Last Pick:', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('${standing.lastPickTeam} (${standing.lastPickResult?.name ?? 'PENDING'})'),
+              const Text(
+                'Last Pick:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(
+                '${standing.lastPickTeam} (${standing.lastPickResult?.name ?? 'PENDING'})',
+              ),
             ],
           ],
         ),

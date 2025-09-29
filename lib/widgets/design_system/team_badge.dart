@@ -21,10 +21,10 @@ class TeamBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final appSizes = theme.extension<AppSizes>()!;
-    
+
     final badgeSize = _getBadgeSize(appSizes);
     final textStyle = _getTextStyle(theme);
-    
+
     Widget content = Container(
       height: badgeSize,
       padding: EdgeInsets.symmetric(
@@ -96,8 +96,4 @@ class TeamBadge extends StatelessWidget {
   }
 }
 
-enum TeamBadgeSize {
-  small,
-  medium,
-  large,
-}
+enum TeamBadgeSize { small, medium, large }

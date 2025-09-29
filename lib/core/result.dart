@@ -7,14 +7,20 @@ class Ok<T> extends Result<T> {
   final T value;
   const Ok(this.value);
   @override
-  R map<R>({required R Function(T p1) ok, required R Function(AppError p1) err}) => ok(value);
+  R map<R>({
+    required R Function(T p1) ok,
+    required R Function(AppError p1) err,
+  }) => ok(value);
 }
 
 class Err<T> extends Result<T> {
   final AppError error;
   const Err(this.error);
   @override
-  R map<R>({required R Function(T p1) ok, required R Function(AppError p1) err}) => err(error);
+  R map<R>({
+    required R Function(T p1) ok,
+    required R Function(AppError p1) err,
+  }) => err(error);
 }
 
 class AppError implements Exception {
@@ -26,8 +32,10 @@ class AppError implements Exception {
 }
 
 class PremiumGuard {
-  static bool canJoinAnotherLeague({required bool isPremium, required int joinedCount}) {
+  static bool canJoinAnotherLeague({
+    required bool isPremium,
+    required int joinedCount,
+  }) {
     return isPremium || joinedCount < 1;
   }
 }
-

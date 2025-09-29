@@ -9,15 +9,15 @@ class PremiumUpgradeInterstitial {
   // Show interstitial ad before premium upgrade
   static Future<void> showBeforeUpgrade() async {
     if (_isLoading) return;
-    
+
     // Skip ads on web platform
     if (kIsWeb) {
       print('⚠️ Ads not supported on web platform');
       return;
     }
-    
+
     _isLoading = true;
-    
+
     try {
       // Load ad if not already loaded
       if (!_adService.isInterstitialAdReady) {
@@ -25,7 +25,7 @@ class PremiumUpgradeInterstitial {
         // Wait a bit for ad to load
         await Future.delayed(const Duration(seconds: 1));
       }
-      
+
       // Show ad if available
       if (_adService.isInterstitialAdReady) {
         await _adService.showInterstitialAd();
@@ -40,15 +40,15 @@ class PremiumUpgradeInterstitial {
   // Show rewarded ad for premium features
   static Future<bool> showRewardedForFeature() async {
     if (_isLoading) return false;
-    
+
     // Skip ads on web platform
     if (kIsWeb) {
       print('⚠️ Ads not supported on web platform');
       return false;
     }
-    
+
     _isLoading = true;
-    
+
     try {
       // Load ad if not already loaded
       if (!_adService.isRewardedAdReady) {
@@ -56,7 +56,7 @@ class PremiumUpgradeInterstitial {
         // Wait a bit for ad to load
         await Future.delayed(const Duration(seconds: 1));
       }
-      
+
       // Show ad if available
       if (_adService.isRewardedAdReady) {
         return await _adService.showRewardedAd();
@@ -66,7 +66,7 @@ class PremiumUpgradeInterstitial {
     } finally {
       _isLoading = false;
     }
-    
+
     return false;
   }
 
@@ -77,7 +77,7 @@ class PremiumUpgradeInterstitial {
       print('⚠️ Ads not supported on web platform');
       return;
     }
-    
+
     try {
       await _adService.loadInterstitialAd();
       await _adService.loadRewardedAd();

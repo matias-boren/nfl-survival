@@ -19,11 +19,11 @@ class StatusPill extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final appSizes = theme.extension<AppSizes>()!;
-    
+
     final pillHeight = _getPillHeight(appSizes);
     final textStyle = _getTextStyle(theme);
     final colors = _getColors(theme);
-    
+
     return Container(
       height: pillHeight,
       padding: EdgeInsets.symmetric(
@@ -33,19 +33,15 @@ class StatusPill extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.backgroundColor,
         borderRadius: BorderRadius.circular(pillHeight / 2),
-        border: colors.borderColor != null 
-          ? Border.all(color: colors.borderColor!, width: 1)
-          : null,
+        border: colors.borderColor != null
+            ? Border.all(color: colors.borderColor!, width: 1)
+            : null,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[
-            Icon(
-              icon,
-              size: pillHeight * 0.6,
-              color: colors.textColor,
-            ),
+            Icon(icon, size: pillHeight * 0.6, color: colors.textColor),
             SizedBox(width: pillHeight * 0.2),
           ],
           Text(
@@ -84,41 +80,49 @@ class StatusPill extends StatelessWidget {
 
   _PillColors _getColors(ThemeData theme) {
     final appColors = theme.extension<AppColors>()!;
-    
+
     switch (variant) {
       case StatusPillVariant.primary:
         return _PillColors(
-          backgroundColor: appColors.primaryContainer ?? theme.colorScheme.primaryContainer,
+          backgroundColor:
+              appColors.primaryContainer ?? theme.colorScheme.primaryContainer,
           textColor: appColors.onPrimary ?? theme.colorScheme.onPrimary,
         );
       case StatusPillVariant.secondary:
         return _PillColors(
-          backgroundColor: appColors.secondaryContainer ?? theme.colorScheme.secondaryContainer,
+          backgroundColor:
+              appColors.secondaryContainer ??
+              theme.colorScheme.secondaryContainer,
           textColor: appColors.onSecondary ?? theme.colorScheme.onSecondary,
         );
       case StatusPillVariant.success:
         return _PillColors(
-          backgroundColor: appColors.successContainer ?? theme.colorScheme.tertiaryContainer,
+          backgroundColor:
+              appColors.successContainer ?? theme.colorScheme.tertiaryContainer,
           textColor: appColors.onTertiary ?? theme.colorScheme.onTertiary,
         );
       case StatusPillVariant.warning:
         return _PillColors(
-          backgroundColor: appColors.warningContainer ?? theme.colorScheme.errorContainer,
+          backgroundColor:
+              appColors.warningContainer ?? theme.colorScheme.errorContainer,
           textColor: appColors.onError ?? theme.colorScheme.onError,
         );
       case StatusPillVariant.error:
         return _PillColors(
-          backgroundColor: appColors.errorContainer ?? theme.colorScheme.errorContainer,
+          backgroundColor:
+              appColors.errorContainer ?? theme.colorScheme.errorContainer,
           textColor: appColors.onError ?? theme.colorScheme.onError,
         );
       case StatusPillVariant.premium:
         return _PillColors(
-          backgroundColor: appColors.premiumContainer ?? theme.colorScheme.primaryContainer,
+          backgroundColor:
+              appColors.premiumContainer ?? theme.colorScheme.primaryContainer,
           textColor: appColors.premium ?? theme.colorScheme.primary,
         );
       case StatusPillVariant.locked:
         return _PillColors(
-          backgroundColor: appColors.lockedContainer ?? theme.colorScheme.surfaceVariant,
+          backgroundColor:
+              appColors.lockedContainer ?? theme.colorScheme.surfaceVariant,
           textColor: appColors.locked ?? theme.colorScheme.onSurfaceVariant,
         );
       case StatusPillVariant.outline:
@@ -154,8 +158,4 @@ enum StatusPillVariant {
   outline,
 }
 
-enum StatusPillSize {
-  small,
-  medium,
-  large,
-}
+enum StatusPillSize { small, medium, large }

@@ -13,7 +13,8 @@ abstract class LeagueSettings with _$LeagueSettings {
     required bool autoEliminateOnNoPick,
   }) = _LeagueSettings;
 
-  factory LeagueSettings.fromJson(Map<String, dynamic> json) => _$LeagueSettingsFromJson(json);
+  factory LeagueSettings.fromJson(Map<String, dynamic> json) =>
+      _$LeagueSettingsFromJson(json);
 }
 
 @freezed
@@ -33,4 +34,3 @@ abstract class League with _$League {
 
   factory League.fromJson(Map<String, dynamic> json) => _$LeagueFromJson(json);
 }
-

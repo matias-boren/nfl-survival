@@ -37,7 +37,9 @@ class LeagueListScreen extends ConsumerWidget {
             child: leaguesAsync.when(
               data: (leagues) {
                 if (leagues.isEmpty) {
-                  return const Center(child: Text('No leagues joined. Create one!'));
+                  return const Center(
+                    child: Text('No leagues joined. Create one!'),
+                  );
                 }
                 return ListView.builder(
                   itemCount: leagues.length,

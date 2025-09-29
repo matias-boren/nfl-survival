@@ -28,11 +28,7 @@ class JoinLeaguesScreen extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.public_off,
-                    size: 64,
-                    color: Colors.grey,
-                  ),
+                  const Icon(Icons.public_off, size: 64, color: Colors.grey),
                   const SizedBox(height: 16),
                   const Text(
                     'No Public Leagues Available',
@@ -63,13 +59,16 @@ class JoinLeaguesScreen extends ConsumerWidget {
             itemCount: leagues.length,
             itemBuilder: (context, index) {
               final league = leagues[index];
-              final isAlreadyJoined = currentUser?.joinedLeagueIds.contains(league.id) ?? false;
-              
+              final isAlreadyJoined =
+                  currentUser?.joinedLeagueIds.contains(league.id) ?? false;
+
               return Card(
                 margin: const EdgeInsets.only(bottom: 12),
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: isAlreadyJoined ? Colors.green : Colors.blue,
+                    backgroundColor: isAlreadyJoined
+                        ? Colors.green
+                        : Colors.blue,
                     child: Icon(
                       isAlreadyJoined ? Icons.check : Icons.public,
                       color: Colors.white,
@@ -82,7 +81,9 @@ class JoinLeaguesScreen extends ConsumerWidget {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Owner: ${league.ownerId.length > 8 ? '${league.ownerId.substring(0, 8)}...' : league.ownerId}'),
+                      Text(
+                        'Owner: ${league.ownerId.length > 8 ? '${league.ownerId.substring(0, 8)}...' : league.ownerId}',
+                      ),
                       Text('Season: ${league.season}'),
                       Text('Max Losses: ${league.settings.maxLosses}'),
                       Text('Tiebreaker: Points For'),
@@ -123,7 +124,11 @@ class JoinLeaguesScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _joinLeague(BuildContext context, WidgetRef ref, String leagueId) async {
+  Future<void> _joinLeague(
+    BuildContext context,
+    WidgetRef ref,
+    String leagueId,
+  ) async {
     final currentUser = ref.read(currentUserProvider);
     if (currentUser == null) return;
 
@@ -133,7 +138,9 @@ class JoinLeaguesScreen extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Free users can only join 1 league. Upgrade to Premium for unlimited leagues!'),
+            content: Text(
+              'Free users can only join 1 league. Upgrade to Premium for unlimited leagues!',
+            ),
             backgroundColor: Colors.orange,
             duration: Duration(seconds: 4),
           ),
@@ -154,7 +161,9 @@ class JoinLeaguesScreen extends ConsumerWidget {
       );
 
       // Join the league
-      await ref.read(leagueRepositoryProvider).joinLeague(leagueId, currentUser.id);
+      await ref
+          .read(leagueRepositoryProvider)
+          .joinLeague(leagueId, currentUser.id);
 
       // Update user's joined leagues
       final updatedUser = currentUser.copyWith(

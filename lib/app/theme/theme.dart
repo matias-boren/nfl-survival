@@ -4,7 +4,7 @@ import 'design_tokens.dart';
 
 ThemeData buildAppTheme() {
   final base = ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo);
-  
+
   // Light theme colors
   final lightColors = AppColors(
     primary: DesignTokens.lightColors['primary'],
@@ -45,17 +45,17 @@ ThemeData buildAppTheme() {
 
   return base.copyWith(
     appBarTheme: const AppBarTheme(centerTitle: true),
-    extensions: [
-      lightColors,
-      const AppSpacings(),
-      const AppSizes(),
-    ],
+    extensions: [lightColors, const AppSpacings(), const AppSizes()],
   );
 }
 
 ThemeData buildAppDarkTheme() {
-  final base = ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo, brightness: Brightness.dark);
-  
+  final base = ThemeData(
+    useMaterial3: true,
+    colorSchemeSeed: Colors.indigo,
+    brightness: Brightness.dark,
+  );
+
   // Dark theme colors
   final darkColors = AppColors(
     primary: DesignTokens.darkColors['primary'],
@@ -96,17 +96,17 @@ ThemeData buildAppDarkTheme() {
 
   return base.copyWith(
     appBarTheme: const AppBarTheme(centerTitle: true),
-    extensions: [
-      darkColors,
-      const AppSpacings(),
-      const AppSizes(),
-    ],
+    extensions: [darkColors, const AppSpacings(), const AppSizes()],
   );
 }
 
 ThemeData buildAppDarkGreyTheme() {
-  final base = ThemeData(useMaterial3: true, colorSchemeSeed: Colors.purple, brightness: Brightness.dark);
-  
+  final base = ThemeData(
+    useMaterial3: true,
+    colorSchemeSeed: Colors.purple,
+    brightness: Brightness.dark,
+  );
+
   // Dark Grey theme colors
   final darkGreyColors = AppColors(
     primary: DesignTokens.darkGreyColors['primary'],
@@ -147,11 +147,6 @@ ThemeData buildAppDarkGreyTheme() {
 
   return base.copyWith(
     appBarTheme: const AppBarTheme(centerTitle: true),
-    extensions: [
-      darkGreyColors,
-      const AppSpacings(),
-      const AppSizes(),
-    ],
+    extensions: [darkGreyColors, const AppSpacings(), const AppSizes()],
   );
 }
-

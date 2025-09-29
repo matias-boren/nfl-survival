@@ -7,7 +7,8 @@ import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
 import 'package:nfl_survival/data/picks/picks_repositories.dart';
 
 class AutomatedResultProcessor {
-  static final AutomatedResultProcessor _instance = AutomatedResultProcessor._internal();
+  static final AutomatedResultProcessor _instance =
+      AutomatedResultProcessor._internal();
   factory AutomatedResultProcessor() => _instance;
   AutomatedResultProcessor._internal();
 
@@ -19,7 +20,7 @@ class AutomatedResultProcessor {
   Timer? get timer => _timer;
   bool get isProcessing => _isProcessing;
   List<String> get processedGames => List.from(_processedGames);
-  
+
   // Dependencies
   LeagueRepository? _leagueRepository;
   NflRepository? _nflRepository;
@@ -46,13 +47,17 @@ class AutomatedResultProcessor {
   /// Runs every 15 minutes during NFL season
   void startProcessing() {
     if (_timer != null) return; // Already running
-    if (_leagueRepository == null || _nflRepository == null || _picksRepository == null) {
-      print('AutomatedResultProcessor not initialized. Call initialize() first.');
+    if (_leagueRepository == null ||
+        _nflRepository == null ||
+        _picksRepository == null) {
+      print(
+        'AutomatedResultProcessor not initialized. Call initialize() first.',
+      );
       return;
     }
 
     print('Starting automated result processing...');
-    
+
     _timer = Timer.periodic(const Duration(minutes: 15), (timer) {
       _processAllLeagues();
     });
@@ -86,7 +91,7 @@ class AutomatedResultProcessor {
     try {
       // Get all leagues (we'll need to add this method to LeagueRepository)
       final allLeagues = await _getAllLeagues();
-      
+
       if (allLeagues.isEmpty) {
         print('No leagues found for result processing');
         return;
@@ -100,7 +105,7 @@ class AutomatedResultProcessor {
 
       // Get completed games for current week
       final completedGames = await _getCompletedGames(currentWeek);
-      
+
       if (completedGames.isEmpty) {
         print('No completed games found for week $currentWeek');
         return;
@@ -115,19 +120,27 @@ class AutomatedResultProcessor {
       for (final league in allLeagues) {
         try {
           print('Processing league: ${league.name} (${league.id})');
-          
-          final summary = await _processLeagueResults(league, currentWeek, completedGames);
-          
+
+          final summary = await _processLeagueResults(
+            league,
+            currentWeek,
+            completedGames,
+          );
+
           totalProcessed += summary.totalPicks;
           totalEliminated += summary.eliminatedUsers.length;
-          
-          print('League ${league.name}: ${summary.totalPicks} picks processed, ${summary.eliminatedUsers.length} users eliminated');
+
+          print(
+            'League ${league.name}: ${summary.totalPicks} picks processed, ${summary.eliminatedUsers.length} users eliminated',
+          );
         } catch (e) {
           print('Error processing league ${league.name}: $e');
         }
       }
 
-      print('Automated processing complete: $totalProcessed picks processed, $totalEliminated users eliminated');
+      print(
+        'Automated processing complete: $totalProcessed picks processed, $totalEliminated users eliminated',
+      );
     } catch (e) {
       print('Error in automated result processing: $e');
     } finally {
@@ -138,7 +151,7 @@ class AutomatedResultProcessor {
   /// Get all leagues
   Future<List<League>> _getAllLeagues() async {
     if (_leagueRepository == null) return [];
-    
+
     try {
       // For now, we'll get leagues from the mock repository
       // In production, this would be a proper database query
@@ -152,7 +165,7 @@ class AutomatedResultProcessor {
   /// Get current week from NFL repository
   Future<int> _getCurrentWeek() async {
     if (_nflRepository == null) return 4;
-    
+
     try {
       // Get current week by checking the deadline service logic
       // For now, we'll use a simple approach
@@ -166,16 +179,19 @@ class AutomatedResultProcessor {
   /// Get completed games for a specific week
   Future<List<Game>> _getCompletedGames(int week) async {
     if (_nflRepository == null) return [];
-    
+
     try {
       final games = await _nflRepository!.listGames(season: 2025, week: week);
-      
+
       // Filter for completed games that haven't been processed yet
-      final completedGames = games.where((game) => 
-        game.status == GameStatus.FINAL && 
-        !_hasGameBeenProcessed(game.id)
-      ).toList();
-      
+      final completedGames = games
+          .where(
+            (game) =>
+                game.status == GameStatus.FINAL &&
+                !_hasGameBeenProcessed(game.id),
+          )
+          .toList();
+
       return completedGames;
     } catch (e) {
       print('Error fetching completed games: $e');
@@ -185,9 +201,9 @@ class AutomatedResultProcessor {
 
   /// Process results for a specific league
   Future<ResultProcessingSummary> _processLeagueResults(
-    League league, 
-    int week, 
-    List<Game> completedGames
+    League league,
+    int week,
+    List<Game> completedGames,
   ) async {
     if (_resultProcessingService == null) {
       return ResultProcessingSummary(
@@ -199,18 +215,18 @@ class AutomatedResultProcessor {
         completedGames: 0,
       );
     }
-    
+
     try {
       final summary = await _resultProcessingService!.processWeekResults(
         leagueId: league.id,
         week: week,
       );
-      
+
       // Mark games as processed
       for (final game in completedGames) {
         _markGameAsProcessed(game.id);
       }
-      
+
       return summary;
     } catch (e) {
       print('Error processing league ${league.name}: $e');

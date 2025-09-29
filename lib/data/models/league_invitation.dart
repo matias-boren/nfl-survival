@@ -19,7 +19,8 @@ abstract class LeagueInvitation with _$LeagueInvitation {
     DateTime? declinedAt,
   }) = _LeagueInvitation;
 
-  factory LeagueInvitation.fromJson(Map<String, dynamic> json) => _$LeagueInvitationFromJson(json);
+  factory LeagueInvitation.fromJson(Map<String, dynamic> json) =>
+      _$LeagueInvitationFromJson(json);
 }
 
 enum InvitationStatus {
@@ -32,4 +33,3 @@ enum InvitationStatus {
   @JsonValue('expired')
   expired,
 }
-

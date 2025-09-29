@@ -4,14 +4,24 @@ import '../../../app/providers.dart';
 import '../../../data/models/pick.dart';
 import '../../../widgets/app_scaffold.dart';
 
-final picksHistoryProvider = FutureProvider.family<List<Pick>, ({String leagueId, int week})>((ref, args) async {
-  return ref.read(picksRepositoryProvider).listPicks(args.leagueId, args.week);
-});
+final picksHistoryProvider =
+    FutureProvider.family<List<Pick>, ({String leagueId, int week})>((
+      ref,
+      args,
+    ) async {
+      return ref
+          .read(picksRepositoryProvider)
+          .listPicks(args.leagueId, args.week);
+    });
 
 class PicksHistoryScreen extends ConsumerWidget {
   final String leagueId;
   final int week;
-  const PicksHistoryScreen({super.key, required this.leagueId, required this.week});
+  const PicksHistoryScreen({
+    super.key,
+    required this.leagueId,
+    required this.week,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -51,7 +61,7 @@ class PicksHistoryScreen extends ConsumerWidget {
               ),
             );
           }
-          
+
           return ListView.builder(
             itemCount: picks.length,
             itemBuilder: (context, i) {
@@ -60,24 +70,26 @@ class PicksHistoryScreen extends ConsumerWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: p.result == PickResult.WIN 
-                        ? Colors.green 
-                        : p.result == PickResult.LOSE 
-                            ? Colors.red 
-                            : Colors.orange,
+                    backgroundColor: p.result == PickResult.WIN
+                        ? Colors.green
+                        : p.result == PickResult.LOSE
+                        ? Colors.red
+                        : Colors.orange,
                     child: Icon(
-                      p.result == PickResult.WIN 
-                          ? Icons.check 
-                          : p.result == PickResult.LOSE 
-                              ? Icons.close 
-                              : Icons.schedule,
+                      p.result == PickResult.WIN
+                          ? Icons.check
+                          : p.result == PickResult.LOSE
+                          ? Icons.close
+                          : Icons.schedule,
                       color: Colors.white,
                     ),
                   ),
                   title: FutureBuilder<String>(
                     future: _getUserDisplayName(ref, p.userId),
                     builder: (context, snapshot) {
-                      final displayName = snapshot.data ?? 'User ${p.userId.substring(0, 8)}...';
+                      final displayName =
+                          snapshot.data ??
+                          'User ${p.userId.substring(0, 8)}...';
                       return Text(
                         displayName,
                         style: const TextStyle(fontWeight: FontWeight.bold),
@@ -163,4 +175,3 @@ class PicksHistoryScreen extends ConsumerWidget {
     }
   }
 }
-

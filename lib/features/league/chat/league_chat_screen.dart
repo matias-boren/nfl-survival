@@ -28,13 +28,11 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
   Widget build(BuildContext context) {
     final chatAsync = ref.watch(leagueChatProvider(widget.leagueId));
     final isPremium = ref.watch(premiumStatusProvider);
-    
+
     print('🏗️ Building chat screen for league: ${widget.leagueId}');
-    print('📊 Chat state: ${chatAsync.when(
-      data: (messages) => '${messages.length} messages',
-      loading: () => 'loading',
-      error: (e, st) => 'error: $e',
-    )}');
+    print(
+      '📊 Chat state: ${chatAsync.when(data: (messages) => '${messages.length} messages', loading: () => 'loading', error: (e, st) => 'error: $e')}',
+    );
 
     return AppScaffold(
       appBar: AppBar(
@@ -72,15 +70,22 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.chat_bubble_outline, size: 64, color: Colors.grey),
+                        Icon(
+                          Icons.chat_bubble_outline,
+                          size: 64,
+                          color: Colors.grey,
+                        ),
                         SizedBox(height: 16),
                         Text('No messages yet'),
-                        Text('Start the conversation!', style: TextStyle(color: Colors.grey)),
+                        Text(
+                          'Start the conversation!',
+                          style: TextStyle(color: Colors.grey),
+                        ),
                       ],
                     ),
                   );
                 }
-                
+
                 return ListView.builder(
                   controller: _scrollController,
                   padding: const EdgeInsets.all(16),
@@ -99,9 +104,7 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
-              border: Border(
-                top: BorderSide(color: Colors.grey[300]!),
-              ),
+              border: Border(top: BorderSide(color: Colors.grey[300]!)),
             ),
             child: Row(
               children: [
@@ -111,7 +114,10 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
                     decoration: const InputDecoration(
                       hintText: 'Type a message...',
                       border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
                     ),
                     maxLines: null,
                     textInputAction: TextInputAction.send,
@@ -190,10 +196,7 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
                     const SizedBox(width: 8),
                     Text(
                       _formatTime(message.createdAt),
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 10,
-                      ),
+                      style: TextStyle(color: Colors.grey[600], fontSize: 10),
                     ),
                   ],
                 ),
@@ -217,7 +220,7 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
   String _formatTime(DateTime timestamp) {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
-    
+
     if (difference.inDays > 0) {
       return '${difference.inDays}d ago';
     } else if (difference.inHours > 0) {
@@ -237,7 +240,7 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
     if (currentUser == null) return;
 
     final chatRepo = ref.read(chatRepositoryProvider);
-    
+
     try {
       await chatRepo.sendMessage(
         leagueId: widget.leagueId,
@@ -245,9 +248,9 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
         userName: currentUser.displayName,
         message: message,
       );
-      
+
       _messageController.clear();
-      
+
       // Scroll to bottom
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (_scrollController.hasClients) {
@@ -260,9 +263,9 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
       });
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to send message: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to send message: $e')));
       }
     }
   }

@@ -46,10 +46,8 @@ class PremiumGate extends ConsumerWidget {
         Positioned.fill(
           child: Center(
             child: GestureDetector(
-              onTap: () => PaywallModal.show(
-                context: context,
-                featureName: featureName,
-              ),
+              onTap: () =>
+                  PaywallModal.show(context: context, featureName: featureName),
               child: Container(
                 margin: const EdgeInsets.all(16),
                 padding: const EdgeInsets.all(24),

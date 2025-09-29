@@ -11,22 +11,26 @@ import 'package:nfl_survival/core/services/ad_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Load environment variables
   await dotenv.load(fileName: ".env");
-  
+
   // Initialize Hive
   await Hive.initFlutter();
-  
+
   // Initialize Supabase with production credentials
   await Supabase.initialize(
-    url: dotenv.env['SUPABASE_URL'] ?? 'https://yjynojqiyrlnszoiqdgp.supabase.co',
-    anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqeW5vanFpeXJsbnN6b2lxZGdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg3MDY1NzUsImV4cCI6MjA3NDI4MjU3NX0.E5jj9ldIXu-5vhy5n-0GxopBJd7L8RvEtuFKHedWNz8',
+    url:
+        dotenv.env['SUPABASE_URL'] ??
+        'https://yjynojqiyrlnszoiqdgp.supabase.co',
+    anonKey:
+        dotenv.env['SUPABASE_ANON_KEY'] ??
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqeW5vanFpeXJsbnN6b2lxZGdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg3MDY1NzUsImV4cCI6MjA3NDI4MjU3NX0.E5jj9ldIXu-5vhy5n-0GxopBJd7L8RvEtuFKHedWNz8',
   );
-  
+
   // Initialize AdMob
   await AdService().initialize();
-  
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -37,17 +41,17 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final goRouter = ref.watch(appRouterProvider);
     final currentTheme = ref.watch(currentThemeProvider);
-    
+
     // Initialize automated result processing
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final processor = ref.read(automatedResultProcessorProvider);
       processor.startProcessing();
-      
+
       // Initialize weekly data refresh service
       final weeklyRefreshService = ref.read(weeklyDataRefreshServiceProvider);
       weeklyRefreshService.startService();
     });
-    
+
     return MaterialApp.router(
       title: 'NFL Survival',
       theme: currentTheme,

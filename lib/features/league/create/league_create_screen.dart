@@ -15,13 +15,13 @@ class LeagueCreateScreen extends ConsumerStatefulWidget {
 class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
   final _formKey = GlobalKey<FormState>();
   final _leagueNameController = TextEditingController();
-  
+
   // League settings
   int _maxLosses = 0;
   bool _allowTeamReuse = false;
   bool _autoEliminateOnNoPick = true;
   LeagueVisibility _visibility = LeagueVisibility.PRIVATE;
-  
+
   bool _isCreating = false;
 
   @override
@@ -32,15 +32,15 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
 
   Future<void> _createLeague() async {
     if (!_formKey.currentState!.validate()) return;
-    
+
     setState(() => _isCreating = true);
-    
+
     try {
       final currentUser = ref.read(currentUserProvider);
       if (currentUser == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please sign in first')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Please sign in first')));
         return;
       }
 
@@ -49,7 +49,9 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
       if (!isPremium && currentUser.joinedLeagueIds.length >= 1) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Free users can only join 1 league. Upgrade to Premium for unlimited leagues!'),
+            content: Text(
+              'Free users can only join 1 league. Upgrade to Premium for unlimited leagues!',
+            ),
             backgroundColor: Colors.orange,
             duration: Duration(seconds: 4),
           ),
@@ -73,14 +75,16 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
         memberIds: [currentUser.id],
       );
 
-      final createdLeague = await ref.read(leagueRepositoryProvider).createLeague(newLeague);
-      
+      final createdLeague = await ref
+          .read(leagueRepositoryProvider)
+          .createLeague(newLeague);
+
       // Update user's joinedLeagueIds
       final updatedUser = currentUser.copyWith(
         joinedLeagueIds: [...currentUser.joinedLeagueIds, createdLeague.id],
       );
       ref.read(currentUserProvider.notifier).state = updatedUser;
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('League created successfully!')),
@@ -89,9 +93,9 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error creating league: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error creating league: $e')));
       }
     } finally {
       if (mounted) {
@@ -103,7 +107,7 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
   @override
   Widget build(BuildContext context) {
     final isPremium = ref.watch(premiumStatusProvider);
-    
+
     return AppScaffold(
       appBar: AppBar(
         title: const Text('Create League'),
@@ -122,9 +126,9 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
               // League Name
               Text(
                 'League Name',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               TextFormField(
@@ -148,9 +152,9 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
               // Visibility
               Text(
                 'League Visibility',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Card(
@@ -161,14 +165,16 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
                       subtitle: const Text('Anyone can join'),
                       value: LeagueVisibility.PUBLIC,
                       groupValue: _visibility,
-                      onChanged: (value) => setState(() => _visibility = value!),
+                      onChanged: (value) =>
+                          setState(() => _visibility = value!),
                     ),
                     RadioListTile<LeagueVisibility>(
                       title: const Text('Private'),
                       subtitle: const Text('Invitation only with code'),
                       value: LeagueVisibility.PRIVATE,
                       groupValue: _visibility,
-                      onChanged: (value) => setState(() => _visibility = value!),
+                      onChanged: (value) =>
+                          setState(() => _visibility = value!),
                     ),
                   ],
                 ),
@@ -203,9 +209,9 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
               // League Settings
               Text(
                 'League Settings',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
 
@@ -238,8 +244,14 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
                               min: 0,
                               max: 3,
                               divisions: 3,
-                              label: _maxLosses == 0 ? 'Sudden Death' : '$_maxLosses Loss${_maxLosses == 1 ? '' : 'es'}',
-                              onChanged: isPremium ? (value) => setState(() => _maxLosses = value.toInt()) : null,
+                              label: _maxLosses == 0
+                                  ? 'Sudden Death'
+                                  : '$_maxLosses Loss${_maxLosses == 1 ? '' : 'es'}',
+                              onChanged: isPremium
+                                  ? (value) => setState(
+                                      () => _maxLosses = value.toInt(),
+                                    )
+                                  : null,
                             ),
                           ),
                           if (!isPremium)
@@ -247,7 +259,7 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
                         ],
                       ),
                       Text(
-                        _maxLosses == 0 
+                        _maxLosses == 0
                             ? 'Sudden Death - One loss and you\'re out!'
                             : '$_maxLosses loss${_maxLosses == 1 ? '' : 'es'} allowed before elimination',
                         style: Theme.of(context).textTheme.bodySmall,
@@ -264,8 +276,12 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
                   title: const Text('Allow Team Reuse'),
                   subtitle: const Text('Can pick the same team multiple times'),
                   value: _allowTeamReuse,
-                  onChanged: isPremium ? (value) => setState(() => _allowTeamReuse = value) : null,
-                  secondary: !isPremium ? Icon(Icons.lock, color: Colors.grey[400]) : null,
+                  onChanged: isPremium
+                      ? (value) => setState(() => _allowTeamReuse = value)
+                      : null,
+                  secondary: !isPremium
+                      ? Icon(Icons.lock, color: Colors.grey[400])
+                      : null,
                 ),
               ),
               const SizedBox(height: 16),
@@ -276,8 +292,13 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
                   title: const Text('Auto-Eliminate on No Pick'),
                   subtitle: const Text('Eliminate users who miss the deadline'),
                   value: _autoEliminateOnNoPick,
-                  onChanged: isPremium ? (value) => setState(() => _autoEliminateOnNoPick = value) : null,
-                  secondary: !isPremium ? Icon(Icons.lock, color: Colors.grey[400]) : null,
+                  onChanged: isPremium
+                      ? (value) =>
+                            setState(() => _autoEliminateOnNoPick = value)
+                      : null,
+                  secondary: !isPremium
+                      ? Icon(Icons.lock, color: Colors.grey[400])
+                      : null,
                 ),
               ),
               const SizedBox(height: 16),
@@ -292,14 +313,19 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.info_outline, color: Colors.blue[700], size: 20),
+                          Icon(
+                            Icons.info_outline,
+                            color: Colors.blue[700],
+                            size: 20,
+                          ),
                           const SizedBox(width: 8),
                           Text(
                             'Points For Tiebreaker',
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue[700],
-                            ),
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue[700],
+                                ),
                           ),
                         ],
                       ),
@@ -347,5 +373,4 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
       ),
     );
   }
-
 }

@@ -31,7 +31,7 @@ class LeagueOptionsDialog extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        
+
         // Join Public Leagues Option
         SizedBox(
           width: double.infinity,
@@ -49,7 +49,7 @@ class LeagueOptionsDialog extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        
+
         // Cancel Option
         SizedBox(
           width: double.infinity,
@@ -69,4 +69,3 @@ class LeagueOptionsDialog extends StatelessWidget {
     );
   }
 }
-

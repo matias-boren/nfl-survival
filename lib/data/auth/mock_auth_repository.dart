@@ -17,7 +17,7 @@ class MockAuthRepository implements AuthRepository {
   Future<User> signInWithEmail(String email, String password) async {
     print('MockAuthRepository.signInWithEmail called');
     await Future.delayed(const Duration(seconds: 1)); // Simulate network delay
-    
+
     final user = User(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       displayName: email.split('@').first,
@@ -25,17 +25,24 @@ class MockAuthRepository implements AuthRepository {
       isPremium: false,
       joinedLeagueIds: [],
     );
-    
+
     _currentUser = user;
-    print('MockAuthRepository.signInWithEmail adding user to stream: ${user.displayName}');
+    print(
+      'MockAuthRepository.signInWithEmail adding user to stream: ${user.displayName}',
+    );
     _userStreamController.add(user);
     return user;
   }
 
   @override
-  Future<User> signUpWithEmail(String email, String password, String displayName, String favoriteTeam) async {
+  Future<User> signUpWithEmail(
+    String email,
+    String password,
+    String displayName,
+    String favoriteTeam,
+  ) async {
     await Future.delayed(const Duration(seconds: 1));
-    
+
     final user = User(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       displayName: displayName,
@@ -44,7 +51,7 @@ class MockAuthRepository implements AuthRepository {
       joinedLeagueIds: [],
       favoriteTeam: favoriteTeam,
     );
-    
+
     _currentUser = user;
     _userStreamController.add(user);
     return user;
@@ -59,7 +66,7 @@ class MockAuthRepository implements AuthRepository {
   @override
   Future<User> signInWithGoogle() async {
     await Future.delayed(const Duration(seconds: 1));
-    
+
     final user = User(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       displayName: 'Google User',
@@ -67,7 +74,7 @@ class MockAuthRepository implements AuthRepository {
       isPremium: false,
       joinedLeagueIds: [],
     );
-    
+
     _currentUser = user;
     _userStreamController.add(user);
     return user;
@@ -85,7 +92,9 @@ class MockAuthRepository implements AuthRepository {
       throw Exception('No user is currently signed in');
     }
 
-    await Future.delayed(const Duration(milliseconds: 500)); // Simulate network delay
+    await Future.delayed(
+      const Duration(milliseconds: 500),
+    ); // Simulate network delay
 
     // Update the current user with new data
     final updatedUser = _currentUser!.copyWith(
@@ -104,7 +113,9 @@ class MockAuthRepository implements AuthRepository {
       throw Exception('No user is currently signed in');
     }
 
-    await Future.delayed(const Duration(milliseconds: 500)); // Simulate network delay
+    await Future.delayed(
+      const Duration(milliseconds: 500),
+    ); // Simulate network delay
 
     // Update the current user's premium status
     final updatedUser = _currentUser!.copyWith(isPremium: isPremium);

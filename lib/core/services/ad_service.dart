@@ -9,12 +9,18 @@ class AdService {
   AdService._internal();
 
   // Test Ad Unit IDs (replace with real ones from AdMob)
-  static const String _bannerAdUnitIdAndroid = 'ca-app-pub-3940256099942544/6300978111';
-  static const String _bannerAdUnitIdIOS = 'ca-app-pub-3940256099942544/2934735716';
-  static const String _interstitialAdUnitIdAndroid = 'ca-app-pub-3940256099942544/1033173712';
-  static const String _interstitialAdUnitIdIOS = 'ca-app-pub-3940256099942544/4411468910';
-  static const String _rewardedAdUnitIdAndroid = 'ca-app-pub-3940256099942544/5224354917';
-  static const String _rewardedAdUnitIdIOS = 'ca-app-pub-3940256099942544/1712485313';
+  static const String _bannerAdUnitIdAndroid =
+      'ca-app-pub-3940256099942544/6300978111';
+  static const String _bannerAdUnitIdIOS =
+      'ca-app-pub-3940256099942544/2934735716';
+  static const String _interstitialAdUnitIdAndroid =
+      'ca-app-pub-3940256099942544/1033173712';
+  static const String _interstitialAdUnitIdIOS =
+      'ca-app-pub-3940256099942544/4411468910';
+  static const String _rewardedAdUnitIdAndroid =
+      'ca-app-pub-3940256099942544/5224354917';
+  static const String _rewardedAdUnitIdIOS =
+      'ca-app-pub-3940256099942544/1712485313';
 
   bool _isInitialized = false;
   InterstitialAd? _interstitialAd;
@@ -23,14 +29,14 @@ class AdService {
   // Initialize AdMob
   Future<void> initialize() async {
     if (_isInitialized) return;
-    
+
     // Skip AdMob initialization on web platform
     if (kIsWeb) {
       print('⚠️ AdMob not supported on web platform');
       _isInitialized = true;
       return;
     }
-    
+
     try {
       await MobileAds.instance.initialize();
       _isInitialized = true;
@@ -79,7 +85,7 @@ class AdService {
   // Load interstitial ad
   Future<void> loadInterstitialAd() async {
     if (!_isInitialized) await initialize();
-    
+
     try {
       await InterstitialAd.load(
         adUnitId: interstitialAdUnitId,
@@ -129,7 +135,7 @@ class AdService {
   // Load rewarded ad
   Future<void> loadRewardedAd() async {
     if (!_isInitialized) await initialize();
-    
+
     try {
       await RewardedAd.load(
         adUnitId: rewardedAdUnitId,
@@ -154,7 +160,7 @@ class AdService {
   Future<bool> showRewardedAd() async {
     if (_rewardedAd != null) {
       bool rewardEarned = false;
-      
+
       _rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(
         onAdShowedFullScreenContent: (ad) {
           print('✅ Rewarded ad showed');
@@ -172,14 +178,14 @@ class AdService {
           _rewardedAd = null;
         },
       );
-      
+
       await _rewardedAd!.show(
         onUserEarnedReward: (ad, reward) {
           print('✅ User earned reward: ${reward.amount} ${reward.type}');
           rewardEarned = true;
         },
       );
-      
+
       return rewardEarned;
     } else {
       print('⚠️ No rewarded ad available');

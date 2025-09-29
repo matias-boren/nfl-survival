@@ -8,7 +8,7 @@ class SupabaseChatRepository implements ChatRepository {
   @override
   Stream<List<ChatMessage>> getChatMessages(String leagueId) {
     print('🔍 Setting up chat stream for league: $leagueId');
-    
+
     // For now, let's use a periodic refresh instead of real-time
     // This will help us debug if the issue is with real-time subscriptions
     return Stream.periodic(const Duration(seconds: 2), (_) async {
@@ -18,7 +18,7 @@ class SupabaseChatRepository implements ChatRepository {
           .select()
           .eq('league_id', leagueId)
           .order('created_at', ascending: true);
-      
+
       print('📨 Fetched ${response.length} messages for league $leagueId');
       return response.map((row) => _chatMessageFromSupabase(row)).toList();
     }).asyncMap((future) => future);
@@ -32,7 +32,7 @@ class SupabaseChatRepository implements ChatRepository {
           .select('display_name')
           .eq('user_id', userId)
           .single();
-      
+
       return userProfile['display_name'] ?? 'Unknown User';
     } catch (e) {
       print('⚠️ Could not fetch display name for user $userId: $e');
@@ -48,11 +48,11 @@ class SupabaseChatRepository implements ChatRepository {
     required String message,
   }) async {
     print('📤 Sending message to league $leagueId: $message');
-    
+
     // Get the user's display name from user_profiles table
     final displayName = await _getUserDisplayName(userId);
     print('👤 Using display name: $displayName');
-    
+
     final result = await _supabase.from('chat_messages').insert({
       'league_id': leagueId,
       'user_id': userId,
@@ -71,7 +71,8 @@ class SupabaseChatRepository implements ChatRepository {
     print('🤖 Sending system message to league $leagueId: $message');
     await _supabase.from('chat_messages').insert({
       'league_id': leagueId,
-      'user_id': '00000000-0000-0000-0000-000000000000', // Special UUID for system messages
+      'user_id':
+          '00000000-0000-0000-0000-000000000000', // Special UUID for system messages
       'user_name': 'System',
       'message': message,
       'is_system_message': true,

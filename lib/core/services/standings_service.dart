@@ -20,27 +20,27 @@ class StandingsService {
     required League league,
   }) async {
     print('Calculating standings for league $leagueId');
-    
+
     // Get all picks for this league
     final allPicks = await _picksRepository.getLeaguePicks(leagueId);
     print('Found ${allPicks.length} total picks for league');
-    
+
     // Group picks by user
     final userPicks = <String, List<Pick>>{};
     for (final pick in allPicks) {
       userPicks.putIfAbsent(pick.userId, () => []).add(pick);
     }
-    
+
     print('Found ${userPicks.length} users with picks');
-    
+
     // Calculate standings for each user
     final standings = <LeagueStanding>[];
-    
+
     for (final userId in userPicks.keys) {
       try {
         final user = await _userRepository.getUserById(userId);
         if (user == null) continue;
-        
+
         final userPickList = userPicks[userId]!;
         final standing = await _calculateUserStanding(
           userId: userId,
@@ -48,16 +48,16 @@ class StandingsService {
           picks: userPickList,
           league: league,
         );
-        
+
         standings.add(standing);
       } catch (e) {
         print('Error calculating standing for user $userId: $e');
       }
     }
-    
+
     // Sort standings based on league rules (points-based tiebreaker)
     _sortStandings(standings, league);
-    
+
     return standings;
   }
 
@@ -69,14 +69,14 @@ class StandingsService {
   }) async {
     // Sort picks by week
     picks.sort((a, b) => a.week.compareTo(b.week));
-    
+
     // Calculate wins and losses
     int wins = 0;
     int losses = 0;
     final usedTeams = <String>[];
     String? lastPickTeam;
     PickResult? lastPickResult;
-    
+
     for (final pick in picks) {
       if (pick.result == PickResult.WIN) {
         wins++;
@@ -85,21 +85,21 @@ class StandingsService {
         losses++;
         usedTeams.add(pick.teamId);
       }
-      
+
       // Track last pick
       if (pick.week == picks.last.week) {
         lastPickTeam = pick.teamId;
         lastPickResult = pick.result;
       }
     }
-    
+
     // Check if user is eliminated
     final isEliminated = _isUserEliminated(
       losses: losses,
       league: league,
       picks: picks,
     );
-    
+
     // Get user's points from league
     final points = league.memberPoints[userId] ?? 0;
 
@@ -127,7 +127,7 @@ class StandingsService {
     if (losses > league.settings.maxLosses) {
       return true;
     }
-    
+
     // Check auto-eliminate on no pick rule
     if (league.settings.autoEliminateOnNoPick) {
       // Check if user missed any required picks
@@ -139,16 +139,17 @@ class StandingsService {
         }
       }
     }
-    
+
     return false;
   }
 
   int _calculateCurrentStreak(List<Pick> picks) {
     if (picks.isEmpty) return 0;
-    
+
     // Sort by week descending to get most recent first
-    final sortedPicks = List<Pick>.from(picks)..sort((a, b) => b.week.compareTo(a.week));
-    
+    final sortedPicks = List<Pick>.from(picks)
+      ..sort((a, b) => b.week.compareTo(a.week));
+
     int streak = 0;
     for (final pick in sortedPicks) {
       if (pick.result == PickResult.WIN) {
@@ -157,28 +158,31 @@ class StandingsService {
         break;
       }
     }
-    
+
     return streak;
   }
 
   int _calculateLongestStreak(List<Pick> picks) {
     if (picks.isEmpty) return 0;
-    
+
     // Sort by week ascending
-    final sortedPicks = List<Pick>.from(picks)..sort((a, b) => a.week.compareTo(b.week));
-    
+    final sortedPicks = List<Pick>.from(picks)
+      ..sort((a, b) => a.week.compareTo(b.week));
+
     int longestStreak = 0;
     int currentStreak = 0;
-    
+
     for (final pick in sortedPicks) {
       if (pick.result == PickResult.WIN) {
         currentStreak++;
-        longestStreak = currentStreak > longestStreak ? currentStreak : longestStreak;
+        longestStreak = currentStreak > longestStreak
+            ? currentStreak
+            : longestStreak;
       } else if (pick.result == PickResult.LOSE) {
         currentStreak = 0;
       }
     }
-    
+
     return longestStreak;
   }
 
@@ -188,31 +192,31 @@ class StandingsService {
       if (a.isEliminated != b.isEliminated) {
         return a.isEliminated ? 1 : -1;
       }
-      
+
       // Then by wins (descending)
       if (a.wins != b.wins) {
         return b.wins.compareTo(a.wins);
       }
-      
+
       // Then by win percentage
       final aWinPercentage = a.totalPicks > 0 ? a.wins / a.totalPicks : 0.0;
       final bWinPercentage = b.totalPicks > 0 ? b.wins / b.totalPicks : 0.0;
       if (aWinPercentage != bWinPercentage) {
         return bWinPercentage.compareTo(aWinPercentage);
       }
-      
+
       // Points-based tiebreaker (new system)
       final aPoints = league.memberPoints[a.userId] ?? 0;
       final bPoints = league.memberPoints[b.userId] ?? 0;
       if (aPoints != bPoints) {
         return bPoints.compareTo(aPoints);
       }
-      
+
       // Final tiebreaker: longest streak
       if (a.longestStreak != b.longestStreak) {
         return b.longestStreak.compareTo(a.longestStreak);
       }
-      
+
       // Ultimate tiebreaker: alphabetical by display name
       return a.displayName.compareTo(b.displayName);
     });

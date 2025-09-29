@@ -5,7 +5,7 @@ class MockScoresRepository implements ScoresRepository {
   @override
   Future<List<LiveScore>> getLiveScores() async {
     await Future.delayed(const Duration(seconds: 1)); // Simulate network delay
-    
+
     return [
       LiveScore(
         gameId: 'game1',

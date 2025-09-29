@@ -9,15 +9,13 @@ void main() {
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => const Scaffold(
-            body: Center(child: Text('Home')),
-          ),
+          builder: (context, state) =>
+              const Scaffold(body: Center(child: Text('Home'))),
         ),
       ],
     );
-    
+
     expect(router, isNotNull);
     expect(router.configuration.routes, isNotEmpty);
   });
 }
-

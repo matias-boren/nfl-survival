@@ -10,7 +10,9 @@ class MockInvitationRepository implements InvitationRepository {
     required String leagueId,
     required String invitedByUserId,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 500)); // Simulate network delay
+    await Future.delayed(
+      const Duration(milliseconds: 500),
+    ); // Simulate network delay
 
     final invitation = LeagueInvitation(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -30,7 +32,7 @@ class MockInvitationRepository implements InvitationRepository {
   @override
   Future<LeagueInvitation?> getInvitationByCode(String invitationCode) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    
+
     try {
       return _invitations.firstWhere(
         (invitation) => invitation.invitationCode == invitationCode,
@@ -41,27 +43,41 @@ class MockInvitationRepository implements InvitationRepository {
   }
 
   @override
-  Future<List<LeagueInvitation>> getInvitationsForLeague(String leagueId) async {
+  Future<List<LeagueInvitation>> getInvitationsForLeague(
+    String leagueId,
+  ) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    
-    return _invitations.where((invitation) => invitation.leagueId == leagueId).toList();
+
+    return _invitations
+        .where((invitation) => invitation.leagueId == leagueId)
+        .toList();
   }
 
   @override
-  Future<List<LeagueInvitation>> getPendingInvitationsForUser(String userId) async {
+  Future<List<LeagueInvitation>> getPendingInvitationsForUser(
+    String userId,
+  ) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    
-    return _invitations.where((invitation) => 
-      invitation.invitedUserId == userId && 
-      invitation.status == InvitationStatus.pending
-    ).toList();
+
+    return _invitations
+        .where(
+          (invitation) =>
+              invitation.invitedUserId == userId &&
+              invitation.status == InvitationStatus.pending,
+        )
+        .toList();
   }
 
   @override
-  Future<LeagueInvitation> acceptInvitation(String invitationId, String userId) async {
+  Future<LeagueInvitation> acceptInvitation(
+    String invitationId,
+    String userId,
+  ) async {
     await Future.delayed(const Duration(milliseconds: 500));
-    
-    final invitationIndex = _invitations.indexWhere((inv) => inv.id == invitationId);
+
+    final invitationIndex = _invitations.indexWhere(
+      (inv) => inv.id == invitationId,
+    );
     if (invitationIndex == -1) {
       throw Exception('Invitation not found');
     }
@@ -79,8 +95,10 @@ class MockInvitationRepository implements InvitationRepository {
   @override
   Future<LeagueInvitation> declineInvitation(String invitationId) async {
     await Future.delayed(const Duration(milliseconds: 500));
-    
-    final invitationIndex = _invitations.indexWhere((inv) => inv.id == invitationId);
+
+    final invitationIndex = _invitations.indexWhere(
+      (inv) => inv.id == invitationId,
+    );
     if (invitationIndex == -1) {
       throw Exception('Invitation not found');
     }
@@ -97,7 +115,7 @@ class MockInvitationRepository implements InvitationRepository {
   @override
   Future<void> cancelInvitation(String invitationId) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    
+
     _invitations.removeWhere((invitation) => invitation.id == invitationId);
   }
 
@@ -106,14 +124,18 @@ class MockInvitationRepository implements InvitationRepository {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     final random = Random();
     return String.fromCharCodes(
-      Iterable.generate(8, (_) => chars.codeUnitAt(random.nextInt(chars.length))),
+      Iterable.generate(
+        8,
+        (_) => chars.codeUnitAt(random.nextInt(chars.length)),
+      ),
     );
   }
 
   @override
   bool isInvitationValid(LeagueInvitation invitation) {
     if (invitation.status != InvitationStatus.pending) return false;
-    if (invitation.expiresAt != null && DateTime.now().isAfter(invitation.expiresAt!)) {
+    if (invitation.expiresAt != null &&
+        DateTime.now().isAfter(invitation.expiresAt!)) {
       return false;
     }
     return true;

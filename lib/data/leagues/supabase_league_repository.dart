@@ -10,7 +10,7 @@ class SupabaseLeagueRepository implements LeagueRepository {
   Future<League> createLeague(League draft) async {
     print('Creating league with ownerId: ${draft.ownerId}');
     print('Current user from auth: ${_supabase.auth.currentUser?.id}');
-    
+
     final response = await _supabase
         .from('leagues')
         .insert({
@@ -19,8 +19,8 @@ class SupabaseLeagueRepository implements LeagueRepository {
           'allow_team_reuse': draft.settings.allowTeamReuse,
           'auto_eliminate_on_no_pick': draft.settings.autoEliminateOnNoPick,
           'visibility': draft.visibility.name,
-          'creator_id': draft.ownerId,  // Keep creator_id for compatibility
-          'owner_id': draft.ownerId,    // Also set owner_id
+          'creator_id': draft.ownerId, // Keep creator_id for compatibility
+          'owner_id': draft.ownerId, // Also set owner_id
           'season': draft.season,
           'created_at_iso': draft.createdAtIso,
           'invite_code': draft.inviteCode,
@@ -30,12 +30,10 @@ class SupabaseLeagueRepository implements LeagueRepository {
         .single();
 
     // Add the owner to the league_members table
-    await _supabase
-        .from('league_members')
-        .insert({
-          'league_id': response['id'],
-          'user_id': draft.ownerId,
-        });
+    await _supabase.from('league_members').insert({
+      'league_id': response['id'],
+      'user_id': draft.ownerId,
+    });
 
     return _leagueFromSupabase(response);
   }
@@ -44,47 +42,47 @@ class SupabaseLeagueRepository implements LeagueRepository {
   Future<List<League>> listLeaguesForUser(String userId) async {
     print('Listing leagues for user: $userId');
     print('Current auth user: ${_supabase.auth.currentUser?.id}');
-    
+
     // First, get all leagues where the user is the owner
     final ownedLeagues = await _supabase
         .from('leagues')
         .select('*, league_members(user_id)')
         .eq('owner_id', userId);
-    
+
     print('Found ${ownedLeagues.length} owned leagues');
     print('Owned leagues: $ownedLeagues');
-    
+
     // Also try with creator_id
     final ownedLeaguesByCreator = await _supabase
         .from('leagues')
         .select('*, league_members(user_id)')
         .eq('creator_id', userId);
-    
+
     print('Found ${ownedLeaguesByCreator.length} leagues by creator_id');
     print('Leagues by creator: $ownedLeaguesByCreator');
-    
+
     // Then, get all leagues where the user is a member
     final memberLeagues = await _supabase
         .from('league_members')
         .select('league_id, leagues(*)')
         .eq('user_id', userId);
-    
+
     print('Found ${memberLeagues.length} member leagues');
     print('Member leagues: $memberLeagues');
-    
+
     // Combine all lists and remove duplicates immediately
     final uniqueLeagues = <String, Map<String, dynamic>>{};
-    
+
     // Add owned leagues
     for (final league in ownedLeagues) {
       uniqueLeagues[league['id']] = league;
     }
-    
+
     // Add leagues by creator_id (only if not already added)
     for (final league in ownedLeaguesByCreator) {
       uniqueLeagues[league['id']] = league;
     }
-    
+
     // Add member leagues
     for (final memberLeague in memberLeagues) {
       if (memberLeague['leagues'] != null) {
@@ -92,9 +90,9 @@ class SupabaseLeagueRepository implements LeagueRepository {
         uniqueLeagues[league['id']] = league;
       }
     }
-    
+
     final finalLeagues = uniqueLeagues.values.toList();
-    
+
     print('Total unique leagues found: ${finalLeagues.length}');
     print('Final leagues: $finalLeagues');
 
@@ -118,10 +116,12 @@ class SupabaseLeagueRepository implements LeagueRepository {
         .single();
 
     final league = _leagueFromSupabase(response);
-    
+
     // The league_members data should now be included in the response
-    print('getLeague - League ${league.name} has ${league.memberIds.length} members');
-    
+    print(
+      'getLeague - League ${league.name} has ${league.memberIds.length} members',
+    );
+
     return league;
   }
 
@@ -137,7 +137,7 @@ class SupabaseLeagueRepository implements LeagueRepository {
     if (currentUser == null) {
       throw Exception('No user logged in');
     }
-    
+
     await joinLeague(leagueId, currentUser.id);
   }
 
@@ -147,22 +147,20 @@ class SupabaseLeagueRepository implements LeagueRepository {
       // Get leagues for a specific user
       return listLeaguesForUser(userId);
     }
-    
+
     // Get all leagues (for system processing)
-    final response = await _supabase
-        .from('leagues')
-        .select('*');
+    final response = await _supabase.from('leagues').select('*');
 
     return response.map<League>((data) => _leagueFromSupabase(data)).toList();
   }
 
   @override
   Stream<List<app_user.User>> leagueMembers(String leagueId) async* {
-    await for (final response in _supabase
-        .from('league_members')
-        .stream(primaryKey: ['id'])
-        .eq('league_id', leagueId)) {
-      
+    await for (final response
+        in _supabase
+            .from('league_members')
+            .stream(primaryKey: ['id'])
+            .eq('league_id', leagueId)) {
       // This would need to fetch user details for each member
       // For now, return empty list
       yield <app_user.User>[];
@@ -236,7 +234,9 @@ class SupabaseLeagueRepository implements LeagueRepository {
     Map<String, int> memberPoints = {};
     if (data['member_points'] != null) {
       final pointsData = data['member_points'] as Map<String, dynamic>;
-      memberPoints = pointsData.map((key, value) => MapEntry(key, (value as num).toInt()));
+      memberPoints = pointsData.map(
+        (key, value) => MapEntry(key, (value as num).toInt()),
+      );
     }
 
     // Debug league_members data
@@ -245,11 +245,13 @@ class SupabaseLeagueRepository implements LeagueRepository {
     print('  league_members: ${data['league_members']}');
     if (data['league_members'] != null) {
       print('  league_members type: ${data['league_members'].runtimeType}');
-      print('  league_members length: ${(data['league_members'] as List).length}');
+      print(
+        '  league_members length: ${(data['league_members'] as List).length}',
+      );
       print('  league_members content: ${data['league_members']}');
-      print('  memberIds will be: ${(data['league_members'] as List<dynamic>?)
-          ?.map((member) => member['user_id'] as String)
-          .toList() ?? []}');
+      print(
+        '  memberIds will be: ${(data['league_members'] as List<dynamic>?)?.map((member) => member['user_id'] as String).toList() ?? []}',
+      );
     } else {
       print('  No league_members data (will be fetched separately)');
     }
@@ -257,7 +259,9 @@ class SupabaseLeagueRepository implements LeagueRepository {
     return League(
       id: data['id'],
       name: data['name'],
-      ownerId: data['owner_id'] ?? data['creator_id'], // Fallback to creator_id if owner_id is null
+      ownerId:
+          data['owner_id'] ??
+          data['creator_id'], // Fallback to creator_id if owner_id is null
       visibility: LeagueVisibility.values.firstWhere(
         (v) => v.name == data['visibility'],
         orElse: () => LeagueVisibility.PRIVATE,
@@ -269,10 +273,10 @@ class SupabaseLeagueRepository implements LeagueRepository {
       ),
       season: data['season'] ?? 2025,
       createdAtIso: data['created_at_iso'] ?? DateTime.now().toIso8601String(),
-      memberIds: data['league_members'] != null 
+      memberIds: data['league_members'] != null
           ? (data['league_members'] as List<dynamic>)
-              .map((member) => member['user_id'] as String)
-              .toList()
+                .map((member) => member['user_id'] as String)
+                .toList()
           : [], // Will be populated separately by calling method
       inviteCode: data['invite_code'],
       memberPoints: memberPoints,
@@ -284,25 +288,27 @@ class SupabaseLeagueRepository implements LeagueRepository {
     try {
       print('DEBUG: Getting member count for league: $leagueId');
       print('DEBUG: Current user: ${_supabase.auth.currentUser?.id}');
-      
+
       // Use a simple select and count the results
       final response = await _supabase
           .from('league_members')
           .select('user_id')
           .eq('league_id', leagueId);
-      
+
       print('DEBUG: Raw response: $response');
       print('DEBUG: Response type: ${response.runtimeType}');
       print('DEBUG: Response length: ${response.length}');
-      
+
       final count = response.length;
-      print('Member count for league $leagueId: $count (from ${response.length} rows)');
+      print(
+        'Member count for league $leagueId: $count (from ${response.length} rows)',
+      );
       return count;
     } catch (e) {
       print('Error getting member count for league $leagueId: $e');
       print('Error details: ${e.toString()}');
       print('Error type: ${e.runtimeType}');
-      
+
       // Try a different approach - maybe RLS is blocking us
       try {
         print('DEBUG: Trying alternative query...');
@@ -327,9 +333,13 @@ class SupabaseLeagueRepository implements LeagueRepository {
           .from('league_members')
           .select('user_id')
           .eq('league_id', leagueId);
-      
-      final memberIds = response.map((row) => row['user_id'] as String).toList();
-      print('Member IDs for league $leagueId: $memberIds (count: ${memberIds.length})');
+
+      final memberIds = response
+          .map((row) => row['user_id'] as String)
+          .toList();
+      print(
+        'Member IDs for league $leagueId: $memberIds (count: ${memberIds.length})',
+      );
       return memberIds;
     } catch (e) {
       print('Error getting member IDs for league $leagueId: $e');

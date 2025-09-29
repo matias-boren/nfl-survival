@@ -36,7 +36,7 @@ class _RealBannerAdState extends State<RealBannerAd> {
 
   void _loadBannerAd() {
     if (_isAdLoading) return;
-    
+
     // Skip ad loading on web platform
     if (kIsWeb) {
       setState(() {
@@ -45,28 +45,31 @@ class _RealBannerAdState extends State<RealBannerAd> {
       });
       return;
     }
-    
+
     setState(() {
       _isAdLoading = true;
       _errorMessage = null;
     });
 
     final adService = AdService();
-    
+
     // Initialize AdMob if not already done
-    adService.initialize().then((_) {
-      _createBannerAd();
-    }).catchError((error) {
-      setState(() {
-        _isAdLoading = false;
-        _errorMessage = 'Failed to initialize ads: $error';
-      });
-    });
+    adService
+        .initialize()
+        .then((_) {
+          _createBannerAd();
+        })
+        .catchError((error) {
+          setState(() {
+            _isAdLoading = false;
+            _errorMessage = 'Failed to initialize ads: $error';
+          });
+        });
   }
 
   void _createBannerAd() {
     final adService = AdService();
-    
+
     _bannerAd = BannerAd(
       adUnitId: adService.bannerAdUnitId,
       size: widget.adSize ?? AdSize.banner,
@@ -149,10 +152,7 @@ class _RealBannerAdState extends State<RealBannerAd> {
         child: Center(
           child: Text(
             'Ad unavailable',
-            style: TextStyle(
-              color: Colors.grey[600],
-              fontSize: 12,
-            ),
+            style: TextStyle(color: Colors.grey[600], fontSize: 12),
           ),
         ),
       );
@@ -181,7 +181,7 @@ class AdSizes {
   static const AdSize mediumRectangle = AdSize.mediumRectangle;
   static const AdSize fullBanner = AdSize.fullBanner;
   static const AdSize leaderboard = AdSize.leaderboard;
-  
+
   // Note: wideSkyscraper and adaptiveBanner are not available in the current version
   // Using banner as fallback
   static const AdSize wideSkyscraper = AdSize.banner;

@@ -5,20 +5,24 @@ void main() {
     testWidgets('Memory usage during list operations', (tester) async {
       // Get initial memory
       final initialMemory = await _getMemoryUsage();
-      
+
       // Simulate heavy list operations
       await _simulateListOperations(tester);
-      
+
       // Get final memory
       final finalMemory = await _getMemoryUsage();
       final memoryIncrease = finalMemory - initialMemory;
-      
+
       print('Memory Usage:');
-      print('  Initial: ${(initialMemory / 1024 / 1024).toStringAsFixed(2)} MB');
+      print(
+        '  Initial: ${(initialMemory / 1024 / 1024).toStringAsFixed(2)} MB',
+      );
       print('  Final: ${(finalMemory / 1024 / 1024).toStringAsFixed(2)} MB');
-      print('  Increase: ${(memoryIncrease / 1024 / 1024).toStringAsFixed(2)} MB');
+      print(
+        '  Increase: ${(memoryIncrease / 1024 / 1024).toStringAsFixed(2)} MB',
+      );
       print('  Target: <10MB increase');
-      
+
       expect(memoryIncrease, lessThan(10 * 1024 * 1024)); // 10MB limit
     });
   });

@@ -4,11 +4,13 @@ import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
 import 'package:nfl_survival/data/models/nfl.dart';
 
 class HybridNflRepository implements NflRepository {
-  static const String _baseUrl = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl';
-  
+  static const String _baseUrl =
+      'https://site.api.espn.com/apis/site/v2/sports/football/nfl';
+
   final http.Client _client;
-  
-  HybridNflRepository({http.Client? client}) : _client = client ?? http.Client();
+
+  HybridNflRepository({http.Client? client})
+    : _client = client ?? http.Client();
 
   @override
   Future<List<Game>> listGames({required int season, required int week}) async {
@@ -17,42 +19,49 @@ class HybridNflRepository implements NflRepository {
       final currentDate = DateTime.now();
       final url = '$_baseUrl/scoreboard';
       print('Fetching NFL data from: $url');
-      
+
       final response = await _client.get(
         Uri.parse(url),
         headers: {
           'Accept': 'application/json, text/plain, */*',
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+          'User-Agent':
+              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
           'Accept-Language': 'en-US,en;q=0.9',
           'Accept-Encoding': 'gzip, deflate, br',
           'Referer': 'https://www.espn.com/',
-          'Origin': 'https://www.espn.com'
+          'Origin': 'https://www.espn.com',
         },
       );
 
       print('ESPN API Response Status: ${response.statusCode}');
-      
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print('ESPN API Response Data: ${data.keys}');
-        
+
         // Get the actual week from ESPN API
         final actualWeek = data['week']?['number'] ?? week;
         final actualSeason = data['season']?['year'] ?? season;
         print('ESPN API - Actual Week: $actualWeek, Season: $actualSeason');
-        
+
         final games = _convertEspnDataToGames(data, actualSeason, actualWeek);
-        print('Converted ${games.length} games from ESPN API for Week $actualWeek');
-        
+        print(
+          'Converted ${games.length} games from ESPN API for Week $actualWeek',
+        );
+
         // Store the first game time for deadline calculation
         if (games.isNotEmpty) {
-          final firstGame = games.reduce((a, b) => a.date.isBefore(b.date) ? a : b);
+          final firstGame = games.reduce(
+            (a, b) => a.date.isBefore(b.date) ? a : b,
+          );
           print('First game time: ${firstGame.date}');
         }
-        
+
         return games;
       } else {
-        print('ESPN API failed with status ${response.statusCode}, using mock data');
+        print(
+          'ESPN API failed with status ${response.statusCode}, using mock data',
+        );
         return _getMockGames(season, week);
       }
     } catch (e) {
@@ -69,11 +78,12 @@ class HybridNflRepository implements NflRepository {
         Uri.parse(url),
         headers: {
           'Accept': 'application/json, text/plain, */*',
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+          'User-Agent':
+              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
           'Accept-Language': 'en-US,en;q=0.9',
           'Accept-Encoding': 'gzip, deflate, br',
           'Referer': 'https://www.espn.com/',
-          'Origin': 'https://www.espn.com'
+          'Origin': 'https://www.espn.com',
         },
       );
 
@@ -97,32 +107,40 @@ class HybridNflRepository implements NflRepository {
       final currentDate = DateTime.now();
       final season = currentDate.year;
       final week = _getCurrentWeek(currentDate);
-      
+
       final games = await listGames(season: season, week: week);
-      
-      return games.map((game) => LiveScore(
-        gameId: game.id,
-        homeTeam: game.homeTeam,
-        awayTeam: game.awayTeam,
-        homeScore: game.homeScore,
-        awayScore: game.awayScore,
-        status: _convertGameStatus(game.status),
-        quarter: game.quarter,
-        timeRemaining: game.timeRemaining,
-        isLive: game.status == GameStatus.IN_PROGRESS,
-      )).toList();
+
+      return games
+          .map(
+            (game) => LiveScore(
+              gameId: game.id,
+              homeTeam: game.homeTeam,
+              awayTeam: game.awayTeam,
+              homeScore: game.homeScore,
+              awayScore: game.awayScore,
+              status: _convertGameStatus(game.status),
+              quarter: game.quarter,
+              timeRemaining: game.timeRemaining,
+              isLive: game.status == GameStatus.IN_PROGRESS,
+            ),
+          )
+          .toList();
     } catch (e) {
       return [];
     }
   }
 
-  List<Game> _convertEspnDataToGames(Map<String, dynamic> data, int season, int week) {
+  List<Game> _convertEspnDataToGames(
+    Map<String, dynamic> data,
+    int season,
+    int week,
+  ) {
     try {
       print('Converting ESPN data: ${data.keys}');
       final events = data['events'] as List<dynamic>? ?? [];
       print('Found ${events.length} events in ESPN response');
       final games = <Game>[];
-      
+
       for (final event in events) {
         print('Processing event: ${event['name']}');
         final competitions = event['competitions'] as List<dynamic>? ?? [];
@@ -130,14 +148,14 @@ class HybridNflRepository implements NflRepository {
           print('No competitions found for event');
           continue;
         }
-        
+
         final competition = competitions.first;
         final competitors = competition['competitors'] as List<dynamic>? ?? [];
         if (competitors.length < 2) {
           print('Not enough competitors found');
           continue;
         }
-        
+
         final homeCompetitor = competitors.firstWhere(
           (c) => c['homeAway'] == 'home',
           orElse: () => competitors.first,
@@ -146,10 +164,10 @@ class HybridNflRepository implements NflRepository {
           (c) => c['homeAway'] == 'away',
           orElse: () => competitors.last,
         );
-        
+
         final homeTeam = homeCompetitor['team'];
         final awayTeam = awayCompetitor['team'];
-        
+
         print('Game: ${awayTeam['displayName']} @ ${homeTeam['displayName']}');
         print('Game date: ${event['date']}');
         print('Home team logo: ${homeTeam['logo']}');
@@ -158,15 +176,19 @@ class HybridNflRepository implements NflRepository {
         print('Away score: ${awayCompetitor['score']}');
         print('Home score type: ${homeCompetitor['score'].runtimeType}');
         print('Away score type: ${awayCompetitor['score'].runtimeType}');
-        
+
         final game = Game(
-          id: event['id']?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),
+          id:
+              event['id']?.toString() ??
+              DateTime.now().millisecondsSinceEpoch.toString(),
           homeTeam: Team(
             id: homeTeam['id']?.toString() ?? '',
             name: homeTeam['displayName'] ?? 'Unknown',
             abbreviation: homeTeam['abbreviation'] ?? 'UNK',
             city: homeTeam['location'] ?? 'Unknown',
-            logoUrl: homeTeam['logo'] is Map ? homeTeam['logo']['href']?.toString() : null,
+            logoUrl: homeTeam['logo'] is Map
+                ? homeTeam['logo']['href']?.toString()
+                : null,
             color: homeTeam['color'],
             alternateColor: homeTeam['alternateColor'],
           ),
@@ -175,7 +197,9 @@ class HybridNflRepository implements NflRepository {
             name: awayTeam['displayName'] ?? 'Unknown',
             abbreviation: awayTeam['abbreviation'] ?? 'UNK',
             city: awayTeam['location'] ?? 'Unknown',
-            logoUrl: awayTeam['logo'] is Map ? awayTeam['logo']['href']?.toString() : null,
+            logoUrl: awayTeam['logo'] is Map
+                ? awayTeam['logo']['href']?.toString()
+                : null,
             color: awayTeam['color'],
             alternateColor: awayTeam['alternateColor'],
           ),
@@ -188,10 +212,10 @@ class HybridNflRepository implements NflRepository {
           week: week,
           season: season,
         );
-        
+
         games.add(game);
       }
-      
+
       print('Successfully converted ${games.length} games from ESPN API');
       return games;
     } catch (e) {
@@ -202,7 +226,8 @@ class HybridNflRepository implements NflRepository {
 
   List<Team> _convertEspnDataToTeams(Map<String, dynamic> data) {
     try {
-      final teams = data['sports']?[0]?['leagues']?[0]?['teams'] as List<dynamic>? ?? [];
+      final teams =
+          data['sports']?[0]?['leagues']?[0]?['teams'] as List<dynamic>? ?? [];
       return teams.map((teamData) {
         final team = teamData['team'];
         return Team(
@@ -232,13 +257,14 @@ class HybridNflRepository implements NflRepository {
 
   GameStatus _convertEspnStatusToGameStatus(Map<String, dynamic>? status) {
     if (status == null) return GameStatus.SCHEDULED;
-    
+
     final completed = status['completed'] as bool? ?? false;
     final type = status['type']?['id'] as String?;
-    
+
     if (completed) {
       return GameStatus.FINAL;
-    } else if (type == '2') { // In Progress
+    } else if (type == '2') {
+      // In Progress
       return GameStatus.IN_PROGRESS;
     } else {
       return GameStatus.SCHEDULED;
@@ -352,11 +378,13 @@ class HybridNflRepository implements NflRepository {
         print('No games found for week $week');
         return null;
       }
-      
+
       // Find the first game (earliest kickoff time)
       final firstGame = games.reduce((a, b) => a.date.isBefore(b.date) ? a : b);
-      print('First game for week $week: ${firstGame.awayTeam.abbreviation} @ ${firstGame.homeTeam.abbreviation} at ${firstGame.date}');
-      
+      print(
+        'First game for week $week: ${firstGame.awayTeam.abbreviation} @ ${firstGame.homeTeam.abbreviation} at ${firstGame.date}',
+      );
+
       return firstGame.date;
     } catch (e) {
       print('Error getting deadline for week $week: $e');
