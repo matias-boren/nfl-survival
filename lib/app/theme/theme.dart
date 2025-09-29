@@ -2,151 +2,113 @@ import 'package:flutter/material.dart';
 import 'theme_extensions.dart';
 import 'design_tokens.dart';
 
+/// Builds the universal dark grey theme for the NFL Survival Pool app
 ThemeData buildAppTheme() {
-  final base = ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo);
-
-  // Light theme colors
-  final lightColors = AppColors(
-    primary: DesignTokens.lightColors['primary'],
-    primaryContainer: DesignTokens.lightColors['primaryContainer'],
-    secondary: DesignTokens.lightColors['secondary'],
-    secondaryContainer: DesignTokens.lightColors['secondaryContainer'],
-    tertiary: DesignTokens.lightColors['tertiary'],
-    tertiaryContainer: DesignTokens.lightColors['tertiaryContainer'],
-    error: DesignTokens.lightColors['error'],
-    errorContainer: DesignTokens.lightColors['errorContainer'],
-    warning: DesignTokens.lightColors['warning'],
-    warningContainer: DesignTokens.lightColors['warningContainer'],
-    success: DesignTokens.lightColors['success'],
-    successContainer: DesignTokens.lightColors['successContainer'],
-    surface: DesignTokens.lightColors['surface'],
-    surfaceVariant: DesignTokens.lightColors['surfaceVariant'],
-    background: DesignTokens.lightColors['background'],
-    onPrimary: DesignTokens.lightColors['onPrimary'],
-    onSecondary: DesignTokens.lightColors['onSecondary'],
-    onTertiary: DesignTokens.lightColors['onTertiary'],
-    onError: DesignTokens.lightColors['onError'],
-    onSurface: DesignTokens.lightColors['onSurface'],
-    onBackground: DesignTokens.lightColors['onBackground'],
-    outline: DesignTokens.lightColors['outline'],
-    outlineVariant: DesignTokens.lightColors['outlineVariant'],
-    shadow: DesignTokens.lightColors['shadow'],
-    scrim: DesignTokens.lightColors['scrim'],
-    inverseSurface: DesignTokens.lightColors['inverseSurface'],
-    inverseOnSurface: DesignTokens.lightColors['inverseOnSurface'],
-    inversePrimary: DesignTokens.lightColors['inversePrimary'],
-    premium: DesignTokens.lightColors['premium'],
-    premiumContainer: DesignTokens.lightColors['premiumContainer'],
-    adBg: DesignTokens.lightColors['adBg'],
-    adText: DesignTokens.lightColors['adText'],
-    locked: DesignTokens.lightColors['locked'],
-    lockedContainer: DesignTokens.lightColors['lockedContainer'],
-  );
-
-  return base.copyWith(
-    appBarTheme: const AppBarTheme(centerTitle: true),
-    extensions: [lightColors, const AppSpacings(), const AppSizes()],
-  );
-}
-
-ThemeData buildAppDarkTheme() {
   final base = ThemeData(
     useMaterial3: true,
-    colorSchemeSeed: Colors.indigo,
     brightness: Brightness.dark,
+    colorSchemeSeed: const Color(0xFF76ABAE), // Teal accent
   );
 
-  // Dark theme colors
-  final darkColors = AppColors(
-    primary: DesignTokens.darkColors['primary'],
-    primaryContainer: DesignTokens.darkColors['primaryContainer'],
-    secondary: DesignTokens.darkColors['secondary'],
-    secondaryContainer: DesignTokens.darkColors['secondaryContainer'],
-    tertiary: DesignTokens.darkColors['tertiary'],
-    tertiaryContainer: DesignTokens.darkColors['tertiaryContainer'],
-    error: DesignTokens.darkColors['error'],
-    errorContainer: DesignTokens.darkColors['errorContainer'],
-    warning: DesignTokens.darkColors['warning'],
-    warningContainer: DesignTokens.darkColors['warningContainer'],
-    success: DesignTokens.darkColors['success'],
-    successContainer: DesignTokens.darkColors['successContainer'],
-    surface: DesignTokens.darkColors['surface'],
-    surfaceVariant: DesignTokens.darkColors['surfaceVariant'],
-    background: DesignTokens.darkColors['background'],
-    onPrimary: DesignTokens.darkColors['onPrimary'],
-    onSecondary: DesignTokens.darkColors['onSecondary'],
-    onTertiary: DesignTokens.darkColors['onTertiary'],
-    onError: DesignTokens.darkColors['onError'],
-    onSurface: DesignTokens.darkColors['onSurface'],
-    onBackground: DesignTokens.darkColors['onBackground'],
-    outline: DesignTokens.darkColors['outline'],
-    outlineVariant: DesignTokens.darkColors['outlineVariant'],
-    shadow: DesignTokens.darkColors['shadow'],
-    scrim: DesignTokens.darkColors['scrim'],
-    inverseSurface: DesignTokens.darkColors['inverseSurface'],
-    inverseOnSurface: DesignTokens.darkColors['inverseOnSurface'],
-    inversePrimary: DesignTokens.darkColors['inversePrimary'],
-    premium: DesignTokens.darkColors['premium'],
-    premiumContainer: DesignTokens.darkColors['premiumContainer'],
-    adBg: DesignTokens.darkColors['adBg'],
-    adText: DesignTokens.darkColors['adText'],
-    locked: DesignTokens.darkColors['locked'],
-    lockedContainer: DesignTokens.darkColors['lockedContainer'],
+  // Dark grey theme colors
+  final appColors = AppColors(
+    primary: DesignTokens.colors['primary'],
+    primaryContainer: DesignTokens.colors['primaryContainer'],
+    secondary: DesignTokens.colors['secondary'],
+    secondaryContainer: DesignTokens.colors['secondaryContainer'],
+    tertiary: DesignTokens.colors['tertiary'],
+    tertiaryContainer: DesignTokens.colors['tertiaryContainer'],
+    error: DesignTokens.colors['error'],
+    errorContainer: DesignTokens.colors['errorContainer'],
+    warning: DesignTokens.colors['warning'],
+    warningContainer: DesignTokens.colors['warningContainer'],
+    success: DesignTokens.colors['success'],
+    successContainer: DesignTokens.colors['successContainer'],
+    surface: DesignTokens.colors['surface'],
+    surfaceVariant: DesignTokens.colors['surfaceVariant'],
+    background: DesignTokens.colors['background'],
+    onPrimary: DesignTokens.colors['onPrimary'],
+    onSecondary: DesignTokens.colors['onSecondary'],
+    onTertiary: DesignTokens.colors['onTertiary'],
+    onError: DesignTokens.colors['onError'],
+    onSurface: DesignTokens.colors['onSurface'],
+    onBackground: DesignTokens.colors['onBackground'],
+    outline: DesignTokens.colors['outline'],
+    outlineVariant: DesignTokens.colors['outlineVariant'],
+    shadow: DesignTokens.colors['shadow'],
+    scrim: DesignTokens.colors['scrim'],
+    inverseSurface: DesignTokens.colors['inverseSurface'],
+    inverseOnSurface: DesignTokens.colors['inverseOnSurface'],
+    inversePrimary: DesignTokens.colors['inversePrimary'],
+    premium: DesignTokens.colors['premium'],
+    premiumContainer: DesignTokens.colors['premiumContainer'],
+    adBg: DesignTokens.colors['adBg'],
+    adText: DesignTokens.colors['adText'],
+    locked: DesignTokens.colors['locked'],
+    lockedContainer: DesignTokens.colors['lockedContainer'],
   );
 
   return base.copyWith(
-    appBarTheme: const AppBarTheme(centerTitle: true),
-    extensions: [darkColors, const AppSpacings(), const AppSizes()],
-  );
-}
-
-ThemeData buildAppDarkGreyTheme() {
-  final base = ThemeData(
-    useMaterial3: true,
-    colorSchemeSeed: Colors.purple,
-    brightness: Brightness.dark,
-  );
-
-  // Dark Grey theme colors
-  final darkGreyColors = AppColors(
-    primary: DesignTokens.darkGreyColors['primary'],
-    primaryContainer: DesignTokens.darkGreyColors['primaryContainer'],
-    secondary: DesignTokens.darkGreyColors['secondary'],
-    secondaryContainer: DesignTokens.darkGreyColors['secondaryContainer'],
-    tertiary: DesignTokens.darkGreyColors['tertiary'],
-    tertiaryContainer: DesignTokens.darkGreyColors['tertiaryContainer'],
-    error: DesignTokens.darkGreyColors['error'],
-    errorContainer: DesignTokens.darkGreyColors['errorContainer'],
-    warning: DesignTokens.darkGreyColors['warning'],
-    warningContainer: DesignTokens.darkGreyColors['warningContainer'],
-    success: DesignTokens.darkGreyColors['success'],
-    successContainer: DesignTokens.darkGreyColors['successContainer'],
-    surface: DesignTokens.darkGreyColors['surface'],
-    surfaceVariant: DesignTokens.darkGreyColors['surfaceVariant'],
-    background: DesignTokens.darkGreyColors['background'],
-    onPrimary: DesignTokens.darkGreyColors['onPrimary'],
-    onSecondary: DesignTokens.darkGreyColors['onSecondary'],
-    onTertiary: DesignTokens.darkGreyColors['onTertiary'],
-    onError: DesignTokens.darkGreyColors['onError'],
-    onSurface: DesignTokens.darkGreyColors['onSurface'],
-    onBackground: DesignTokens.darkGreyColors['onBackground'],
-    outline: DesignTokens.darkGreyColors['outline'],
-    outlineVariant: DesignTokens.darkGreyColors['outlineVariant'],
-    shadow: DesignTokens.darkGreyColors['shadow'],
-    scrim: DesignTokens.darkGreyColors['scrim'],
-    inverseSurface: DesignTokens.darkGreyColors['inverseSurface'],
-    inverseOnSurface: DesignTokens.darkGreyColors['inverseOnSurface'],
-    inversePrimary: DesignTokens.darkGreyColors['inversePrimary'],
-    premium: DesignTokens.darkGreyColors['premium'],
-    premiumContainer: DesignTokens.darkGreyColors['premiumContainer'],
-    adBg: DesignTokens.darkGreyColors['adBg'],
-    adText: DesignTokens.darkGreyColors['adText'],
-    locked: DesignTokens.darkGreyColors['locked'],
-    lockedContainer: DesignTokens.darkGreyColors['lockedContainer'],
-  );
-
-  return base.copyWith(
-    appBarTheme: const AppBarTheme(centerTitle: true),
-    extensions: [darkGreyColors, const AppSpacings(), const AppSizes()],
+    appBarTheme: const AppBarTheme(
+      centerTitle: true,
+      backgroundColor: Color(0xFF222831),
+      foregroundColor: Color(0xFFEEEEEE),
+      elevation: 0,
+    ),
+    scaffoldBackgroundColor: const Color(0xFF222831),
+    cardTheme: CardThemeData(
+      color: const Color(0xFF31363F),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFF76ABAE),
+        foregroundColor: const Color(0xFF222831),
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: const Color(0xFF76ABAE),
+        side: const BorderSide(color: Color(0xFF76ABAE)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: const Color(0xFF76ABAE),
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: const Color(0xFF31363F),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: Color(0xFF31363F)),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: Color(0xFF31363F)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: Color(0xFF76ABAE), width: 2),
+      ),
+      labelStyle: const TextStyle(color: Color(0xFFEEEEEE)),
+      hintStyle: const TextStyle(color: Color(0xFF76ABAE)),
+    ),
+    extensions: [
+      appColors,
+      const AppSpacings(),
+      const AppSizes(),
+    ],
   );
 }

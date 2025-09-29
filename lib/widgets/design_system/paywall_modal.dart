@@ -196,13 +196,6 @@ class PaywallModal extends ConsumerWidget {
           'Ad-Free Experience',
           'Enjoy the app without advertisements',
         ),
-        _buildFeatureItem(
-          context,
-          appColors,
-          Icons.palette,
-          'Premium Themes',
-          'Access to Dark Grey and Dark themes',
-        ),
       ],
     );
   }

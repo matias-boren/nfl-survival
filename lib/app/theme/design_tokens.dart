@@ -1,119 +1,44 @@
 import 'package:flutter/material.dart';
 
 /// Design tokens for the NFL Survival Pool app
-/// Maps to Flutter ThemeExtensions for easy access throughout the app
+/// Universal Dark Grey Theme with specified colors
 class DesignTokens {
-  // Colors
-  static const Map<String, Color> lightColors = {
-    'primary': Color(0xFF2563EB),
-    'primaryContainer': Color(0xFFDBEAFE),
-    'secondary': Color(0xFF7C3AED),
-    'secondaryContainer': Color(0xFFEDE9FE),
-    'tertiary': Color(0xFF059669),
-    'tertiaryContainer': Color(0xFFD1FAE5),
-    'error': Color(0xFFDC2626),
-    'errorContainer': Color(0xFFFEE2E2),
-    'warning': Color(0xFFD97706),
-    'warningContainer': Color(0xFFFEF3C7),
-    'success': Color(0xFF059669),
-    'successContainer': Color(0xFFD1FAE5),
-    'surface': Color(0xFFFFFFFF),
-    'surfaceVariant': Color(0xFFF8FAFC),
-    'background': Color(0xFFFFFFFF),
-    'onPrimary': Color(0xFFFFFFFF),
-    'onSecondary': Color(0xFFFFFFFF),
-    'onTertiary': Color(0xFFFFFFFF),
-    'onError': Color(0xFFFFFFFF),
-    'onSurface': Color(0xFF1F2937),
-    'onBackground': Color(0xFF1F2937),
-    'outline': Color(0xFFE5E7EB),
-    'outlineVariant': Color(0xFFF3F4F6),
-    'shadow': Color(0xFF000000),
-    'scrim': Color(0xFF000000),
-    'inverseSurface': Color(0xFF374151),
-    'inverseOnSurface': Color(0xFFFFFFFF),
-    'inversePrimary': Color(0xFF93C5FD),
-    'premium': Color(0xFF059669),
-    'premiumContainer': Color(0xFFD1FAE5),
-    'adBg': Color(0xFFF9FAFB),
-    'adText': Color(0xFF6B7280),
-    'locked': Color(0xFF9CA3AF),
-    'lockedContainer': Color(0xFFF3F4F6),
-  };
-
-  static const Map<String, Color> darkColors = {
-    'primary': Color(0xFF60A5FA),
-    'primaryContainer': Color(0xFF1E3A8A),
-    'secondary': Color(0xFFA78BFA),
-    'secondaryContainer': Color(0xFF5B21B6),
-    'tertiary': Color(0xFF34D399),
-    'tertiaryContainer': Color(0xFF047857),
-    'error': Color(0xFFF87171),
-    'errorContainer': Color(0xFF7F1D1D),
-    'warning': Color(0xFFFBBF24),
-    'warningContainer': Color(0xFF92400E),
-    'success': Color(0xFF34D399),
-    'successContainer': Color(0xFF047857),
-    'surface': Color(0xFF111827),
-    'surfaceVariant': Color(0xFF1F2937),
-    'background': Color(0xFF0F172A),
-    'onPrimary': Color(0xFF000000),
-    'onSecondary': Color(0xFF000000),
-    'onTertiary': Color(0xFF000000),
-    'onError': Color(0xFF000000),
-    'onSurface': Color(0xFFF9FAFB),
-    'onBackground': Color(0xFFF9FAFB),
-    'outline': Color(0xFF374151),
-    'outlineVariant': Color(0xFF4B5563),
-    'shadow': Color(0xFF000000),
-    'scrim': Color(0xFF000000),
-    'inverseSurface': Color(0xFFE5E7EB),
-    'inverseOnSurface': Color(0xFF1F2937),
-    'inversePrimary': Color(0xFF1E40AF),
-    'premium': Color(0xFF34D399),
-    'premiumContainer': Color(0xFF047857),
-    'adBg': Color(0xFF1F2937),
-    'adText': Color(0xFF9CA3AF),
-    'locked': Color(0xFF6B7280),
-    'lockedContainer': Color(0xFF374151),
-  };
-
-  // Dark Grey theme colors (premium only)
-  static const Map<String, Color> darkGreyColors = {
-    'primary': Color(0xFF8B5CF6),
-    'primaryContainer': Color(0xFF4C1D95),
-    'secondary': Color(0xFFA78BFA),
-    'secondaryContainer': Color(0xFF5B21B6),
-    'tertiary': Color(0xFF34D399),
-    'tertiaryContainer': Color(0xFF047857),
-    'error': Color(0xFFF87171),
-    'errorContainer': Color(0xFF7F1D1D),
-    'warning': Color(0xFFFBBF24),
-    'warningContainer': Color(0xFF92400E),
-    'success': Color(0xFF34D399),
-    'successContainer': Color(0xFF047857),
-    'surface': Color(0xFF2D3748),
-    'surfaceVariant': Color(0xFF4A5568),
-    'background': Color(0xFF1A202C),
-    'onPrimary': Color(0xFFFFFFFF),
-    'onSecondary': Color(0xFFFFFFFF),
-    'onTertiary': Color(0xFFFFFFFF),
-    'onError': Color(0xFFFFFFFF),
-    'onSurface': Color(0xFFE2E8F0),
-    'onBackground': Color(0xFFE2E8F0),
-    'outline': Color(0xFF4A5568),
-    'outlineVariant': Color(0xFF718096),
-    'shadow': Color(0xFF000000),
-    'scrim': Color(0xFF000000),
-    'inverseSurface': Color(0xFFE2E8F0),
-    'inverseOnSurface': Color(0xFF2D3748),
-    'inversePrimary': Color(0xFF4C1D95),
-    'premium': Color(0xFF34D399),
-    'premiumContainer': Color(0xFF047857),
-    'adBg': Color(0xFF4A5568),
-    'adText': Color(0xFFA0AEC0),
-    'locked': Color(0xFF718096),
-    'lockedContainer': Color(0xFF4A5568),
+  // Colors - Universal Dark Grey Theme
+  static const Map<String, Color> colors = {
+    'primary': Color(0xFF76ABAE), // Teal accent
+    'primaryContainer': Color(0xFF31363F), // Dark grey container
+    'secondary': Color(0xFF76ABAE), // Same as primary
+    'secondaryContainer': Color(0xFF31363F), // Dark grey container
+    'tertiary': Color(0xFF76ABAE), // Same as primary
+    'tertiaryContainer': Color(0xFF31363F), // Dark grey container
+    'error': Color(0xFFFF6B6B), // Red for errors
+    'errorContainer': Color(0xFF31363F), // Dark grey container
+    'warning': Color(0xFFFFD93D), // Yellow for warnings
+    'warningContainer': Color(0xFF31363F), // Dark grey container
+    'success': Color(0xFF76ABAE), // Teal for success
+    'successContainer': Color(0xFF31363F), // Dark grey container
+    'surface': Color(0xFF222831), // Main dark background
+    'surfaceVariant': Color(0xFF31363F), // Slightly lighter dark
+    'background': Color(0xFF222831), // Main background
+    'onPrimary': Color(0xFF222831), // Dark text on teal
+    'onSecondary': Color(0xFF222831), // Dark text on teal
+    'onTertiary': Color(0xFF222831), // Dark text on teal
+    'onError': Color(0xFFEEEEEE), // Light text on error
+    'onSurface': Color(0xFFEEEEEE), // Light text on dark
+    'onBackground': Color(0xFFEEEEEE), // Light text on dark
+    'outline': Color(0xFF31363F), // Dark grey outline
+    'outlineVariant': Color(0xFF76ABAE), // Teal outline variant
+    'shadow': Color(0xFF000000), // Black shadow
+    'scrim': Color(0xFF000000), // Black scrim
+    'inverseSurface': Color(0xFFEEEEEE), // Light inverse surface
+    'inverseOnSurface': Color(0xFF222831), // Dark text on light
+    'inversePrimary': Color(0xFF76ABAE), // Teal inverse primary
+    'premium': Color(0xFF76ABAE), // Teal for premium
+    'premiumContainer': Color(0xFF31363F), // Dark grey container
+    'adBg': Color(0xFF31363F), // Dark grey for ads
+    'adText': Color(0xFFEEEEEE), // Light text for ads
+    'locked': Color(0xFF76ABAE), // Teal for locked features
+    'lockedContainer': Color(0xFF31363F), // Dark grey container
   };
 
   // Spacing

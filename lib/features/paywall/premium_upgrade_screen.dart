@@ -144,11 +144,6 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
               title: 'Ad-Free Experience',
               description: 'Enjoy the app without any advertisements',
             ),
-            _buildFeatureItem(
-              icon: Icons.palette,
-              title: 'Premium Themes',
-              description: 'Access to Dark Grey and Dark themes',
-            ),
 
             const SizedBox(height: 32),
 
