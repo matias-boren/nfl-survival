@@ -22,8 +22,6 @@ class WeeklyDataRefreshService {
   // Dependencies
   LeagueRepository? _leagueRepository;
   NflRepository? _nflRepository;
-  PicksRepository? _picksRepository;
-  UserRepository? _userRepository;
   ResultProcessingService? _resultProcessingService;
   StandingsService? _standingsService;
 
@@ -36,8 +34,6 @@ class WeeklyDataRefreshService {
   }) {
     _leagueRepository = leagueRepository;
     _nflRepository = nflRepository;
-    _picksRepository = picksRepository;
-    _userRepository = userRepository;
     _resultProcessingService = ResultProcessingService(
       picksRepository: picksRepository,
       leagueRepository: leagueRepository,
@@ -216,7 +212,7 @@ class WeeklyDataRefreshService {
       if (!allGamesComplete) return false;
 
       // Find the latest game end time
-      DateTime? latestGameEnd = null;
+      DateTime? latestGameEnd;
       for (final game in games) {
         // Estimate game end time (3 hours after start for NFL games)
         final estimatedEndTime = game.date.add(const Duration(hours: 3));
@@ -292,12 +288,10 @@ class WeeklyDataRefreshService {
   Future<void> _updateLeagueStandings(String leagueId) async {
     try {
       final league = await _leagueRepository!.getLeague(leagueId);
-      if (league != null) {
-        await _standingsService!.calculateLeagueStandings(
-          leagueId: leagueId,
-          league: league,
-        );
-      }
+      await _standingsService!.calculateLeagueStandings(
+        leagueId: leagueId,
+        league: league,
+      );
     } catch (e) {
       print('❌ Error updating standings for league $leagueId: $e');
     }

@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nfl_survival/data/models/nfl.dart';
-import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
 
 class DeadlineService {
   static final DeadlineService _instance = DeadlineService._internal();
@@ -57,25 +55,6 @@ class DeadlineService {
     return null; // This will be overridden by the NFL repository
   }
 
-  DateTime _getNextSunday(DateTime date) {
-    // Find the next Sunday
-    final daysUntilSunday = (7 - date.weekday) % 7;
-    if (daysUntilSunday == 0 && date.weekday == 7) {
-      return date; // Today is Sunday
-    }
-    return date.add(Duration(days: daysUntilSunday == 0 ? 7 : daysUntilSunday));
-  }
-
-  DateTime _getNextThursday(DateTime date) {
-    // Find the next Thursday
-    final daysUntilThursday = (4 - date.weekday) % 7;
-    if (daysUntilThursday == 0 && date.weekday == 4) {
-      return date; // Today is Thursday
-    }
-    return date.add(
-      Duration(days: daysUntilThursday == 0 ? 7 : daysUntilThursday),
-    );
-  }
 
   bool isPickDeadlinePassed(int week) {
     final deadline = getPickDeadline(week);

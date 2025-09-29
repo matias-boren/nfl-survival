@@ -9,21 +9,16 @@ import 'package:nfl_survival/core/config/api_config.dart';
 import 'package:nfl_survival/data/ads/ads_service.dart';
 import 'package:nfl_survival/data/ads/mock_ads_service.dart';
 import 'package:nfl_survival/data/auth/auth_repositories.dart';
-import 'package:nfl_survival/data/auth/mock_auth_repository.dart';
 import 'package:nfl_survival/data/auth/supabase_auth_repository.dart';
 import 'package:nfl_survival/data/billing/billing_repositories.dart';
 import 'package:nfl_survival/data/billing/mock_billing_repository.dart';
 import 'package:nfl_survival/data/leagues/league_repositories.dart';
-import 'package:nfl_survival/data/leagues/mock_league_repository.dart';
 import 'package:nfl_survival/data/leagues/supabase_league_repository.dart';
-import 'package:nfl_survival/data/nfl/mock_nfl_repository.dart';
 import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
 import 'package:nfl_survival/data/nfl/hybrid_nfl_repository.dart';
-import 'package:nfl_survival/data/picks/mock_picks_repository.dart';
 import 'package:nfl_survival/data/picks/supabase_picks_repository.dart';
 import 'package:nfl_survival/data/picks/picks_repositories.dart';
 import 'package:nfl_survival/data/news/news_repositories.dart';
-import 'package:nfl_survival/data/news/mock_news_repository.dart';
 import 'package:nfl_survival/data/news/supabase_news_repository.dart';
 import 'package:nfl_survival/data/scores/scores_repositories.dart';
 import 'package:nfl_survival/data/scores/mock_scores_repository.dart';
@@ -35,14 +30,12 @@ import 'package:nfl_survival/data/users/user_repositories.dart';
 import 'package:nfl_survival/data/users/mock_user_repository.dart';
 import 'package:nfl_survival/data/chat/chat_repositories.dart';
 import 'package:nfl_survival/data/chat/supabase_chat_repository.dart';
-import 'package:nfl_survival/data/chat/mock_chat_repository.dart';
 import 'package:nfl_survival/data/models/user.dart';
 import 'package:nfl_survival/data/models/pick.dart';
 import 'package:nfl_survival/data/models/nfl.dart';
 import 'package:nfl_survival/data/models/chat_message.dart';
 import 'package:nfl_survival/core/services/deadline_service.dart';
 import 'package:nfl_survival/features/league/table/league_list_screen.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Repositories
 final authRepositoryProvider = Provider<AuthRepository>(
@@ -361,7 +354,6 @@ final leagueStandingsProvider =
       final league = await ref
           .read(leagueRepositoryProvider)
           .getLeague(leagueId);
-      if (league == null) return [];
 
       return await standingsService.calculateLeagueStandings(
         leagueId: leagueId,

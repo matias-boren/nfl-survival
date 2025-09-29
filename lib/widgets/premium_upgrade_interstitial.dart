@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:nfl_survival/core/services/ad_service.dart';
 
 class PremiumUpgradeInterstitial {

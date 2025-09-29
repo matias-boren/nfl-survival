@@ -28,9 +28,6 @@ class ResultProcessingService {
 
     // Get league settings
     final league = await _leagueRepository.getLeague(leagueId);
-    if (league == null) {
-      throw Exception('League not found: $leagueId');
-    }
 
     // Get all picks for this week
     final picks = await _picksRepository.listPicks(leagueId, week);
@@ -51,8 +48,8 @@ class ResultProcessingService {
           gameId: game.id,
           homeTeam: game.homeTeam.abbreviation,
           awayTeam: game.awayTeam.abbreviation,
-          homeScore: game.homeScore ?? 0,
-          awayScore: game.awayScore ?? 0,
+          homeScore: game.homeScore,
+          awayScore: game.awayScore,
           winner: _determineWinner(game),
         );
       }
@@ -196,9 +193,8 @@ class ResultProcessingService {
 
   String? _determineWinner(Game game) {
     if (game.status != GameStatus.FINAL) return null;
-    if (game.homeScore == null || game.awayScore == null) return null;
 
-    if (game.homeScore! > game.awayScore!) {
+    if (game.homeScore > game.awayScore) {
       return game.homeTeam.abbreviation;
     } else {
       return game.awayTeam.abbreviation;

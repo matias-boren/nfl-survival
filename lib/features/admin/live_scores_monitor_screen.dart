@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nfl_survival/app/providers.dart';
-import 'package:nfl_survival/core/services/live_scores_service.dart';
 import 'package:nfl_survival/data/models/nfl.dart';
 import 'package:nfl_survival/widgets/app_scaffold.dart';
 

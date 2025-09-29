@@ -2,7 +2,6 @@ import 'package:nfl_survival/data/models/pick.dart';
 import 'package:nfl_survival/data/models/league.dart';
 import 'package:nfl_survival/data/picks/picks_repositories.dart';
 import 'package:nfl_survival/data/users/user_repositories.dart';
-import 'package:nfl_survival/core/services/points_calculation_service.dart';
 
 class StandingsService {
   final PicksRepository _picksRepository;

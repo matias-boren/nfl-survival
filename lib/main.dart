@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:nfl_survival/app/router.dart';
-import 'package:nfl_survival/app/theme/theme.dart';
 import 'package:nfl_survival/app/providers.dart';
 import 'package:nfl_survival/app/providers/theme_provider.dart';
 import 'package:nfl_survival/core/services/ad_service.dart';

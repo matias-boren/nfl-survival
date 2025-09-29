@@ -5,7 +5,6 @@ import 'package:nfl_survival/app/providers.dart';
 import 'package:nfl_survival/data/models/league.dart';
 import 'package:nfl_survival/widgets/app_scaffold.dart';
 import 'package:nfl_survival/widgets/banner_ad_slot.dart';
-import 'package:nfl_survival/data/models/user.dart';
 import 'package:nfl_survival/features/league/join/league_options_dialog.dart';
 
 final userLeaguesProvider = FutureProvider<List<League>>((ref) async {

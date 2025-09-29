@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nfl_survival/app/providers.dart';
 import 'package:nfl_survival/app/providers/theme_provider.dart';
-import 'package:nfl_survival/data/billing/mock_billing_repository.dart';
 import 'package:nfl_survival/data/auth/supabase_auth_repository.dart';
 import 'package:nfl_survival/widgets/app_scaffold.dart';
 import 'package:nfl_survival/widgets/design_system/paywall_modal.dart';

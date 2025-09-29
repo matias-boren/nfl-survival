@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:nfl_survival/app/providers.dart';
 import 'package:nfl_survival/data/models/league_invitation.dart';
 import 'package:nfl_survival/widgets/app_scaffold.dart';
@@ -13,7 +12,6 @@ class LeagueInvitationsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final invitationsAsync = ref.watch(leagueInvitationsProvider(leagueId));
-    final currentUser = ref.watch(currentUserProvider);
 
     return AppScaffold(
       appBar: AppBar(

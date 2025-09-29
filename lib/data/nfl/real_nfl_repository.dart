@@ -2,12 +2,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:nfl_survival/data/nfl/api_models.dart';
 import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
+import 'package:nfl_survival/data/models/nfl.dart';
 
 class RealNflRepository implements NflRepository {
   static const String _baseUrl =
       'https://site.api.espn.com/apis/site/v2/sports/football/nfl';
-  static const String _apiKey =
-      'your-espn-api-key'; // Replace with actual API key if needed
 
   final http.Client _client;
 
@@ -182,6 +181,13 @@ class RealNflRepository implements NflRepository {
     final seasonStart = DateTime(date.year, 9, 1); // Approximate season start
     final daysSinceStart = date.difference(seasonStart).inDays;
     return (daysSinceStart / 7).floor().clamp(1, 18);
+  }
+
+  @override
+  Future<DateTime?> getPickDeadline(int week) async {
+    // For now, return null - this would need to be implemented based on
+    // actual NFL schedule data or business rules
+    return null;
   }
 
   @override

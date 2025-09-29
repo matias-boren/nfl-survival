@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nfl_survival/app/providers.dart';
-import 'package:nfl_survival/core/services/automated_result_processor.dart';
 import 'package:nfl_survival/widgets/app_scaffold.dart';
 
 class AutomatedProcessingScreen extends ConsumerWidget {

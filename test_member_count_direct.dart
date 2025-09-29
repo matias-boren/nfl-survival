@@ -30,10 +30,10 @@ void main() async {
     // Also test a simple count query
     final countResponse = await supabase
         .from('league_members')
-        .select('*', const FetchOptions(count: CountOption.exact))
+        .select('*')
         .eq('league_id', leagueId);
 
-    print('Count response: ${countResponse.count}');
+    print('Count response: ${countResponse.length}');
   } catch (e) {
     print('Error: $e');
   }

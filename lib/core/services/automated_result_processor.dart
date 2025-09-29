@@ -251,10 +251,6 @@ class AutomatedResultProcessor {
     _processedGames.add(gameId);
   }
 
-  /// Clear processed games list (call at start of new week)
-  void _clearProcessedGames() {
-    _processedGames.clear();
-  }
 
   /// Dispose resources
   void dispose() {

@@ -256,7 +256,7 @@ class SupabaseAuthRepository implements AuthRepository {
 
   @override
   Future<app_user.User> signInWithGoogle() async {
-    final response = await _supabase.auth.signInWithOAuth(
+    await _supabase.auth.signInWithOAuth(
       OAuthProvider.google,
       redirectTo: 'io.supabase.flutterquickstart://login-callback/',
     );
