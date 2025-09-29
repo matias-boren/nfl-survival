@@ -127,8 +127,8 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
 
             _buildFeatureItem(
               icon: Icons.visibility,
-              title: 'Live Scores',
-              description: 'See real-time scores and game updates',
+              title: 'Advanced Analytics',
+              description: 'Detailed performance insights and statistics',
             ),
             _buildFeatureItem(
               icon: Icons.analytics,

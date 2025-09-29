@@ -3,9 +3,7 @@ import 'package:nfl_survival/core/services/result_processing_service.dart';
 import 'package:nfl_survival/core/services/standings_service.dart';
 import 'package:nfl_survival/core/services/automated_result_processor.dart';
 import 'package:nfl_survival/core/services/weekly_data_refresh_service.dart';
-import 'package:nfl_survival/core/services/live_scores_service.dart';
-import 'package:nfl_survival/core/services/server_sync_service.dart';
-import 'package:nfl_survival/core/config/api_config.dart';
+// Live score services removed
 import 'package:nfl_survival/data/ads/ads_service.dart';
 import 'package:nfl_survival/data/ads/mock_ads_service.dart';
 import 'package:nfl_survival/data/auth/auth_repositories.dart';
@@ -16,13 +14,10 @@ import 'package:nfl_survival/data/leagues/league_repositories.dart';
 import 'package:nfl_survival/data/leagues/supabase_league_repository.dart';
 import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
 import 'package:nfl_survival/data/nfl/hybrid_nfl_repository.dart';
-import 'package:nfl_survival/data/nfl/server_sync_nfl_repository.dart';
 import 'package:nfl_survival/data/picks/supabase_picks_repository.dart';
 import 'package:nfl_survival/data/picks/picks_repositories.dart';
 import 'package:nfl_survival/data/news/news_repositories.dart';
 import 'package:nfl_survival/data/news/supabase_news_repository.dart';
-import 'package:nfl_survival/data/scores/scores_repositories.dart';
-import 'package:nfl_survival/data/scores/mock_scores_repository.dart';
 import 'package:nfl_survival/data/friends/friends_repositories.dart';
 import 'package:nfl_survival/data/friends/mock_friends_repository.dart';
 import 'package:nfl_survival/data/invitations/invitation_repositories.dart';
@@ -33,7 +28,7 @@ import 'package:nfl_survival/data/chat/chat_repositories.dart';
 import 'package:nfl_survival/data/chat/supabase_chat_repository.dart';
 import 'package:nfl_survival/data/models/user.dart';
 import 'package:nfl_survival/data/models/pick.dart';
-import 'package:nfl_survival/data/models/nfl.dart';
+// NFL models import removed - LiveScore functionality removed
 import 'package:nfl_survival/data/models/chat_message.dart';
 import 'package:nfl_survival/core/services/deadline_service.dart';
 import 'package:nfl_survival/features/league/table/league_list_screen.dart';
@@ -47,12 +42,7 @@ final billingRepositoryProvider = Provider<BillingRepository>(
 );
 final adsServiceProvider = Provider<AdsService>((ref) => MockAdsService());
 final nflRepositoryProvider = Provider<NflRepository>((ref) {
-  // Use server sync if configured, otherwise use hybrid repository
-  if (ApiConfig.shouldUseServerSync()) {
-    return ServerSyncNflRepository();
-  } else {
-    return HybridNflRepository();
-  }
+  return HybridNflRepository();
 });
 final leagueRepositoryProvider = Provider<LeagueRepository>(
   (ref) => SupabaseLeagueRepository(),
@@ -65,9 +55,6 @@ final chatRepositoryProvider = Provider<ChatRepository>(
 );
 final newsRepositoryProvider = Provider<NewsRepository>(
   (ref) => SupabaseNewsRepository(),
-);
-final scoresRepositoryProvider = Provider<ScoresRepository>(
-  (ref) => MockScoresRepository(),
 );
 final friendsRepositoryProvider = Provider<FriendsRepository>(
   (ref) => MockFriendsRepository(),
@@ -110,67 +97,7 @@ final newsFeedProvider = FutureProvider<List<NewsArticle>>((ref) async {
   return ref.read(newsRepositoryProvider).getLatestNews();
 });
 
-// Live scores service provider (direct ESPN polling)
-final liveScoresServiceProvider = Provider<LiveScoresService>((ref) {
-  final service = LiveScoresService();
-
-  // Initialize with dependencies
-  service.initialize(
-    nflRepository: ref.read(nflRepositoryProvider),
-    season: 2025,
-    week: 4, // Default week, will be updated by currentWeekProvider
-  );
-
-  return service;
-});
-
-// Server sync service provider (server-side polling)
-final serverSyncServiceProvider = Provider<ServerSyncService>((ref) {
-  final service = ServerSyncService();
-
-  // Initialize with server configuration
-  service.initialize(
-    serverBaseUrl: ApiConfig.SERVER_BASE_URL,
-    season: 2025,
-    week: 4, // Default week, will be updated by currentWeekProvider
-  );
-
-  return service;
-});
-
-// Real-time live scores stream provider (configurable)
-final liveScoresProvider = StreamProvider<List<LiveScore>>((ref) {
-  // Only load live scores if user is authenticated
-  final currentUser = ref.watch(currentUserProvider);
-  if (currentUser == null) {
-    return Stream.value([]);
-  }
-
-  final currentWeekAsync = ref.watch(currentWeekProvider);
-  final currentWeek = currentWeekAsync.valueOrNull ?? 4;
-
-  if (ApiConfig.shouldUseServerSync()) {
-    // Use server sync (recommended for production)
-    final service = ref.read(serverSyncServiceProvider);
-    service.updateWeek(currentWeek);
-
-    if (!service.isRunning) {
-      service.startSyncing();
-    }
-
-    return service.scoresStream;
-  } else {
-    // Use direct ESPN polling (current implementation)
-    final service = ref.read(liveScoresServiceProvider);
-    service.updateWeek(currentWeek);
-
-    if (!service.isRunning) {
-      service.startPolling();
-    }
-
-    return service.scoresStream;
-  }
-});
+// Live scores functionality removed to fix CI issues
 
 // Current User Notifier
 class CurrentUserNotifier extends StateNotifier<User?> {

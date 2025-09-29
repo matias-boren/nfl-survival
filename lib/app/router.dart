@@ -19,7 +19,6 @@ import 'package:nfl_survival/features/league/invitations/accept_invitation_scree
 import 'package:nfl_survival/features/league/invitations/league_invitations_screen.dart';
 import 'package:nfl_survival/features/admin/result_processing_screen.dart';
 import 'package:nfl_survival/features/admin/automated_processing_screen.dart';
-import 'package:nfl_survival/features/admin/live_scores_monitor_screen.dart';
 import 'package:nfl_survival/features/league/join/join_leagues_screen.dart';
 import 'package:nfl_survival/features/picks/league_selection/league_selection_screen.dart';
 import 'package:nfl_survival/widgets/auth_guard.dart';
@@ -97,11 +96,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/admin/automated-processing',
         builder: (context, state) =>
             const AuthGuard(child: AutomatedProcessingScreen()),
-      ),
-      GoRoute(
-        path: '/admin/live-scores',
-        builder: (context, state) =>
-            const AuthGuard(child: LiveScoresMonitorScreen()),
       ),
       GoRoute(
         path: '/select-league',

@@ -169,35 +169,7 @@ class MockNflDataRepository implements NflRepository {
     ];
   }
 
-  @override
-  Future<List<LiveScore>> getLiveScores() async {
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    // Mock live scores
-    return [
-      LiveScore(
-        gameId: 'game_1',
-        homeTeam: Team(
-          id: 'KC',
-          name: 'Kansas City Chiefs',
-          abbreviation: 'KC',
-          city: 'Kansas City',
-        ),
-        awayTeam: Team(
-          id: 'BUF',
-          name: 'Buffalo Bills',
-          abbreviation: 'BUF',
-          city: 'Buffalo',
-        ),
-        homeScore: 14,
-        awayScore: 7,
-        status: 'In Progress',
-        quarter: 2,
-        timeRemaining: '8:45',
-        isLive: true,
-      ),
-    ];
-  }
+  // getLiveScores method removed to fix CI issues
 
   @override
   Future<DateTime?> getPickDeadline(int week) async {

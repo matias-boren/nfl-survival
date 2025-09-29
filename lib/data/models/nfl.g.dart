@@ -59,32 +59,3 @@ const _$GameStatusEnumMap = {
   GameStatus.IN_PROGRESS: 'IN_PROGRESS',
   GameStatus.FINAL: 'FINAL',
 };
-
-_LiveScore _$LiveScoreFromJson(Map<String, dynamic> json) => _LiveScore(
-  gameId: json['gameId'] as String,
-  homeTeam: Team.fromJson(json['homeTeam'] as Map<String, dynamic>),
-  awayTeam: Team.fromJson(json['awayTeam'] as Map<String, dynamic>),
-  homeScore: (json['homeScore'] as num).toInt(),
-  awayScore: (json['awayScore'] as num).toInt(),
-  status: json['status'] as String,
-  quarter: (json['quarter'] as num).toInt(),
-  timeRemaining: json['timeRemaining'] as String,
-  isLive: json['isLive'] as bool,
-  gameDate: json['gameDate'] == null
-      ? null
-      : DateTime.parse(json['gameDate'] as String),
-);
-
-Map<String, dynamic> _$LiveScoreToJson(_LiveScore instance) =>
-    <String, dynamic>{
-      'gameId': instance.gameId,
-      'homeTeam': instance.homeTeam,
-      'awayTeam': instance.awayTeam,
-      'homeScore': instance.homeScore,
-      'awayScore': instance.awayScore,
-      'status': instance.status,
-      'quarter': instance.quarter,
-      'timeRemaining': instance.timeRemaining,
-      'isLive': instance.isLive,
-      'gameDate': instance.gameDate?.toIso8601String(),
-    };

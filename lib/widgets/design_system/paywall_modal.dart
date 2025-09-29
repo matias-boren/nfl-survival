@@ -179,8 +179,8 @@ class PaywallModal extends ConsumerWidget {
           context,
           appColors,
           Icons.visibility,
-          'Live Scores',
-          'Real-time game scores and updates',
+          'Advanced Analytics',
+          'Detailed performance insights and statistics',
         ),
         _buildFeatureItem(
           context,

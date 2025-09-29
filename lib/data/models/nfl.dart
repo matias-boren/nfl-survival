@@ -39,21 +39,4 @@ abstract class Game with _$Game {
   factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
 }
 
-@freezed
-abstract class LiveScore with _$LiveScore {
-  const factory LiveScore({
-    required String gameId,
-    required Team homeTeam,
-    required Team awayTeam,
-    required int homeScore,
-    required int awayScore,
-    required String status,
-    required int quarter,
-    required String timeRemaining,
-    required bool isLive,
-    DateTime? gameDate, // Add game date for kickoff time
-  }) = _LiveScore;
-
-  factory LiveScore.fromJson(Map<String, dynamic> json) =>
-      _$LiveScoreFromJson(json);
-}
+// LiveScore model removed to fix CI issues

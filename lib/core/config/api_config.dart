@@ -9,7 +9,6 @@ class ApiConfig {
   // Server Configuration (when using server sync)
   static const String SERVER_BASE_URL =
       'https://nfl-survival-production.up.railway.app/api';
-  static const String SERVER_LIVE_SCORES_ENDPOINT = '/live-scores';
 
   // ESPN Direct Configuration (when using direct ESPN)
   static const int ESPN_POLLING_INTERVAL_SECONDS = 15;
@@ -32,10 +31,6 @@ class ApiConfig {
     }
   }
 
-  /// Get the server URL for live scores
-  static String getLiveScoresUrl(int week, int season) {
-    return '$SERVER_BASE_URL$SERVER_LIVE_SCORES_ENDPOINT?week=$week&season=$season';
-  }
 
   /// Check if we should use server sync
   static bool shouldUseServerSync() {

@@ -24,7 +24,7 @@ class PaywallScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(
-              'Premium unlocks multiple leagues, no ads, live scores, and advanced analytics.',
+              'Premium unlocks multiple leagues, no ads, and advanced analytics.',
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 24),
