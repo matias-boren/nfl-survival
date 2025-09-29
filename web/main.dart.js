@@ -29971,7 +29971,7 @@ return A.n($.aRg().zg(0,".env"),$async$BW)
 case 2:s=3
 return A.n(A.aSu($.b3z()),$async$BW)
 case 3:q=$.aRg().ga2r().i(0,"SUPABASE_URL")
-if(q==null)q="https://your-project.supabase.co"
+if(q==null)q="https://yjynojqiyrlnszoiqdgp.supabase.co"
 p=$.aRg().ga2r().i(0,"SUPABASE_ANON_KEY")
 s=4
 return A.n(A.ayo(p==null?"your-anon-key":p,q),$async$BW)
