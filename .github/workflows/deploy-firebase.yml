@@ -26,10 +26,11 @@ jobs:
     - name: Build Flutter web
       run: flutter build web --release --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
       
+    - name: Setup Firebase CLI
+      run: npm install -g firebase-tools
+      
     - name: Deploy to Firebase
-      uses: FirebaseExtended/action-hosting-deploy@v0
-      with:
-        repoToken: '${{ secrets.GITHUB_TOKEN }}'
-        firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_NFL_SURVIVAL }}'
-        channelId: live
-        projectId: pick1-34708
+      run: |
+        firebase deploy --only hosting --project pick1-34708 --token "${{ secrets.FIREBASE_TOKEN }}"
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
