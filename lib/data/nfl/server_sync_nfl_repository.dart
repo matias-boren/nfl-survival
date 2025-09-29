@@ -9,7 +9,7 @@ class ServerSyncNflRepository implements NflRepository {
   final http.Client _client;
 
   ServerSyncNflRepository({http.Client? client})
-      : _client = client ?? http.Client();
+    : _client = client ?? http.Client();
 
   @override
   Future<List<Game>> listGames({required int season, required int week}) async {
@@ -38,7 +38,9 @@ class ServerSyncNflRepository implements NflRepository {
 
         return games;
       } else {
-        print('Server failed with status ${response.statusCode}, using mock data');
+        print(
+          'Server failed with status ${response.statusCode}, using mock data',
+        );
         return _getMockGames(season, week);
       }
     } catch (e) {
@@ -51,7 +53,8 @@ class ServerSyncNflRepository implements NflRepository {
   Future<List<Team>> listTeams() async {
     try {
       // For teams, we can still use ESPN directly as it doesn't change often
-      final url = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams';
+      final url =
+          'https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams';
       final response = await _client.get(
         Uri.parse(url),
         headers: {
@@ -108,11 +111,11 @@ class ServerSyncNflRepository implements NflRepository {
     // This could be calculated server-side or use a simple calculation
     final now = DateTime.now();
     final currentWeek = _getCurrentWeek(now);
-    
+
     if (week <= currentWeek) {
       return null; // Week has already started
     }
-    
+
     // Return Thursday 8:20 PM ET for the week
     final thursday = _getNextThursday(now);
     return thursday.subtract(const Duration(hours: 4)); // Convert to ET
@@ -124,7 +127,11 @@ class ServerSyncNflRepository implements NflRepository {
   }
 
   /// Parse server games response
-  List<Game> _parseServerGamesResponse(Map<String, dynamic> data, int season, int week) {
+  List<Game> _parseServerGamesResponse(
+    Map<String, dynamic> data,
+    int season,
+    int week,
+  ) {
     try {
       final List<dynamic> gamesData = data['games'] ?? [];
       final List<Game> games = [];
@@ -134,7 +141,9 @@ class ServerSyncNflRepository implements NflRepository {
         final awayTeam = gameData['awayTeam'];
 
         final game = Game(
-          id: gameData['id']?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),
+          id:
+              gameData['id']?.toString() ??
+              DateTime.now().millisecondsSinceEpoch.toString(),
           homeTeam: Team(
             id: homeTeam['id']?.toString() ?? '',
             name: homeTeam['name'] ?? 'Unknown',
@@ -204,7 +213,8 @@ class ServerSyncNflRepository implements NflRepository {
           quarter: scoreData['quarter'] ?? 0,
           timeRemaining: scoreData['timeRemaining'] ?? '',
           isLive: scoreData['isLive'] ?? false,
-          gameDate: DateTime.tryParse(scoreData['gameDate'] ?? '') ?? DateTime.now(),
+          gameDate:
+              DateTime.tryParse(scoreData['gameDate'] ?? '') ?? DateTime.now(),
         );
       }).toList();
     } catch (e) {
@@ -230,7 +240,8 @@ class ServerSyncNflRepository implements NflRepository {
   /// Convert ESPN teams data to Team objects
   List<Team> _convertEspnDataToTeams(Map<String, dynamic> data) {
     try {
-      final teams = data['sports']?[0]?['leagues']?[0]?['teams'] as List<dynamic>? ?? [];
+      final teams =
+          data['sports']?[0]?['leagues']?[0]?['teams'] as List<dynamic>? ?? [];
       return teams.map((teamData) {
         final team = teamData['team'];
         return Team(

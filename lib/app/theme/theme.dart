@@ -75,33 +75,25 @@ ThemeData buildAppTheme() {
     cardTheme: CardThemeData(
       color: const Color(0xFF31363F),
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF76ABAE),
         foregroundColor: const Color(0xFF222831),
         elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: const Color(0xFF76ABAE),
         side: const BorderSide(color: Color(0xFF76ABAE)),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        foregroundColor: const Color(0xFF76ABAE),
-      ),
+      style: TextButton.styleFrom(foregroundColor: const Color(0xFF76ABAE)),
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
@@ -138,10 +130,6 @@ ThemeData buildAppTheme() {
       labelMedium: TextStyle(color: Color(0xFFEEEEEE)),
       labelSmall: TextStyle(color: Color(0xFF76ABAE)),
     ),
-    extensions: [
-      appColors,
-      const AppSpacings(),
-      const AppSizes(),
-    ],
+    extensions: [appColors, const AppSpacings(), const AppSizes()],
   );
 }

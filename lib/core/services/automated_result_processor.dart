@@ -251,7 +251,6 @@ class AutomatedResultProcessor {
     _processedGames.add(gameId);
   }
 
-
   /// Dispose resources
   void dispose() {
     stopProcessing();

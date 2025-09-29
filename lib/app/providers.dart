@@ -46,16 +46,14 @@ final billingRepositoryProvider = Provider<BillingRepository>(
   (ref) => MockBillingRepository(),
 );
 final adsServiceProvider = Provider<AdsService>((ref) => MockAdsService());
-final nflRepositoryProvider = Provider<NflRepository>(
-  (ref) {
-    // Use server sync if configured, otherwise use hybrid repository
-    if (ApiConfig.shouldUseServerSync()) {
-      return ServerSyncNflRepository();
-    } else {
-      return HybridNflRepository();
-    }
-  },
-);
+final nflRepositoryProvider = Provider<NflRepository>((ref) {
+  // Use server sync if configured, otherwise use hybrid repository
+  if (ApiConfig.shouldUseServerSync()) {
+    return ServerSyncNflRepository();
+  } else {
+    return HybridNflRepository();
+  }
+});
 final leagueRepositoryProvider = Provider<LeagueRepository>(
   (ref) => SupabaseLeagueRepository(),
 );

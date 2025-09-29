@@ -46,7 +46,10 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e'), backgroundColor: const Color(0xFFFF6B6B)),
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: const Color(0xFFFF6B6B),
+          ),
         );
       }
     } finally {
@@ -104,7 +107,10 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
                   const SizedBox(height: 8),
                   const Text(
                     'Unlock all features and remove ads',
-                    style: const TextStyle(fontSize: 16, color: Color(0xFFEEEEEE)),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFFEEEEEE),
+                    ),
                   ),
                 ],
               ),
@@ -269,7 +275,10 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
                 const SizedBox(height: 4),
                 Text(
                   description,
-                  style: const TextStyle(fontSize: 14, color: Color(0xFF76ABAE)),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF76ABAE),
+                  ),
                 ),
               ],
             ),

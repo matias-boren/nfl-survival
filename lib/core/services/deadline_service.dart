@@ -55,7 +55,6 @@ class DeadlineService {
     return null; // This will be overridden by the NFL repository
   }
 
-
   bool isPickDeadlinePassed(int week) {
     final deadline = getPickDeadline(week);
     print(

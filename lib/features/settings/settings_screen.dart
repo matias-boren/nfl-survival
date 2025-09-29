@@ -37,7 +37,6 @@ class SettingsScreen extends ConsumerWidget {
           ),
           const Divider(),
 
-
           // Account Section
           const Padding(
             padding: EdgeInsets.all(16.0),
@@ -348,14 +347,18 @@ class SettingsScreen extends ConsumerWidget {
                 height: 8,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isActive ? const Color(0xFF76ABAE) : const Color(0xFFFF6B6B),
+                  color: isActive
+                      ? const Color(0xFF76ABAE)
+                      : const Color(0xFFFF6B6B),
                 ),
               ),
               const SizedBox(width: 8),
               Text(
                 value,
                 style: TextStyle(
-                  color: isActive ? const Color(0xFF76ABAE) : const Color(0xFFFF6B6B),
+                  color: isActive
+                      ? const Color(0xFF76ABAE)
+                      : const Color(0xFFFF6B6B),
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -365,5 +368,4 @@ class SettingsScreen extends ConsumerWidget {
       ),
     );
   }
-
 }

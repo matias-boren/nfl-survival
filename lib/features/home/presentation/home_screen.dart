@@ -76,7 +76,9 @@ class HomeScreen extends ConsumerWidget {
                                 const SizedBox(height: 8),
                                 Text(
                                   'Ready to make your pick?',
-                                  style: const TextStyle(color: Color(0xFF76ABAE)),
+                                  style: const TextStyle(
+                                    color: Color(0xFF76ABAE),
+                                  ),
                                 ),
                               ],
                             ),
