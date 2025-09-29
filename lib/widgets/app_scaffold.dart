@@ -21,6 +21,9 @@ class AppScaffold extends ConsumerWidget {
     final location = uri.toString();
     final currentUser = ref.watch(currentUserProvider);
     
+    // Debug logging
+    print('🔍 AppScaffold - Location: $location, CurrentUser: ${currentUser?.email ?? "null"}');
+    
     // Only show navigation bar if:
     // 1. User is authenticated (currentUser is not null)
     // 2. Not on sign-in or loading screens
@@ -30,6 +33,8 @@ class AppScaffold extends ConsumerWidget {
                        location.contains('/loading');
     
     final shouldShowNavigation = currentUser != null && !isAuthRoute;
+    
+    print('🔍 AppScaffold - isAuthRoute: $isAuthRoute, shouldShowNavigation: $shouldShowNavigation');
     
     return Scaffold(
       appBar: appBar,

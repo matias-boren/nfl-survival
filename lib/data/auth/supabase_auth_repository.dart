@@ -8,7 +8,8 @@ class SupabaseAuthRepository implements AuthRepository {
   @override
   Stream<app_user.User?> currentUser() async* {
     await for (final session in _supabase.auth.onAuthStateChange) {
-      if (session.session?.user != null) {
+      print('🔍 Auth state change - Session: ${session.session?.user?.email ?? "null"}');
+      if (session.session?.user != null && session.session?.accessToken != null) {
         final supabaseUser = session.session!.user;
         
         // Load joined league IDs and user profile from database
@@ -56,6 +57,7 @@ class SupabaseAuthRepository implements AuthRepository {
           favoriteTeam: favoriteTeam,
         );
       } else {
+        print('🔍 No valid session - yielding null');
         yield null;
       }
     }
