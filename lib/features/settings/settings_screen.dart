@@ -370,6 +370,7 @@ class SettingsScreen extends ConsumerWidget {
               subtitle: const Text('Clean and bright interface'),
               trailing: currentTheme == AppThemeMode.light ? const Icon(Icons.check, color: Colors.green) : null,
               onTap: () {
+                print('Switching to Light theme');
                 themeNotifier.setTheme(AppThemeMode.light);
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -384,6 +385,7 @@ class SettingsScreen extends ConsumerWidget {
               trailing: currentTheme == AppThemeMode.darkGrey ? const Icon(Icons.check, color: Colors.green) : null,
               enabled: isPremium,
               onTap: isPremium ? () {
+                print('Switching to Dark Grey theme');
                 themeNotifier.setTheme(AppThemeMode.darkGrey);
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -404,6 +406,7 @@ class SettingsScreen extends ConsumerWidget {
               trailing: currentTheme == AppThemeMode.dark ? const Icon(Icons.check, color: Colors.green) : null,
               enabled: isPremium,
               onTap: isPremium ? () {
+                print('Switching to Dark theme');
                 themeNotifier.setTheme(AppThemeMode.dark);
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(

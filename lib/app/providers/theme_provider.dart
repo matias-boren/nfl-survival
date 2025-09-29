@@ -32,8 +32,9 @@ class ThemeNotifier extends StateNotifier<AppThemeMode> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setInt(_themeKey, theme.index);
       state = theme;
+      print('Theme changed to: $theme');
     } catch (e) {
-      // Handle error silently for now
+      print('Error setting theme: $e');
     }
   }
 
@@ -60,6 +61,15 @@ final themeProvider = StateNotifierProvider<ThemeNotifier, AppThemeMode>((ref) {
 });
 
 final currentThemeProvider = Provider<ThemeData>((ref) {
-  final themeNotifier = ref.watch(themeProvider.notifier);
-  return themeNotifier.getCurrentTheme();
+  final themeMode = ref.watch(themeProvider);
+  print('Current theme provider called with mode: $themeMode');
+  
+  switch (themeMode) {
+    case AppThemeMode.light:
+      return buildAppTheme();
+    case AppThemeMode.darkGrey:
+      return buildAppDarkGreyTheme();
+    case AppThemeMode.dark:
+      return buildAppDarkTheme();
+  }
 });
