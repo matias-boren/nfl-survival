@@ -3,6 +3,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_performance/firebase_performance.dart';
+import 'package:nfl_survival/firebase_options.dart';
 import 'package:nfl_survival/app/router.dart';
 import 'package:nfl_survival/app/providers.dart';
 import 'package:nfl_survival/app/theme/theme.dart';
@@ -13,6 +17,17 @@ Future<void> main() async {
 
   // Load environment variables
   await dotenv.load(fileName: ".env");
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Initialize Firebase Analytics
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  
+  // Initialize Firebase Performance
+  FirebasePerformance performance = FirebasePerformance.instance;
 
   // Initialize Hive
   await Hive.initFlutter();
