@@ -21,13 +21,42 @@ let redisClient = null;
 if (process.env.REDIS_URL) {
   try {
     redisClient = redis.createClient({
-      url: process.env.REDIS_URL
+      url: process.env.REDIS_URL,
+      retry_strategy: (options) => {
+        if (options.error && options.error.code === 'ECONNREFUSED') {
+          console.log('❌ Redis connection refused, running without cache');
+          return null; // Stop retrying
+        }
+        if (options.total_retry_time > 1000 * 60 * 60) {
+          console.log('❌ Redis retry time exhausted, running without cache');
+          return null; // Stop retrying after 1 hour
+        }
+        if (options.attempt > 10) {
+          console.log('❌ Redis max retry attempts reached, running without cache');
+          return null; // Stop retrying after 10 attempts
+        }
+        return Math.min(options.attempt * 100, 3000); // Exponential backoff
+      }
     });
-    redisClient.on('error', (err) => console.log('Redis Client Error:', err.message));
+    
+    redisClient.on('error', (err) => {
+      console.log('⚠️ Redis Client Error:', err.message);
+      redisClient = null; // Disable Redis on error
+    });
+    
     redisClient.on('connect', () => console.log('✅ Redis connected'));
-    redisClient.connect();
+    redisClient.on('ready', () => console.log('✅ Redis ready'));
+    redisClient.on('end', () => {
+      console.log('⚠️ Redis connection ended');
+      redisClient = null;
+    });
+    
+    redisClient.connect().catch((error) => {
+      console.log('❌ Redis connection failed:', error.message);
+      redisClient = null;
+    });
   } catch (error) {
-    console.log('❌ Redis connection failed:', error.message);
+    console.log('❌ Redis setup failed:', error.message);
     redisClient = null;
   }
 } else {
@@ -115,24 +144,34 @@ class ESPNPollingService {
         const data = response.data;
         const liveScores = this.parseESPNData(data);
         
-        // Cache the results
-        await redisClient.setEx(
-          `live-scores:week-${currentWeek}`,
-          CACHE_DURATION,
-          JSON.stringify({
-            scores: liveScores,
-            lastUpdate: Date.now(),
-            week: currentWeek,
-            season: season
-          })
-        );
+        // Cache the results only if Redis is available and connected
+        if (redisClient) {
+          try {
+            await redisClient.setEx(
+              `live-scores:week-${currentWeek}`,
+              CACHE_DURATION,
+              JSON.stringify({
+                scores: liveScores,
+                lastUpdate: Date.now(),
+                week: currentWeek,
+                season: season
+              })
+            );
+            console.log(`✅ Cached ${liveScores.length} games for week ${currentWeek}`);
+          } catch (redisError) {
+            console.log('⚠️ Redis cache error (non-critical):', redisError.message);
+            // Continue without caching - this is not a critical error
+          }
+        } else {
+          console.log('ℹ️ Redis not available, skipping cache');
+        }
         
         const liveGames = liveScores.filter(score => score.isLive).length;
         if (liveGames > 0) {
           console.log(`🏈 Found ${liveGames} live games`);
         }
         
-        console.log(`✅ Cached ${liveScores.length} games for week ${currentWeek}`);
+        console.log(`✅ Processed ${liveScores.length} games for week ${currentWeek}`);
       } else {
         console.log('❌ ESPN API request failed:', response.status);
       }
@@ -300,7 +339,8 @@ app.get('/api/live-scores', async (req, res) => {
       try {
         cachedData = await redisClient.get(cacheKey);
       } catch (error) {
-        console.log('Redis cache error:', error.message);
+        console.log('⚠️ Redis cache get error (non-critical):', error.message);
+        // Continue without cache - this is not a critical error
       }
     }
     
@@ -346,8 +386,10 @@ app.get('/api/live-scores', async (req, res) => {
                 season: currentSeason
               })
             );
+            console.log(`✅ Cached live scores for week ${currentWeek}`);
           } catch (error) {
-            console.log('Redis cache set error:', error.message);
+            console.log('⚠️ Redis cache set error (non-critical):', error.message);
+            // Continue without caching - this is not a critical error
           }
         }
         
