@@ -1,8 +1,8 @@
 class NewsConfig {
-  // OpenAI API Key - should be set from environment variables
+  // OpenAI API Key - set via dart-define in build process
   static const String openAIApiKey = String.fromEnvironment(
     'OPENAI_API_KEY',
-    defaultValue: '', // Will be set from .env file
+    defaultValue: '', // Set via --dart-define=OPENAI_API_KEY=your_key
   );
 
   // News generation settings
