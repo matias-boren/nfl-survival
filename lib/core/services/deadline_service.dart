@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nfl_survival/core/services/week_override_service.dart';
 
 class DeadlineService {
   static final DeadlineService _instance = DeadlineService._internal();
@@ -40,8 +39,7 @@ class DeadlineService {
     final calculatedWeek = (daysSinceStart / 7).floor() + 1;
     final week = calculatedWeek.clamp(1, 18); // NFL regular season is 18 weeks
     
-    // Use override if set (for testing)
-    return WeekOverrideService.getCurrentWeek(week);
+    return week;
   }
 
   DateTime? getPickDeadline(int week) {

@@ -313,9 +313,9 @@ class LeagueInvitationsScreen extends ConsumerWidget {
       await Clipboard.setData(ClipboardData(text: text));
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Link copied to clipboard!'),
-            duration: Duration(seconds: 2),
+          SnackBar(
+            content: Text('Copied: $text'),
+            duration: const Duration(seconds: 3),
             backgroundColor: Colors.green,
           ),
         );
