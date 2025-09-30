@@ -1,11 +1,11 @@
 {
-    "name": "nfl_survival",
-    "short_name": "nfl_survival",
+    "name": "Pick1",
+    "short_name": "Pick1",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Pick1 - Create and join leagues, make weekly picks, compete with friends!",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
