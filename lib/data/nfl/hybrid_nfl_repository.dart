@@ -232,13 +232,23 @@ class HybridNflRepository implements NflRepository {
 
     final completed = status['completed'] as bool? ?? false;
     final type = status['type']?['id'] as String?;
+    final typeName = status['type']?['name'] as String?;
+
+    print('ESPN Game Status Debug:');
+    print('  completed: $completed');
+    print('  type.id: $type');
+    print('  type.name: $typeName');
+    print('  full status: $status');
 
     if (completed) {
+      print('  -> Returning FINAL');
       return GameStatus.FINAL;
     } else if (type == '2') {
       // In Progress
+      print('  -> Returning IN_PROGRESS');
       return GameStatus.IN_PROGRESS;
     } else {
+      print('  -> Returning SCHEDULED');
       return GameStatus.SCHEDULED;
     }
   }
