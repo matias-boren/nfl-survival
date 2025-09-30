@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nfl_survival/data/ads/ads_service.dart';
+import 'package:pick1/data/ads/ads_service.dart';
 
 class AdMobAdsService implements AdsService {
   @override

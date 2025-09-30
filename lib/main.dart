@@ -6,11 +6,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
-import 'package:nfl_survival/firebase_options.dart';
-import 'package:nfl_survival/app/router.dart';
-import 'package:nfl_survival/app/providers.dart';
-import 'package:nfl_survival/app/theme/theme.dart';
-import 'package:nfl_survival/core/services/ad_service.dart';
+import 'package:pick1/firebase_options.dart';
+import 'package:pick1/app/router.dart';
+import 'package:pick1/app/providers.dart';
+import 'package:pick1/app/theme/theme.dart';
+import 'package:pick1/core/services/ad_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,7 +71,7 @@ class MyApp extends ConsumerWidget {
     });
 
     return MaterialApp.router(
-      title: 'NFL Survival',
+      title: 'Pick1',
       theme: buildAppTheme(),
       routerConfig: goRouter,
     );

@@ -1,4 +1,4 @@
-import 'package:nfl_survival/data/news/news_repositories.dart';
+import 'package:pick1/data/news/news_repositories.dart';
 
 class MockNewsRepository implements NewsRepository {
   @override

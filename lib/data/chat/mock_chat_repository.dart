@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:nfl_survival/data/chat/chat_repositories.dart';
-import 'package:nfl_survival/data/models/chat_message.dart';
+import 'package:pick1/data/chat/chat_repositories.dart';
+import 'package:pick1/data/models/chat_message.dart';
 
 class MockChatRepository implements ChatRepository {
   static final Map<String, List<ChatMessage>> _messages = {};

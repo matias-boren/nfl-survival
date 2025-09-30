@@ -1,4 +1,4 @@
-import 'package:nfl_survival/data/models/league_invitation.dart';
+import 'package:pick1/data/models/league_invitation.dart';
 
 abstract class InvitationRepository {
   // Create a new invitation

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nfl_survival/app/providers.dart';
-import 'package:nfl_survival/data/models/nfl.dart';
-import 'package:nfl_survival/widgets/app_scaffold.dart';
-import 'package:nfl_survival/widgets/banner_ad_slot.dart';
-import 'package:nfl_survival/features/league/table/league_list_screen.dart';
-import 'package:nfl_survival/features/league/join/league_options_dialog.dart';
-import 'package:nfl_survival/core/services/team_logo_service.dart';
+import 'package:pick1/app/providers.dart';
+import 'package:pick1/data/models/nfl.dart';
+import 'package:pick1/widgets/app_scaffold.dart';
+import 'package:pick1/widgets/banner_ad_slot.dart';
+import 'package:pick1/features/league/table/league_list_screen.dart';
+import 'package:pick1/features/league/join/league_options_dialog.dart';
+import 'package:pick1/core/services/team_logo_service.dart';
 
 final nextWeekGamesProvider = FutureProvider<List<Game>>((ref) async {
   print('nextWeekGamesProvider called');
@@ -41,7 +41,7 @@ class HomeScreen extends ConsumerWidget {
 
     return AppScaffold(
       appBar: AppBar(
-        title: const Text('NFL Survival Pool'),
+        title: const Text('Pick1'),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

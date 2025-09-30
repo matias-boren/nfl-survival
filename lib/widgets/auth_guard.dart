@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nfl_survival/app/providers.dart';
+import 'package:pick1/app/providers.dart';
 
 class AuthGuard extends ConsumerWidget {
   final Widget child;

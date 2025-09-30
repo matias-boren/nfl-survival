@@ -1,6 +1,6 @@
 import 'dart:math';
-import 'package:nfl_survival/data/users/user_repositories.dart';
-import 'package:nfl_survival/data/models/user.dart';
+import 'package:pick1/data/users/user_repositories.dart';
+import 'package:pick1/data/models/user.dart';
 
 class MockUserRepository implements UserRepository {
   // Mock users database - will be populated dynamically

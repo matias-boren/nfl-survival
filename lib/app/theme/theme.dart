@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'theme_extensions.dart';
 import 'design_tokens.dart';
 
-/// Builds the universal dark grey theme for the NFL Survival Pool app
+/// Builds the universal dark grey theme for the Pick1 app
 ThemeData buildAppTheme() {
   final base = ThemeData(
     useMaterial3: true,

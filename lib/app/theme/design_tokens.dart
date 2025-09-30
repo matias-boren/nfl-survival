@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Design tokens for the NFL Survival Pool app
+/// Design tokens for the Pick1 app
 /// Universal Dark Grey Theme with specified colors
 class DesignTokens {
   // Colors - Universal Dark Grey Theme

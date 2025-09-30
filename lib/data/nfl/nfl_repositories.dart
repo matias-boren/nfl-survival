@@ -1,4 +1,4 @@
-import 'package:nfl_survival/data/models/nfl.dart';
+import 'package:pick1/data/models/nfl.dart';
 
 abstract class NflRepository {
   Future<List<Game>> listGames({required int season, required int week});

@@ -1,5 +1,5 @@
-import 'package:nfl_survival/data/friends/friends_repositories.dart';
-import 'package:nfl_survival/data/models/user.dart';
+import 'package:pick1/data/friends/friends_repositories.dart';
+import 'package:pick1/data/models/user.dart';
 
 class MockFriendsRepository implements FriendsRepository {
   @override

@@ -1,5 +1,5 @@
-import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
-import 'package:nfl_survival/data/models/nfl.dart';
+import 'package:pick1/data/nfl/nfl_repositories.dart';
+import 'package:pick1/data/models/nfl.dart';
 
 class RealNflRepository implements NflRepository {
   @override

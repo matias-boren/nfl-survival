@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:nfl_survival/data/auth/auth_repositories.dart';
-import 'package:nfl_survival/data/models/user.dart';
+import 'package:pick1/data/auth/auth_repositories.dart';
+import 'package:pick1/data/models/user.dart';
 
 class MockAuthRepository implements AuthRepository {
   final _userStreamController = StreamController<User?>.broadcast();

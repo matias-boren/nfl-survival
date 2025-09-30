@@ -1,5 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:nfl_survival/data/news/news_repositories.dart';
+import 'package:pick1/data/news/news_repositories.dart';
 
 class SupabaseNewsRepository implements NewsRepository {
   final SupabaseClient _supabase = Supabase.instance.client;

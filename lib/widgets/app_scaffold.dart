@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nfl_survival/app/providers.dart';
+import 'package:pick1/app/providers.dart';
 
 class AppScaffold extends ConsumerWidget {
   final Widget child;

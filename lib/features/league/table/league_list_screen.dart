@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nfl_survival/app/providers.dart';
-import 'package:nfl_survival/data/models/league.dart';
-import 'package:nfl_survival/widgets/app_scaffold.dart';
-import 'package:nfl_survival/widgets/banner_ad_slot.dart';
-import 'package:nfl_survival/features/league/join/league_options_dialog.dart';
+import 'package:pick1/app/providers.dart';
+import 'package:pick1/data/models/league.dart';
+import 'package:pick1/widgets/app_scaffold.dart';
+import 'package:pick1/widgets/banner_ad_slot.dart';
+import 'package:pick1/features/league/join/league_options_dialog.dart';
 
 final userLeaguesProvider = FutureProvider<List<League>>((ref) async {
   final currentUser = ref.watch(currentUserProvider);

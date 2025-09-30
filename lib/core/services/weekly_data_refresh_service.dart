@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'package:nfl_survival/core/services/result_processing_service.dart';
-import 'package:nfl_survival/core/services/standings_service.dart';
-import 'package:nfl_survival/data/leagues/league_repositories.dart';
-import 'package:nfl_survival/data/models/league.dart';
-import 'package:nfl_survival/data/models/nfl.dart';
-import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
-import 'package:nfl_survival/data/picks/picks_repositories.dart';
-import 'package:nfl_survival/data/users/user_repositories.dart';
+import 'package:pick1/core/services/result_processing_service.dart';
+import 'package:pick1/core/services/standings_service.dart';
+import 'package:pick1/data/leagues/league_repositories.dart';
+import 'package:pick1/data/models/league.dart';
+import 'package:pick1/data/models/nfl.dart';
+import 'package:pick1/data/nfl/nfl_repositories.dart';
+import 'package:pick1/data/picks/picks_repositories.dart';
+import 'package:pick1/data/users/user_repositories.dart';
 
 class WeeklyDataRefreshService {
   static final WeeklyDataRefreshService _instance =

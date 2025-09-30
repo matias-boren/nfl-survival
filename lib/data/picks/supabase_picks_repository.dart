@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:nfl_survival/data/picks/picks_repositories.dart';
-import 'package:nfl_survival/data/models/pick.dart';
+import 'package:pick1/data/picks/picks_repositories.dart';
+import 'package:pick1/data/models/pick.dart';
 
 class SupabasePicksRepository implements PicksRepository {
   final SupabaseClient _supabase = Supabase.instance.client;

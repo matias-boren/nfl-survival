@@ -1,5 +1,5 @@
-import 'package:nfl_survival/data/models/league.dart';
-import 'package:nfl_survival/data/models/user.dart';
+import 'package:pick1/data/models/league.dart';
+import 'package:pick1/data/models/user.dart';
 
 abstract class LeagueRepository {
   Future<League> createLeague(League draft);

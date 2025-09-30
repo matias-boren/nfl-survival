@@ -1,5 +1,5 @@
-import 'package:nfl_survival/data/models/pick.dart';
-import 'package:nfl_survival/data/picks/picks_repositories.dart';
+import 'package:pick1/data/models/pick.dart';
+import 'package:pick1/data/picks/picks_repositories.dart';
 
 class MockPicksRepository implements PicksRepository {
   // In-memory storage for testing

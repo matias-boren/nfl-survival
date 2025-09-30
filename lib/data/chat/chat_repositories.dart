@@ -1,4 +1,4 @@
-import 'package:nfl_survival/data/models/chat_message.dart';
+import 'package:pick1/data/models/chat_message.dart';
 
 abstract class ChatRepository {
   /// Get all chat messages for a league, ordered by creation time

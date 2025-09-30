@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:nfl_survival/core/services/ad_service.dart';
+import 'package:pick1/core/services/ad_service.dart';
 
 class PremiumUpgradeInterstitial {
   static final AdService _adService = AdService();

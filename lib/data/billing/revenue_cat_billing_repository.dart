@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:nfl_survival/data/billing/billing_repositories.dart';
+import 'package:pick1/data/billing/billing_repositories.dart';
 
 class RevenueCatBillingRepository implements BillingRepository {
   final _premiumStatusController = StreamController<bool>.broadcast();

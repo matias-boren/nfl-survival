@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:nfl_survival/core/services/ad_service.dart';
+import 'package:pick1/core/services/ad_service.dart';
 
 class RealBannerAd extends StatefulWidget {
   final double? height;

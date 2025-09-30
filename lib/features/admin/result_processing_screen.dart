@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nfl_survival/app/providers.dart';
-import 'package:nfl_survival/data/models/pick.dart';
-import 'package:nfl_survival/features/league/table/league_list_screen.dart';
-import 'package:nfl_survival/widgets/app_scaffold.dart';
+import 'package:pick1/app/providers.dart';
+import 'package:pick1/data/models/pick.dart';
+import 'package:pick1/features/league/table/league_list_screen.dart';
+import 'package:pick1/widgets/app_scaffold.dart';
 
 class ResultProcessingScreen extends ConsumerStatefulWidget {
   const ResultProcessingScreen({super.key});

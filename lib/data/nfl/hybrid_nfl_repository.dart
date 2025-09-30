@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
-import 'package:nfl_survival/data/models/nfl.dart';
+import 'package:pick1/data/nfl/nfl_repositories.dart';
+import 'package:pick1/data/models/nfl.dart';
 
 class HybridNflRepository implements NflRepository {
   static const String _baseUrl =

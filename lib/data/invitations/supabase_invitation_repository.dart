@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:nfl_survival/data/invitations/invitation_repositories.dart';
-import 'package:nfl_survival/data/models/league_invitation.dart';
+import 'package:pick1/data/invitations/invitation_repositories.dart';
+import 'package:pick1/data/models/league_invitation.dart';
 
 class SupabaseInvitationRepository implements InvitationRepository {
   final SupabaseClient _supabase = Supabase.instance.client;

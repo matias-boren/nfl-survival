@@ -1,7 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:nfl_survival/data/leagues/league_repositories.dart';
-import 'package:nfl_survival/data/models/league.dart';
-import 'package:nfl_survival/data/models/user.dart' as app_user;
+import 'package:pick1/data/leagues/league_repositories.dart';
+import 'package:pick1/data/models/league.dart';
+import 'package:pick1/data/models/user.dart' as app_user;
 
 class SupabaseLeagueRepository implements LeagueRepository {
   final SupabaseClient _supabase = Supabase.instance.client;

@@ -1,5 +1,5 @@
-import 'package:nfl_survival/data/models/league.dart';
-import 'package:nfl_survival/data/models/pick.dart';
+import 'package:pick1/data/models/league.dart';
+import 'package:pick1/data/models/pick.dart';
 
 class PointsCalculationService {
   /// Calculate points for a pick - simply the score of the picked team

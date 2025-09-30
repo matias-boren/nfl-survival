@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nfl_survival/app/providers.dart';
-import 'package:nfl_survival/widgets/app_scaffold.dart';
+import 'package:pick1/app/providers.dart';
+import 'package:pick1/widgets/app_scaffold.dart';
 
 class AutomatedProcessingScreen extends ConsumerWidget {
   const AutomatedProcessingScreen({super.key});

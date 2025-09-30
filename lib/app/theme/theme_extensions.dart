@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show lerpDouble;
 
-/// Extended theme extensions for the NFL Survival Pool app
+/// Extended theme extensions for the Pick1 app
 @immutable
 class AppColors extends ThemeExtension<AppColors> {
   final Color? primary;

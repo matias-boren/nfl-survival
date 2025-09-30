@@ -1,4 +1,4 @@
-import 'package:nfl_survival/data/models/pick.dart';
+import 'package:pick1/data/models/pick.dart';
 
 abstract class PicksRepository {
   Future<Pick> submitPick({

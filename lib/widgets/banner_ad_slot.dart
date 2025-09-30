@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:nfl_survival/app/providers.dart';
-import 'package:nfl_survival/widgets/real_banner_ad.dart';
+import 'package:pick1/app/providers.dart';
+import 'package:pick1/widgets/real_banner_ad.dart';
 
 class BannerAdSlot extends ConsumerWidget {
   final double? height;

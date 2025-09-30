@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:nfl_survival/data/chat/chat_repositories.dart';
-import 'package:nfl_survival/data/models/chat_message.dart';
+import 'package:pick1/data/chat/chat_repositories.dart';
+import 'package:pick1/data/models/chat_message.dart';
 
 class SupabaseChatRepository implements ChatRepository {
   final SupabaseClient _supabase = Supabase.instance.client;

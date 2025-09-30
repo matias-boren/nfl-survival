@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nfl_survival/app/providers.dart';
-import 'package:nfl_survival/app/theme/theme_extensions.dart';
+import 'package:pick1/app/providers.dart';
+import 'package:pick1/app/theme/theme_extensions.dart';
 
 class PremiumUpgradeScreen extends ConsumerStatefulWidget {
   const PremiumUpgradeScreen({super.key});
@@ -97,7 +97,7 @@ class _PremiumUpgradeScreenState extends ConsumerState<PremiumUpgradeScreen> {
                   const Icon(Icons.star, size: 64, color: Color(0xFFEEEEEE)),
                   const SizedBox(height: 16),
                   const Text(
-                    'NFL Survival Premium',
+                    'Pick1 Premium',
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,

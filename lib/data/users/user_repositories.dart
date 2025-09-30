@@ -1,4 +1,4 @@
-import 'package:nfl_survival/data/models/user.dart';
+import 'package:pick1/data/models/user.dart';
 
 abstract class UserRepository {
   // Get user by ID

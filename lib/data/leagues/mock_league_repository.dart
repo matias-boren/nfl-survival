@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:nfl_survival/data/leagues/league_repositories.dart';
-import 'package:nfl_survival/data/models/league.dart';
-import 'package:nfl_survival/data/models/user.dart';
+import 'package:pick1/data/leagues/league_repositories.dart';
+import 'package:pick1/data/models/league.dart';
+import 'package:pick1/data/models/user.dart';
 
 class MockLeagueRepository implements LeagueRepository {
   // In-memory storage for testing

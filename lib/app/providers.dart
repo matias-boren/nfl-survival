@@ -1,39 +1,40 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nfl_survival/core/services/result_processing_service.dart';
-import 'package:nfl_survival/core/services/standings_service.dart';
-import 'package:nfl_survival/core/services/automated_result_processor.dart';
-import 'package:nfl_survival/core/services/weekly_data_refresh_service.dart';
-import 'package:nfl_survival/core/services/elimination_service.dart';
+import 'package:pick1/core/services/result_processing_service.dart';
+import 'package:pick1/core/services/standings_service.dart';
+import 'package:pick1/core/services/automated_result_processor.dart';
+import 'package:pick1/core/services/weekly_data_refresh_service.dart';
+import 'package:pick1/core/services/elimination_service.dart';
 // Live score services removed
-import 'package:nfl_survival/data/ads/ads_service.dart';
-import 'package:nfl_survival/data/ads/mock_ads_service.dart';
-import 'package:nfl_survival/data/auth/auth_repositories.dart';
-import 'package:nfl_survival/data/auth/supabase_auth_repository.dart';
-import 'package:nfl_survival/data/billing/billing_repositories.dart';
-import 'package:nfl_survival/data/billing/mock_billing_repository.dart';
-import 'package:nfl_survival/data/leagues/league_repositories.dart';
-import 'package:nfl_survival/data/leagues/supabase_league_repository.dart';
-import 'package:nfl_survival/data/nfl/nfl_repositories.dart';
-import 'package:nfl_survival/data/nfl/hybrid_nfl_repository.dart';
-import 'package:nfl_survival/data/picks/supabase_picks_repository.dart';
-import 'package:nfl_survival/data/picks/picks_repositories.dart';
-import 'package:nfl_survival/data/news/news_repositories.dart';
-import 'package:nfl_survival/data/news/supabase_news_repository.dart';
-import 'package:nfl_survival/data/friends/friends_repositories.dart';
-import 'package:nfl_survival/data/friends/mock_friends_repository.dart';
-import 'package:nfl_survival/data/invitations/invitation_repositories.dart';
-import 'package:nfl_survival/data/invitations/supabase_invitation_repository.dart';
-import 'package:nfl_survival/data/invitations/mock_invitation_repository.dart';
-import 'package:nfl_survival/data/users/user_repositories.dart';
-import 'package:nfl_survival/data/users/mock_user_repository.dart';
-import 'package:nfl_survival/data/chat/chat_repositories.dart';
-import 'package:nfl_survival/data/chat/supabase_chat_repository.dart';
-import 'package:nfl_survival/data/models/user.dart';
-import 'package:nfl_survival/data/models/pick.dart';
+import 'package:pick1/data/ads/ads_service.dart';
+import 'package:pick1/data/ads/mock_ads_service.dart';
+import 'package:pick1/data/auth/auth_repositories.dart';
+import 'package:pick1/data/auth/supabase_auth_repository.dart';
+import 'package:pick1/data/billing/billing_repositories.dart';
+import 'package:pick1/data/billing/mock_billing_repository.dart';
+import 'package:pick1/data/leagues/league_repositories.dart';
+import 'package:pick1/data/leagues/supabase_league_repository.dart';
+import 'package:pick1/data/nfl/nfl_repositories.dart';
+import 'package:pick1/data/nfl/hybrid_nfl_repository.dart';
+import 'package:pick1/data/picks/supabase_picks_repository.dart';
+import 'package:pick1/data/picks/picks_repositories.dart';
+import 'package:pick1/data/news/news_repositories.dart';
+import 'package:pick1/data/news/supabase_news_repository.dart';
+import 'package:pick1/data/news/mock_news_repository.dart';
+import 'package:pick1/data/friends/friends_repositories.dart';
+import 'package:pick1/data/friends/mock_friends_repository.dart';
+import 'package:pick1/data/invitations/invitation_repositories.dart';
+import 'package:pick1/data/invitations/supabase_invitation_repository.dart';
+import 'package:pick1/data/invitations/mock_invitation_repository.dart';
+import 'package:pick1/data/users/user_repositories.dart';
+import 'package:pick1/data/users/mock_user_repository.dart';
+import 'package:pick1/data/chat/chat_repositories.dart';
+import 'package:pick1/data/chat/supabase_chat_repository.dart';
+import 'package:pick1/data/models/user.dart';
+import 'package:pick1/data/models/pick.dart';
 // NFL models import removed - LiveScore functionality removed
-import 'package:nfl_survival/data/models/chat_message.dart';
-import 'package:nfl_survival/core/services/deadline_service.dart';
-import 'package:nfl_survival/features/league/table/league_list_screen.dart';
+import 'package:pick1/data/models/chat_message.dart';
+import 'package:pick1/core/services/deadline_service.dart';
+import 'package:pick1/features/league/table/league_list_screen.dart';
 
 // Repositories
 final authRepositoryProvider = Provider<AuthRepository>(
@@ -56,7 +57,7 @@ final chatRepositoryProvider = Provider<ChatRepository>(
   (ref) => SupabaseChatRepository(),
 );
 final newsRepositoryProvider = Provider<NewsRepository>(
-  (ref) => SupabaseNewsRepository(),
+  (ref) => MockNewsRepository(),
 );
 final friendsRepositoryProvider = Provider<FriendsRepository>(
   (ref) => MockFriendsRepository(),
