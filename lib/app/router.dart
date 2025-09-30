@@ -21,6 +21,7 @@ import 'package:nfl_survival/features/admin/result_processing_screen.dart';
 import 'package:nfl_survival/features/admin/automated_processing_screen.dart';
 import 'package:nfl_survival/features/league/join/join_leagues_screen.dart';
 import 'package:nfl_survival/features/picks/league_selection/league_selection_screen.dart';
+import 'package:nfl_survival/features/debug/week_override_screen.dart';
 import 'package:nfl_survival/widgets/auth_guard.dart';
 import 'package:nfl_survival/widgets/invitation_guard.dart';
 
@@ -174,6 +175,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/paywall',
         builder: (context, state) => const AuthGuard(child: PaywallScreen()),
+      ),
+      GoRoute(
+        path: '/debug/week-override',
+        builder: (context, state) => const AuthGuard(child: WeekOverrideScreen()),
       ),
       GoRoute(
         path: '/premium-upgrade',
