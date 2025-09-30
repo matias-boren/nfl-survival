@@ -148,6 +148,7 @@ class HybridNflRepository implements NflRepository {
         print('Away score: ${awayCompetitor['score']}');
         print('Home score type: ${homeCompetitor['score'].runtimeType}');
         print('Away score type: ${awayCompetitor['score'].runtimeType}');
+        print('Competition status: ${competition['status']}');
 
         final game = Game(
           id:
@@ -177,7 +178,10 @@ class HybridNflRepository implements NflRepository {
           ),
           homeScore: _parseScore(homeCompetitor['score']),
           awayScore: _parseScore(awayCompetitor['score']),
-          status: _convertEspnStatusToGameStatus(competition['status']),
+          status: () {
+            print('About to convert status for ${awayTeam['displayName']} @ ${homeTeam['displayName']}');
+            return _convertEspnStatusToGameStatus(competition['status']);
+          }(),
           quarter: competition['status']?['period'] ?? 0,
           timeRemaining: competition['status']?['displayClock'] ?? '',
           date: DateTime.tryParse(event['date'] ?? '') ?? DateTime.now(),
