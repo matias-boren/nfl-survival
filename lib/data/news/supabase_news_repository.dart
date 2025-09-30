@@ -7,13 +7,17 @@ class SupabaseNewsRepository implements NewsRepository {
   @override
   Future<List<NewsArticle>> getLatestNews() async {
     try {
+      print('=== Fetching latest news from Supabase ===');
       final response = await _supabase
           .from('news_articles')
           .select()
           .order('published_at', ascending: false)
           .limit(20);
 
-      return response.map((row) => _newsArticleFromSupabase(row)).toList();
+      print('Raw response from Supabase: $response');
+      final articles = response.map((row) => _newsArticleFromSupabase(row)).toList();
+      print('Parsed ${articles.length} articles from Supabase');
+      return articles;
     } catch (e) {
       print('Error fetching latest news: $e');
       return [];
