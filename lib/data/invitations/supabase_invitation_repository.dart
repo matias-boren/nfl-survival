@@ -14,6 +14,11 @@ class SupabaseInvitationRepository implements InvitationRepository {
       final invitationCode = generateInvitationCode();
       final expiresAt = DateTime.now().add(const Duration(days: 7));
       
+      print('Creating invitation with data:');
+      print('  leagueId: $leagueId');
+      print('  invitedByUserId: $invitedByUserId');
+      print('  invitationCode: $invitationCode');
+      
       final response = await _supabase
           .from('league_invitations')
           .insert({
@@ -27,9 +32,11 @@ class SupabaseInvitationRepository implements InvitationRepository {
           .select()
           .single();
 
+      print('Invitation created successfully: $response');
       return LeagueInvitation.fromJson(response);
     } catch (e) {
       print('Error creating invitation: $e');
+      print('Error details: ${e.toString()}');
       rethrow;
     }
   }
