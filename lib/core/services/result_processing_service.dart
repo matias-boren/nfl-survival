@@ -5,19 +5,23 @@ import 'package:pick1/data/picks/picks_repositories.dart';
 import 'package:pick1/data/leagues/league_repositories.dart';
 import 'package:pick1/data/nfl/nfl_repositories.dart';
 import 'package:pick1/core/services/points_calculation_service.dart';
+import 'package:pick1/core/services/team_service.dart';
 
 class ResultProcessingService {
   final PicksRepository _picksRepository;
   final LeagueRepository _leagueRepository;
   final NflRepository _nflRepository;
+  final TeamService _teamService;
 
   ResultProcessingService({
     required PicksRepository picksRepository,
     required LeagueRepository leagueRepository,
     required NflRepository nflRepository,
+    required TeamService teamService,
   }) : _picksRepository = picksRepository,
        _leagueRepository = leagueRepository,
-       _nflRepository = nflRepository;
+       _nflRepository = nflRepository,
+       _teamService = teamService;
 
   /// Process results for a specific week and league
   Future<ResultProcessingSummary> processWeekResults({
@@ -118,6 +122,18 @@ class ResultProcessingService {
     // Update league with new points
     final updatedLeague = league.copyWith(memberPoints: updatedPoints);
     await _leagueRepository.updateLeague(updatedLeague);
+
+    // Update team records from game results
+    try {
+      await _teamService.updateTeamRecordsFromGames(
+        season: 2024, // TODO: Make this dynamic
+        week: week,
+      );
+      print('Team records updated successfully');
+    } catch (e) {
+      print('Error updating team records: $e');
+      // Don't fail the entire process if team records fail
+    }
 
     return ResultProcessingSummary(
       leagueId: leagueId,

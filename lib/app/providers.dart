@@ -27,6 +27,10 @@ import 'package:pick1/data/friends/mock_friends_repository.dart';
 import 'package:pick1/data/invitations/invitation_repositories.dart';
 import 'package:pick1/data/invitations/supabase_invitation_repository.dart';
 import 'package:pick1/data/invitations/mock_invitation_repository.dart';
+import 'package:pick1/data/teams/team_repositories.dart';
+import 'package:pick1/data/teams/supabase_team_repository.dart';
+import 'package:pick1/data/teams/supabase_team_record_repository.dart';
+import 'package:pick1/core/services/team_service.dart';
 import 'package:pick1/data/users/user_repositories.dart';
 import 'package:pick1/data/users/mock_user_repository.dart';
 import 'package:pick1/data/chat/chat_repositories.dart';
@@ -67,6 +71,23 @@ final friendsRepositoryProvider = Provider<FriendsRepository>(
 final invitationRepositoryProvider = Provider<InvitationRepository>(
   (ref) => SupabaseInvitationRepository(),
 );
+
+// Team Repositories
+final teamRepositoryProvider = Provider<TeamRepository>(
+  (ref) => SupabaseTeamRepository(),
+);
+final teamRecordRepositoryProvider = Provider<TeamRecordRepository>(
+  (ref) => SupabaseTeamRecordRepository(),
+);
+
+// Team Service
+final teamServiceProvider = Provider<TeamService>((ref) {
+  return TeamService(
+    teamRepository: ref.read(teamRepositoryProvider),
+    teamRecordRepository: ref.read(teamRecordRepositoryProvider),
+    nflRepository: ref.read(nflRepositoryProvider),
+  );
+});
 final userRepositoryProvider = Provider<UserRepository>(
   (ref) => MockUserRepository(),
 );
@@ -269,6 +290,7 @@ final resultProcessingServiceProvider = Provider<ResultProcessingService>((
     picksRepository: ref.read(picksRepositoryProvider),
     leagueRepository: ref.read(leagueRepositoryProvider),
     nflRepository: ref.read(nflRepositoryProvider),
+    teamService: ref.read(teamServiceProvider),
   );
 });
 
