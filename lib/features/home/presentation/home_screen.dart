@@ -456,6 +456,32 @@ class HomeScreen extends ConsumerWidget {
                 Consumer(
                   builder: (context, ref, child) {
                     final deadlineService = ref.read(deadlineServiceProvider);
+                    
+                    // For completed games, show "Final" instead of time
+                    if (game.status == GameStatus.FINAL) {
+                      return Text(
+                        'Final',
+                        style: TextStyle(
+                          color: Colors.green[600],
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      );
+                    }
+                    
+                    // For in-progress games, show "In Progress"
+                    if (game.status == GameStatus.IN_PROGRESS) {
+                      return Text(
+                        'In Progress',
+                        style: TextStyle(
+                          color: Colors.red[600],
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      );
+                    }
+                    
+                    // For scheduled games, show time until kickoff
                     final timeUntilKickoff = deadlineService
                         .getTimeUntilKickoff(game.date);
                     return Text(
