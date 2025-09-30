@@ -65,17 +65,26 @@ class SupabaseInvitationRepository implements InvitationRepository {
   @override
   Future<List<LeagueInvitation>> getInvitationsForLeague(String leagueId) async {
     try {
+      print('Getting invitations for league: $leagueId');
+      
       final response = await _supabase
           .from('league_invitations')
           .select()
           .eq('leagueId', leagueId)
           .order('createdAt', ascending: false);
 
-      return response
+      print('Raw response from Supabase: $response');
+      
+      final invitations = response
           .map((json) => LeagueInvitation.fromJson(json))
           .toList();
+          
+      print('Parsed invitations: ${invitations.length} invitations found');
+      
+      return invitations;
     } catch (e) {
       print('Error getting invitations for league: $e');
+      print('Error details: ${e.toString()}');
       return [];
     }
   }
