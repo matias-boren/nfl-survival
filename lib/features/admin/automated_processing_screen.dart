@@ -3,12 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick1/app/providers.dart';
 import 'package:pick1/widgets/app_scaffold.dart';
 
-class AutomatedProcessingScreen extends ConsumerWidget {
+class AutomatedProcessingScreen extends ConsumerStatefulWidget {
   const AutomatedProcessingScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final processor = ref.watch(automatedResultProcessorProvider);
+  ConsumerState<AutomatedProcessingScreen> createState() => _AutomatedProcessingScreenState();
+}
+
+class _AutomatedProcessingScreenState extends ConsumerState<AutomatedProcessingScreen> {
+  @override
+  Widget build(BuildContext context) {
+    final dataRefreshService = ref.watch(automatedDataRefreshServiceProvider);
 
     return AppScaffold(
       appBar: AppBar(
@@ -17,8 +22,14 @@ class AutomatedProcessingScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
-              // Manually trigger processing
-              processor.processNow();
+              // Trigger manual refresh
+              dataRefreshService.processResultsManually();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Manual processing triggered'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
             },
           ),
         ],
@@ -28,138 +39,77 @@ class AutomatedProcessingScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Service Status
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Automated Result Processing',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'This service automatically processes NFL game results and updates pick outcomes across all leagues.',
-                    ),
-                    const SizedBox(height: 16),
                     Row(
                       children: [
                         Icon(
-                          Icons.schedule,
-                          color: processor.timer != null
-                              ? Colors.green
-                              : Colors.grey,
+                          dataRefreshService.isRunning ? Icons.play_circle : Icons.pause_circle,
+                          color: dataRefreshService.isRunning ? Colors.green : Colors.red,
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          processor.timer != null
-                              ? 'Running (every 15 minutes)'
-                              : 'Stopped',
-                          style: TextStyle(
-                            color: processor.timer != null
-                                ? Colors.green
-                                : Colors.grey,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          'Automated Data Refresh Service',
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.sync,
-                          color: processor.isProcessing
-                              ? Colors.orange
-                              : Colors.grey,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          processor.isProcessing
-                              ? 'Currently Processing...'
-                              : 'Idle',
-                          style: TextStyle(
-                            color: processor.isProcessing
-                                ? Colors.orange
-                                : Colors.grey,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
                     Text(
-                      'Controls',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                      dataRefreshService.isRunning 
+                        ? '🟢 Running - Checks every 30 minutes' 
+                        : '🔴 Stopped',
+                      style: TextStyle(
+                        color: dataRefreshService.isRunning ? Colors.green : Colors.red,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: processor.timer == null
-                                ? () => processor.startProcessing()
-                                : null,
-                            icon: const Icon(Icons.play_arrow),
-                            label: const Text('Start Processing'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              foregroundColor: Colors.white,
-                            ),
-                          ),
+                        ElevatedButton(
+                          onPressed: dataRefreshService.isRunning 
+                            ? () {
+                                dataRefreshService.stopService();
+                                setState(() {});
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Service stopped')),
+                                );
+                              }
+                            : () {
+                                dataRefreshService.startService();
+                                setState(() {});
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Service started')),
+                                );
+                              },
+                          child: Text(dataRefreshService.isRunning ? 'Stop Service' : 'Start Service'),
                         ),
                         const SizedBox(width: 16),
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: processor.timer != null
-                                ? () => processor.stopProcessing()
-                                : null,
-                            icon: const Icon(Icons.stop),
-                            label: const Text('Stop Processing'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              foregroundColor: Colors.white,
-                            ),
-                          ),
+                        ElevatedButton(
+                          onPressed: () {
+                            dataRefreshService.processResultsManually();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Manual processing triggered')),
+                            );
+                          },
+                          child: const Text('Process Now'),
                         ),
                       ],
-                    ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          // Manually trigger processing
-                          processor.processNow();
-                        },
-                        icon: const Icon(Icons.refresh),
-                        label: const Text('Process Now'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          foregroundColor: Colors.white,
-                        ),
-                      ),
                     ),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+
+            const SizedBox(height: 24),
+
+            // Service Information
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -167,16 +117,67 @@ class AutomatedProcessingScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Processing Statistics',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      'How It Works',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'The Automated Data Refresh Service:',
+                      style: TextStyle(fontWeight: FontWeight.w500),
                     ),
                     const SizedBox(height: 8),
-                    Text('Processed Games: ${processor.processedGames.length}'),
-                    const SizedBox(height: 4),
+                    const Text('• Runs every 30 minutes to check for finalized games'),
+                    const Text('• Processes results 6 hours before the week\'s endDate'),
+                    const Text('• Updates team records and processes pick results'),
+                    const Text('• Processes all leagues automatically'),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Timing:',
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text('• Week endDate: Retrieved from ESPN API'),
+                    const Text('• Processing starts: 6 hours before endDate'),
+                    const Text('• Example: If week ends at 2025-10-01T06:59Z, processing starts at 2025-10-01T00:59Z'),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Current Week Info
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      'Last Processed: ${processor.processedGames.isNotEmpty ? processor.processedGames.last : 'None'}',
+                      'Current Week Info',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'This information is fetched from the ESPN API:',
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text('• Current week number'),
+                    const Text('• Current season year'),
+                    const Text('• Week endDate (when processing will start)'),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        // This would show current week info
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Current week info would be displayed here'),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      },
+                      child: const Text('Check Current Week'),
                     ),
                   ],
                 ),

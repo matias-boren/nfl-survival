@@ -60,20 +60,18 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final goRouter = ref.watch(appRouterProvider);
 
-    // Initialize automated result processing
+    // Initialize automated services
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final processor = ref.read(automatedResultProcessorProvider);
-      processor.startProcessing();
-
-      // Initialize weekly data refresh service
-      final weeklyRefreshService = ref.read(weeklyDataRefreshServiceProvider);
-      weeklyRefreshService.startService();
+      // Initialize automated data refresh service (processes results 6 hours before week end)
+      final dataRefreshService = ref.read(automatedDataRefreshServiceProvider);
+      dataRefreshService.startService();
+      print('🔄 Automated data refresh service started');
 
       // Initialize automated news generation service
       final newsGenerator = ref.read(newsGeneratorProvider);
       if (NewsConfig.openAIApiKey.isNotEmpty) {
         newsGenerator.startService();
-        print('News generation service started');
+        print('📰 News generation service started');
       } else {
         print('OpenAI API key not found - news generation service disabled');
       }

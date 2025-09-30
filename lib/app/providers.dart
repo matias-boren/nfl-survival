@@ -31,6 +31,7 @@ import 'package:pick1/data/teams/team_repositories.dart';
 import 'package:pick1/data/teams/supabase_team_repository.dart';
 import 'package:pick1/data/teams/supabase_team_record_repository.dart';
 import 'package:pick1/core/services/team_service.dart';
+import 'package:pick1/core/services/automated_data_refresh_service.dart';
 import 'package:pick1/data/users/user_repositories.dart';
 import 'package:pick1/data/users/mock_user_repository.dart';
 import 'package:pick1/data/chat/chat_repositories.dart';
@@ -87,6 +88,18 @@ final teamServiceProvider = Provider<TeamService>((ref) {
     teamRecordRepository: ref.read(teamRecordRepositoryProvider),
     nflRepository: ref.read(nflRepositoryProvider),
   );
+});
+
+// Automated Data Refresh Service
+final automatedDataRefreshServiceProvider = Provider<AutomatedDataRefreshService>((ref) {
+  final service = AutomatedDataRefreshService();
+  service.initialize(
+    resultProcessingService: ref.read(resultProcessingServiceProvider),
+    teamService: ref.read(teamServiceProvider),
+    leagueRepository: ref.read(leagueRepositoryProvider),
+    nflRepository: ref.read(nflRepositoryProvider),
+  );
+  return service;
 });
 final userRepositoryProvider = Provider<UserRepository>(
   (ref) => MockUserRepository(),
