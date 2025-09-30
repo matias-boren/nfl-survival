@@ -40,6 +40,7 @@ class SupabaseLeagueRepository implements LeagueRepository {
 
   @override
   Future<List<League>> listLeaguesForUser(String userId) async {
+    print('=== listLeaguesForUser called ===');
     print('Listing leagues for user: $userId');
     print('Current auth user: ${_supabase.auth.currentUser?.id}');
 
@@ -100,10 +101,11 @@ class SupabaseLeagueRepository implements LeagueRepository {
     final List<League> leagues = [];
     for (final data in finalLeagues) {
       final league = _leagueFromSupabase(data);
-      print('League ${league.name} has ${league.memberIds.length} members');
+      print('League ${league.name} (${league.id}) has ${league.memberIds.length} members: ${league.memberIds}');
       leagues.add(league);
     }
 
+    print('=== Returning ${leagues.length} leagues to user ===');
     return leagues;
   }
 
@@ -203,11 +205,17 @@ class SupabaseLeagueRepository implements LeagueRepository {
 
   @override
   Future<void> leaveLeague(String leagueId, String userId) async {
-    await _supabase
+    print('=== leaveLeague called ===');
+    print('Removing user $userId from league $leagueId');
+    
+    final result = await _supabase
         .from('league_members')
         .delete()
         .eq('league_id', leagueId)
         .eq('user_id', userId);
+    
+    print('Leave league result: $result');
+    print('=== leaveLeague completed ===');
   }
 
   @override

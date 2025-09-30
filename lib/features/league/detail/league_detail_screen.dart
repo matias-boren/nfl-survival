@@ -280,8 +280,10 @@ class LeagueDetailScreen extends ConsumerWidget {
       );
       ref.read(currentUserProvider.notifier).state = updatedUser;
 
-      // Invalidate providers to refresh data
+      // Invalidate and refresh providers to ensure data is updated
       ref.invalidate(userLeaguesProvider);
+      // Force refresh the user leagues provider
+      ref.refresh(userLeaguesProvider);
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
