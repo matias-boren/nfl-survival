@@ -234,7 +234,8 @@ class HybridNflRepository implements NflRepository {
   GameStatus _convertEspnStatusToGameStatus(Map<String, dynamic>? status) {
     if (status == null) return GameStatus.SCHEDULED;
 
-    final completed = status['completed'] as bool? ?? false;
+    // ESPN API has completed field nested inside type object
+    final completed = status['type']?['completed'] as bool? ?? false;
     final type = status['type']?['id'] as String?;
     final typeName = status['type']?['name'] as String?;
 
