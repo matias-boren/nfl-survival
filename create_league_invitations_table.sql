@@ -43,7 +43,7 @@ CREATE POLICY "Users can create invitations for leagues they own" ON league_invi
         AND EXISTS (
             SELECT 1 FROM leagues l
             WHERE l.id = league_invitations."leagueId"
-            AND l.owner_id = auth.uid()
+            AND l.creator_id = auth.uid()
         )
     );
 
