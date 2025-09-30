@@ -298,8 +298,8 @@ class LeagueInvitationsScreen extends ConsumerWidget {
   }
 
   String _getInvitationUrl(String invitationCode) {
-    // In a real app, this would be your actual domain
-    return 'https://your-app.com/invite/$invitationCode';
+    // Use the actual frontend domain
+    return 'https://pick1-34708.web.app/invite/$invitationCode';
   }
 
   void _copyInvitationUrl(BuildContext context, String invitationCode) {

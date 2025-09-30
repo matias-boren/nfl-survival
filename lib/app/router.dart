@@ -22,6 +22,7 @@ import 'package:nfl_survival/features/admin/automated_processing_screen.dart';
 import 'package:nfl_survival/features/league/join/join_leagues_screen.dart';
 import 'package:nfl_survival/features/picks/league_selection/league_selection_screen.dart';
 import 'package:nfl_survival/widgets/auth_guard.dart';
+import 'package:nfl_survival/widgets/invitation_guard.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -31,14 +32,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final isSignInRoute =
           state.uri.path == '/signin' || state.uri.path == '/sign-in';
       final isLoadingRoute = state.uri.path == '/loading';
+      final isInviteRoute = state.uri.path.startsWith('/invite/');
 
-      // If user is authenticated and on signin page, redirect to home
+      // If user is authenticated and on signin page, check for redirect
       if (currentUser != null && isSignInRoute) {
+        final redirectParam = state.uri.queryParameters['redirect'];
+        if (redirectParam != null) {
+          return redirectParam;
+        }
         return '/';
       }
 
       // If user is not authenticated and not on signin page, redirect to signin
-      if (currentUser == null && !isSignInRoute && !isLoadingRoute) {
+      // EXCEPT for invitation routes (handled by InvitationGuard)
+      if (currentUser == null && !isSignInRoute && !isLoadingRoute && !isInviteRoute) {
         return '/signin';
       }
 
@@ -157,7 +164,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/invite/:code',
-        builder: (context, state) => AuthGuard(
+        builder: (context, state) => InvitationGuard(
+          invitationCode: state.pathParameters['code']!,
           child: AcceptInvitationScreen(
             invitationCode: state.pathParameters['code']!,
           ),
