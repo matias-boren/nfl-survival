@@ -63,22 +63,6 @@ class MockAuthRepository implements AuthRepository {
     _userStreamController.add(null);
   }
 
-  @override
-  Future<User> signInWithGoogle() async {
-    await Future.delayed(const Duration(seconds: 1));
-
-    final user = User(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      displayName: 'Google User',
-      email: 'google@example.com',
-      isPremium: false,
-      joinedLeagueIds: [],
-    );
-
-    _currentUser = user;
-    _userStreamController.add(user);
-    return user;
-  }
 
   @override
   Future<void> resetPassword(String email) async {

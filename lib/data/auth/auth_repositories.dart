@@ -9,7 +9,6 @@ abstract class AuthRepository {
     String displayName,
     String favoriteTeam,
   );
-  Future<User> signInWithGoogle();
   Future<void> resetPassword(String email);
   Future<void> signOut();
   Future<User> updateUser({String? displayName, String? favoriteTeam});

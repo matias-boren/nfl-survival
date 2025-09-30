@@ -113,42 +113,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             ],
             const SizedBox(height: 48),
 
-            // Google Sign In Button
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton.icon(
-                onPressed: _isLoading ? null : _signInWithGoogle,
-                icon: const Icon(Icons.login, color: Colors.white),
-                label: Text(
-                  _isSignUp ? 'Sign up with Google' : 'Continue with Google',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red[600],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Divider
-            Row(
-              children: [
-                Expanded(child: Divider(color: Colors.grey[300])),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('or', style: TextStyle(color: Colors.grey[600])),
-                ),
-                Expanded(child: Divider(color: Colors.grey[300])),
-              ],
-            ),
-            const SizedBox(height: 16),
 
             // Display Name Field (only for sign up)
             if (_isSignUp) ...[
@@ -285,26 +249,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     );
   }
 
-  Future<void> _signInWithGoogle() async {
-    setState(() => _isLoading = true);
-    try {
-      final user = await ref.read(authRepositoryProvider).signInWithGoogle();
-      ref.read(currentUserProvider.notifier).state = user;
-      if (mounted) {
-        context.go('/');
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Google Sign In Error: $e')));
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
-    }
-  }
 
   Future<void> _handleEmailAuth() async {
     // Validate email and password

@@ -254,19 +254,6 @@ class SupabaseAuthRepository implements AuthRepository {
     return _userFromSupabaseUser(response.user!);
   }
 
-  @override
-  Future<app_user.User> signInWithGoogle() async {
-    await _supabase.auth.signInWithOAuth(
-      OAuthProvider.google,
-      redirectTo: 'io.supabase.flutterquickstart://login-callback/',
-    );
-
-    // For OAuth, we need to wait for the auth state change
-    // This is a simplified implementation
-    throw Exception(
-      'Google sign in not yet implemented - please use email/password for now',
-    );
-  }
 
   @override
   Future<void> resetPassword(String email) async {
