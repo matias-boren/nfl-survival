@@ -19,16 +19,20 @@ class SupabaseInvitationRepository implements InvitationRepository {
       print('  invitedByUserId: $invitedByUserId');
       print('  invitationCode: $invitationCode');
       
+      final insertData = {
+        'leagueId': leagueId,
+        'invitedByUserId': invitedByUserId,
+        'invitationCode': invitationCode,
+        'status': 'pending',
+        'createdAt': DateTime.now().toIso8601String(),
+        'expiresAt': expiresAt.toIso8601String(),
+      };
+      
+      print('Inserting data: $insertData');
+      
       final response = await _supabase
           .from('league_invitations')
-          .insert({
-            'leagueId': leagueId,
-            'invitedByUserId': invitedByUserId,
-            'invitationCode': invitationCode,
-            'status': 'pending',
-            'createdAt': DateTime.now().toIso8601String(),
-            'expiresAt': expiresAt.toIso8601String(),
-          })
+          .insert(insertData)
           .select()
           .single();
 
