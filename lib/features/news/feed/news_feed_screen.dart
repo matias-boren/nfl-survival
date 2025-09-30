@@ -13,6 +13,14 @@ class NewsFeedScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final newsAsync = ref.watch(newsFeedProvider);
     final isPremium = ref.watch(premiumStatusProvider);
+    
+    print('=== News Feed Screen Build ===');
+    print('News async state: ${newsAsync.runtimeType}');
+    newsAsync.whenOrNull(
+      data: (articles) => print('News articles count: ${articles.length}'),
+      loading: () => print('News loading...'),
+      error: (e, st) => print('News error: $e'),
+    );
 
     return AppScaffold(
       appBar: AppBar(

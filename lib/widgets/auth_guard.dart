@@ -15,7 +15,7 @@ class AuthGuard extends ConsumerWidget {
     if (currentUser == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (context.mounted) {
-          context.go('/signin');
+          context.go('/signin?redirect=${Uri.encodeComponent(GoRouterState.of(context).uri.toString())}');
         }
       });
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
