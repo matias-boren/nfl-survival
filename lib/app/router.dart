@@ -19,6 +19,7 @@ import 'package:pick1/features/league/invitations/accept_invitation_screen.dart'
 import 'package:pick1/features/league/invitations/league_invitations_screen.dart';
 import 'package:pick1/features/admin/result_processing_screen.dart';
 import 'package:pick1/features/admin/automated_processing_screen.dart';
+import 'package:pick1/features/admin/news_management_screen.dart';
 import 'package:pick1/features/league/join/join_leagues_screen.dart';
 import 'package:pick1/features/picks/league_selection/league_selection_screen.dart';
 import 'package:pick1/widgets/auth_guard.dart';
@@ -103,6 +104,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/admin/automated-processing',
         builder: (context, state) =>
             const AuthGuard(child: AutomatedProcessingScreen()),
+      ),
+      GoRoute(
+        path: '/admin/news-management',
+        builder: (context, state) =>
+            const AuthGuard(child: NewsManagementScreen()),
       ),
       GoRoute(
         path: '/select-league',

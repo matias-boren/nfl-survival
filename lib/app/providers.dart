@@ -4,6 +4,8 @@ import 'package:pick1/core/services/standings_service.dart';
 import 'package:pick1/core/services/automated_result_processor.dart';
 import 'package:pick1/core/services/weekly_data_refresh_service.dart';
 import 'package:pick1/core/services/elimination_service.dart';
+import 'package:pick1/core/services/automated_news_generator.dart';
+import 'package:pick1/core/config/news_config.dart';
 // Live score services removed
 import 'package:pick1/data/ads/ads_service.dart';
 import 'package:pick1/data/ads/mock_ads_service.dart';
@@ -57,7 +59,7 @@ final chatRepositoryProvider = Provider<ChatRepository>(
   (ref) => SupabaseChatRepository(),
 );
 final newsRepositoryProvider = Provider<NewsRepository>(
-  (ref) => MockNewsRepository(),
+  (ref) => SupabaseNewsRepository(),
 );
 final friendsRepositoryProvider = Provider<FriendsRepository>(
   (ref) => MockFriendsRepository(),
@@ -98,6 +100,13 @@ final premiumStatusProvider = Provider<bool>((ref) {
 // News and Scores Providers
 final newsFeedProvider = FutureProvider<List<NewsArticle>>((ref) async {
   return ref.read(newsRepositoryProvider).getLatestNews();
+});
+
+// Automated News Generator
+final newsGeneratorProvider = Provider<AutomatedNewsGenerator>((ref) {
+  return AutomatedNewsGenerator(
+    openAIApiKey: NewsConfig.openAIApiKey,
+  );
 });
 
 // Live scores functionality removed to fix CI issues
