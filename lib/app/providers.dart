@@ -22,6 +22,7 @@ import 'package:nfl_survival/data/news/supabase_news_repository.dart';
 import 'package:nfl_survival/data/friends/friends_repositories.dart';
 import 'package:nfl_survival/data/friends/mock_friends_repository.dart';
 import 'package:nfl_survival/data/invitations/invitation_repositories.dart';
+import 'package:nfl_survival/data/invitations/supabase_invitation_repository.dart';
 import 'package:nfl_survival/data/invitations/mock_invitation_repository.dart';
 import 'package:nfl_survival/data/users/user_repositories.dart';
 import 'package:nfl_survival/data/users/mock_user_repository.dart';
@@ -61,7 +62,7 @@ final friendsRepositoryProvider = Provider<FriendsRepository>(
   (ref) => MockFriendsRepository(),
 );
 final invitationRepositoryProvider = Provider<InvitationRepository>(
-  (ref) => MockInvitationRepository(),
+  (ref) => SupabaseInvitationRepository(),
 );
 final userRepositoryProvider = Provider<UserRepository>(
   (ref) => MockUserRepository(),
