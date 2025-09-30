@@ -3,6 +3,9 @@
 -- These are the ACTUAL ESPN API team IDs fetched from the API
 -- Teams marked with -- VERIFIED were confirmed from ESPN API responses
 
+-- Clear existing data first to ensure clean population
+DELETE FROM teams;
+
 INSERT INTO teams (espn_team_id, name, abbreviation, city, conference, division, logo_url) VALUES
 ('1', 'Atlanta Falcons', 'ATL', 'Atlanta', 'NFC', 'South', 'https://a.espncdn.com/i/teamlogos/nfl/500/atl.png'), -- VERIFIED
 ('2', 'Buffalo Bills', 'BUF', 'Buffalo', 'AFC', 'East', 'https://a.espncdn.com/i/teamlogos/nfl/500/buf.png'), -- VERIFIED
