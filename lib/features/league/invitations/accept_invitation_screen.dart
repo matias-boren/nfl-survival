@@ -30,30 +30,38 @@ class _AcceptInvitationScreenState
   }
 
   Future<void> _loadInvitation() async {
+    print('🔗 AcceptInvitationScreen: Loading invitation with code: ${widget.invitationCode}');
     setState(() => _isLoading = true);
 
     try {
       final invitation = await ref
           .read(invitationRepositoryProvider)
           .getInvitationByCode(widget.invitationCode);
+      print('🔗 AcceptInvitationScreen: Found invitation: ${invitation?.id}');
+      
       if (invitation != null) {
         final league = await ref
             .read(leagueRepositoryProvider)
             .getLeague(invitation.leagueId);
+        print('🔗 AcceptInvitationScreen: Found league: ${league?.name}');
 
         // Get inviter's display name (in a real app, this would fetch from user service)
         // For now, we'll use a mock approach
         final inviterDisplayName = await _getInviterDisplayName(
           invitation.invitedByUserId,
         );
+        print('🔗 AcceptInvitationScreen: Inviter display name: $inviterDisplayName');
 
         setState(() {
           _invitation = invitation;
           _league = league;
           _inviterDisplayName = inviterDisplayName;
         });
+      } else {
+        print('🔗 AcceptInvitationScreen: No invitation found for code: ${widget.invitationCode}');
       }
     } catch (e) {
+      print('🔗 AcceptInvitationScreen: Error loading invitation: $e');
       // Handle error
     } finally {
       setState(() => _isLoading = false);

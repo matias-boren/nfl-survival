@@ -21,12 +21,12 @@ class SupabaseInvitationRepository implements InvitationRepository {
       print('  invitationCode: $invitationCode');
       
       final insertData = {
-        'leagueId': leagueId,
-        'invitedByUserId': invitedByUserId,
-        'invitationCode': invitationCode,
+        '"leagueId"': leagueId,
+        '"invitedByUserId"': invitedByUserId,
+        '"invitationCode"': invitationCode,
         'status': 'pending',
-        'createdAt': DateTime.now().toIso8601String(),
-        'expiresAt': expiresAt.toIso8601String(),
+        '"createdAt"': DateTime.now().toIso8601String(),
+        '"expiresAt"': expiresAt.toIso8601String(),
       };
       
       print('Inserting data: $insertData');
@@ -52,7 +52,7 @@ class SupabaseInvitationRepository implements InvitationRepository {
       final response = await _supabase
           .from('league_invitations')
           .select()
-          .eq('invitationCode', invitationCode)
+          .eq('"invitationCode"', invitationCode)
           .maybeSingle();
 
       if (response == null) return null;
@@ -71,8 +71,8 @@ class SupabaseInvitationRepository implements InvitationRepository {
       final response = await _supabase
           .from('league_invitations')
           .select()
-          .eq('leagueId', leagueId)
-          .order('createdAt', ascending: false);
+          .eq('"leagueId"', leagueId)
+          .order('"createdAt"', ascending: false);
 
       print('Raw response from Supabase: $response');
       
@@ -96,9 +96,9 @@ class SupabaseInvitationRepository implements InvitationRepository {
       final response = await _supabase
           .from('league_invitations')
           .select()
-          .eq('invitedUserId', userId)
+          .eq('"invitedUserId"', userId)
           .eq('status', 'pending')
-          .order('createdAt', ascending: false);
+          .order('"createdAt"', ascending: false);
 
       return response
           .map((json) => LeagueInvitation.fromJson(json))
@@ -116,8 +116,8 @@ class SupabaseInvitationRepository implements InvitationRepository {
           .from('league_invitations')
           .update({
             'status': 'accepted',
-            'invitedUserId': userId,
-            'acceptedAt': DateTime.now().toIso8601String(),
+            '"invitedUserId"': userId,
+            '"acceptedAt"': DateTime.now().toIso8601String(),
           })
           .eq('id', invitationId)
           .select()
@@ -137,7 +137,7 @@ class SupabaseInvitationRepository implements InvitationRepository {
           .from('league_invitations')
           .update({
             'status': 'declined',
-            'declinedAt': DateTime.now().toIso8601String(),
+            '"declinedAt"': DateTime.now().toIso8601String(),
           })
           .eq('id', invitationId)
           .select()
