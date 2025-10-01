@@ -46,10 +46,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       // If user is authenticated and on signin page, check for redirect
       if (currentUser != null && isSignInRoute) {
+        print('🔄 Router: Authenticated user on signin page');
         final redirectParam = state.uri.queryParameters['redirect'];
         if (redirectParam != null) {
+          print('🔄 Router: Found redirect parameter: $redirectParam');
           return redirectParam;
         }
+        print('🔄 Router: No redirect parameter, going to home');
         return '/';
       }
 
@@ -63,7 +66,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       // If user is authenticated and not on loading page, go to home
       if (currentUser != null && isLoadingRoute) {
-        print('🔄 Router: User authenticated, checking for pending invitation...');
+        print('🔄 Router: User authenticated on loading page, checking for pending invitation...');
         // Check if there's a pending invitation code
         final pendingInvitationCode = InvitationStorageService.getPendingInvitationCode();
         if (pendingInvitationCode != null) {
@@ -84,10 +87,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       // If user is not authenticated and on loading page, go to signin
       if (currentUser == null && isLoadingRoute) {
+        print('🔄 Router: Unauthenticated user on loading page, redirecting to signin');
         return '/signin';
       }
 
       // No redirect needed
+      print('🔄 Router: No redirect needed, allowing to proceed');
       return null;
     },
     routes: [
