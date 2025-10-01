@@ -28,7 +28,6 @@ import 'package:pick1/core/services/invitation_storage_service.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/',
     redirect: (context, state) {
       final currentUser = ref.watch(currentUserProvider);
       final isSignInRoute =

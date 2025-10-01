@@ -71,29 +71,18 @@ class InvitationGuard extends ConsumerWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    final currentUser = ref.read(currentUserProvider);
-                    print('🔗 InvitationGuard: Accept button clicked, currentUser: ${currentUser?.email}');
-                    
-                    if (currentUser == null) {
-                      // User not authenticated, redirect to sign in
-                      print('🔗 InvitationGuard: User not authenticated, redirecting to signin');
-                      context.go('/signin?invite=$invitationCode');
-                    } else {
-                      // User is authenticated, redirect to invitation acceptance screen
-                      print('🔗 InvitationGuard: User authenticated, redirecting to invitation acceptance');
-                      context.go('/invite/$invitationCode');
-                    }
+                    // Redirect to sign in with invitation code as query parameter
+                    print('🔗 InvitationGuard: Redirecting to signin with invitation code');
+                    context.go('/signin?invite=$invitationCode');
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,
                   ),
-                  child: Text(
-                    ref.watch(currentUserProvider) == null 
-                        ? 'Sign In to Accept Invitation'
-                        : 'Accept Invitation',
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  child: const Text(
+                    'Sign In to Accept Invitation',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
