@@ -11,6 +11,7 @@ import 'package:pick1/app/router.dart';
 import 'package:pick1/app/providers.dart';
 import 'package:pick1/app/theme/theme.dart';
 import 'package:pick1/core/services/ad_service.dart';
+import 'package:pick1/core/config/news_config.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

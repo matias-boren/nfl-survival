@@ -1,6 +1,7 @@
 import 'package:pick1/data/models/team.dart';
 import 'package:pick1/data/teams/team_repositories.dart';
 import 'package:pick1/data/nfl/nfl_repositories.dart';
+import 'package:pick1/data/models/nfl.dart';
 
 class TeamService {
   final TeamRepository _teamRepository;
@@ -88,20 +89,20 @@ class TeamService {
         if (game.status != GameStatus.FINAL) continue;
 
         // Determine winner/loser
-        final homeScore = int.tryParse(game.homeScore ?? '0') ?? 0;
-        final awayScore = int.tryParse(game.awayScore ?? '0') ?? 0;
+        final homeScore = game.homeScore;
+        final awayScore = game.awayScore;
 
         if (homeScore > awayScore) {
           // Home team won
           await _teamRecordRepository.updateTeamRecordFromGameResult(
-            teamId: game.homeTeamId,
+            teamId: game.homeTeam.id,
             season: season,
             week: week,
             won: true,
             tied: false,
           );
           await _teamRecordRepository.updateTeamRecordFromGameResult(
-            teamId: game.awayTeamId,
+            teamId: game.awayTeam.id,
             season: season,
             week: week,
             won: false,
@@ -110,14 +111,14 @@ class TeamService {
         } else if (awayScore > homeScore) {
           // Away team won
           await _teamRecordRepository.updateTeamRecordFromGameResult(
-            teamId: game.awayTeamId,
+            teamId: game.awayTeam.id,
             season: season,
             week: week,
             won: true,
             tied: false,
           );
           await _teamRecordRepository.updateTeamRecordFromGameResult(
-            teamId: game.homeTeamId,
+            teamId: game.homeTeam.id,
             season: season,
             week: week,
             won: false,
@@ -126,14 +127,14 @@ class TeamService {
         } else {
           // Tie
           await _teamRecordRepository.updateTeamRecordFromGameResult(
-            teamId: game.homeTeamId,
+            teamId: game.homeTeam.id,
             season: season,
             week: week,
             won: false,
             tied: true,
           );
           await _teamRecordRepository.updateTeamRecordFromGameResult(
-            teamId: game.awayTeamId,
+            teamId: game.awayTeam.id,
             season: season,
             week: week,
             won: false,

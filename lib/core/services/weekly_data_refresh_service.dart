@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick1/core/services/result_processing_service.dart';
 import 'package:pick1/core/services/standings_service.dart';
 import 'package:pick1/data/leagues/league_repositories.dart';
@@ -7,6 +8,7 @@ import 'package:pick1/data/models/nfl.dart';
 import 'package:pick1/data/nfl/nfl_repositories.dart';
 import 'package:pick1/data/picks/picks_repositories.dart';
 import 'package:pick1/data/users/user_repositories.dart';
+import 'package:pick1/app/providers.dart';
 
 class WeeklyDataRefreshService {
   static final WeeklyDataRefreshService _instance =
@@ -31,6 +33,7 @@ class WeeklyDataRefreshService {
     required NflRepository nflRepository,
     required PicksRepository picksRepository,
     required UserRepository userRepository,
+    required ProviderRef ref,
   }) {
     _leagueRepository = leagueRepository;
     _nflRepository = nflRepository;
@@ -38,6 +41,7 @@ class WeeklyDataRefreshService {
       picksRepository: picksRepository,
       leagueRepository: leagueRepository,
       nflRepository: nflRepository,
+      teamService: ref.read(teamServiceProvider),
     );
     _standingsService = StandingsService(
       picksRepository: picksRepository,

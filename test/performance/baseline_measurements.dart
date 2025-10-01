@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nfl_survival/features/picks/make_pick/make_pick_screen.dart';
+import 'package:pick1/features/picks/make_pick/make_pick_screen.dart';
 
 void main() {
   group('Performance Baseline Measurements', () {

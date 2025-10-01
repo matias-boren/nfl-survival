@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nfl_survival/app/providers.dart';
+import 'package:pick1/app/providers.dart';
 
 void main() {
   group('Provider Rebuild Analysis', () {

@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick1/core/services/result_processing_service.dart';
 import 'package:pick1/data/leagues/league_repositories.dart';
 import 'package:pick1/data/models/league.dart';
 import 'package:pick1/data/models/nfl.dart';
 import 'package:pick1/data/nfl/nfl_repositories.dart';
 import 'package:pick1/data/picks/picks_repositories.dart';
+import 'package:pick1/app/providers.dart';
 
 class AutomatedResultProcessor {
   static final AutomatedResultProcessor _instance =
@@ -32,6 +34,7 @@ class AutomatedResultProcessor {
     required LeagueRepository leagueRepository,
     required NflRepository nflRepository,
     required PicksRepository picksRepository,
+    required ProviderRef ref,
   }) {
     _leagueRepository = leagueRepository;
     _nflRepository = nflRepository;
@@ -40,6 +43,7 @@ class AutomatedResultProcessor {
       picksRepository: picksRepository,
       leagueRepository: leagueRepository,
       nflRepository: nflRepository,
+      teamService: ref.read(teamServiceProvider),
     );
   }
 

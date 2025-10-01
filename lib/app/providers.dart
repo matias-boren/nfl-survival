@@ -360,6 +360,7 @@ final automatedResultProcessorProvider = Provider<AutomatedResultProcessor>((
     leagueRepository: ref.read(leagueRepositoryProvider),
     nflRepository: ref.read(nflRepositoryProvider),
     picksRepository: ref.read(picksRepositoryProvider),
+    ref: ref,
   );
 
   return processor;
@@ -401,6 +402,7 @@ final weeklyDataRefreshServiceProvider = Provider<WeeklyDataRefreshService>((
     nflRepository: ref.read(nflRepositoryProvider),
     picksRepository: ref.read(picksRepositoryProvider),
     userRepository: ref.read(userRepositoryProvider),
+    ref: ref,
   );
 
   return service;

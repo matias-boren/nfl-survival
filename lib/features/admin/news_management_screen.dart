@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pick1/app/providers.dart';
 import 'package:pick1/widgets/app_scaffold.dart';
+import 'package:pick1/data/news/news_repositories.dart';
 
 class NewsManagementScreen extends ConsumerStatefulWidget {
   const NewsManagementScreen({super.key});
@@ -359,18 +360,23 @@ class _NewsManagementScreenState extends ConsumerState<NewsManagementScreen> {
     );
   }
 
-  String _formatDate(DateTime dateTime) {
-    final now = DateTime.now();
-    final difference = now.difference(dateTime);
+  String _formatDate(String dateTimeString) {
+    try {
+      final dateTime = DateTime.parse(dateTimeString);
+      final now = DateTime.now();
+      final difference = now.difference(dateTime);
 
-    if (difference.inDays > 0) {
-      return '${difference.inDays}d ago';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m ago';
-    } else {
-      return 'Just now';
+      if (difference.inDays > 0) {
+        return '${difference.inDays}d ago';
+      } else if (difference.inHours > 0) {
+        return '${difference.inHours}h ago';
+      } else if (difference.inMinutes > 0) {
+        return '${difference.inMinutes}m ago';
+      } else {
+        return 'Just now';
+      }
+    } catch (e) {
+      return dateTimeString; // Return original string if parsing fails
     }
   }
 }
