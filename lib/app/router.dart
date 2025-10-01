@@ -24,6 +24,7 @@ import 'package:pick1/features/league/join/join_leagues_screen.dart';
 import 'package:pick1/features/picks/league_selection/league_selection_screen.dart';
 import 'package:pick1/widgets/auth_guard.dart';
 import 'package:pick1/widgets/invitation_guard.dart';
+import 'package:pick1/core/services/invitation_storage_service.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -53,6 +54,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       // If user is authenticated and not on loading page, go to home
       if (currentUser != null && isLoadingRoute) {
+        // Check if there's a pending invitation code
+        final pendingInvitationCode = InvitationStorageService.getPendingInvitationCode();
+        if (pendingInvitationCode != null) {
+          InvitationStorageService.clearPendingInvitationCode();
+          return '/invite/$pendingInvitationCode';
+        }
+        
+        // Check if there's a stored redirect URL (from invitation flow)
+        final redirectParam = state.uri.queryParameters['redirect'];
+        if (redirectParam != null && redirectParam.isNotEmpty) {
+          return redirectParam;
+        }
         return '/';
       }
 

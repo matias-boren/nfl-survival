@@ -354,7 +354,13 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             .read(currentUserProvider.notifier)
             .signIn(_emailController.text, _passwordController.text);
         if (mounted) {
-          context.go('/');
+          // Check for redirect parameter
+          final redirectParam = GoRouterState.of(context).uri.queryParameters['redirect'];
+          if (redirectParam != null && redirectParam.isNotEmpty) {
+            context.go(redirectParam);
+          } else {
+            context.go('/');
+          }
         }
       }
     } catch (e) {

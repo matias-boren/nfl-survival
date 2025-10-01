@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pick1/app/providers.dart';
+import 'package:pick1/core/services/invitation_storage_service.dart';
 
 class InvitationGuard extends ConsumerWidget {
   final Widget child;
@@ -18,6 +19,8 @@ class InvitationGuard extends ConsumerWidget {
     final currentUser = ref.watch(currentUserProvider);
 
     if (currentUser == null) {
+      // Store the invitation code for later use after authentication
+      InvitationStorageService.storeInvitationCode(invitationCode);
       // User is not authenticated, show invitation preview and login prompt
       return _buildInvitationPreview(context, ref);
     }
