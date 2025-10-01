@@ -17,6 +17,10 @@ ADD COLUMN IF NOT EXISTS locked BOOLEAN DEFAULT FALSE;
 ALTER TABLE picks 
 ADD COLUMN IF NOT EXISTS season INTEGER DEFAULT 2025;
 
+-- Add team_name column if it doesn't exist
+ALTER TABLE picks 
+ADD COLUMN IF NOT EXISTS team_name TEXT;
+
 -- Update existing records to have proper timestamps
 UPDATE picks 
 SET created_at = NOW() 
@@ -30,6 +34,10 @@ UPDATE picks
 SET season = 2025 
 WHERE season IS NULL;
 
+UPDATE picks 
+SET team_name = team_id 
+WHERE team_name IS NULL;
+
 -- Make created_at NOT NULL
 ALTER TABLE picks 
 ALTER COLUMN created_at SET NOT NULL;
@@ -41,6 +49,10 @@ ALTER COLUMN updated_at SET NOT NULL;
 -- Make season NOT NULL
 ALTER TABLE picks 
 ALTER COLUMN season SET NOT NULL;
+
+-- Make team_name NOT NULL
+ALTER TABLE picks 
+ALTER COLUMN team_name SET NOT NULL;
 
 -- Add indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_picks_user_league_week ON picks(user_id, league_id, week);
