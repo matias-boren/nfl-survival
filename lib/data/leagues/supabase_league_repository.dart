@@ -190,7 +190,17 @@ class SupabaseLeagueRepository implements LeagueRepository {
         .eq('id', leagueId)
         .single();
 
-    final league = _leagueFromSupabase(response);
+    // Fetch league members separately
+    final membersResponse = await _supabase
+        .from('league_members')
+        .select('user_id')
+        .eq('league_id', leagueId);
+
+    // Add member IDs to the response data
+    final responseWithMembers = Map<String, dynamic>.from(response);
+    responseWithMembers['league_members'] = membersResponse;
+
+    final league = _leagueFromSupabase(responseWithMembers);
 
     print(
       'getLeague - League ${league.name} has ${league.memberIds.length} members',
