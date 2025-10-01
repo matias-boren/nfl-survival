@@ -186,13 +186,12 @@ class SupabaseLeagueRepository implements LeagueRepository {
   Future<League> getLeague(String leagueId) async {
     final response = await _supabase
         .from('leagues')
-        .select('*, league_members(user_id)')
+        .select('*')
         .eq('id', leagueId)
         .single();
 
     final league = _leagueFromSupabase(response);
 
-    // The league_members data should now be included in the response
     print(
       'getLeague - League ${league.name} has ${league.memberIds.length} members',
     );
