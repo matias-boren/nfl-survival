@@ -354,15 +354,23 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             .read(currentUserProvider.notifier)
             .signIn(_emailController.text, _passwordController.text);
         if (mounted) {
-          // Check for redirect parameter
-          final redirectParam = GoRouterState.of(context).uri.queryParameters['redirect'];
-          print('🔐 SignInScreen: Redirect parameter: $redirectParam');
-          if (redirectParam != null && redirectParam.isNotEmpty) {
-            print('🔐 SignInScreen: Redirecting to: $redirectParam');
-            context.go(redirectParam);
+          // Check for invitation code parameter
+          final inviteCode = GoRouterState.of(context).uri.queryParameters['invite'];
+          print('🔐 SignInScreen: Invite code parameter: $inviteCode');
+          if (inviteCode != null && inviteCode.isNotEmpty) {
+            print('🔐 SignInScreen: Redirecting to invitation: /invite/$inviteCode');
+            context.go('/invite/$inviteCode');
           } else {
-            print('🔐 SignInScreen: No redirect parameter, going to home');
-            context.go('/');
+            // Check for redirect parameter (fallback)
+            final redirectParam = GoRouterState.of(context).uri.queryParameters['redirect'];
+            print('🔐 SignInScreen: Redirect parameter: $redirectParam');
+            if (redirectParam != null && redirectParam.isNotEmpty) {
+              print('🔐 SignInScreen: Redirecting to: $redirectParam');
+              context.go(redirectParam);
+            } else {
+              print('🔐 SignInScreen: No redirect parameter, going to home');
+              context.go('/');
+            }
           }
         }
       }
