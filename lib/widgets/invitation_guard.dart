@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pick1/app/providers.dart';
 import 'package:pick1/core/services/invitation_storage_service.dart';
 
-class InvitationGuard extends ConsumerWidget {
+class InvitationGuard extends ConsumerStatefulWidget {
   final Widget child;
   final String invitationCode;
 
@@ -15,23 +15,40 @@ class InvitationGuard extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<InvitationGuard> createState() => _InvitationGuardState();
+}
+
+class _InvitationGuardState extends ConsumerState<InvitationGuard> {
+  @override
+  void initState() {
+    super.initState();
+    print('🔗 InvitationGuard: initState with invitationCode: ${widget.invitationCode}');
+  }
+
+  @override
+  void dispose() {
+    print('🔗 InvitationGuard: dispose with invitationCode: ${widget.invitationCode}');
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserProvider);
-    print('🔗 InvitationGuard: Building with invitationCode: $invitationCode, currentUser: ${currentUser?.email}');
+    print('🔗 InvitationGuard: Building with invitationCode: ${widget.invitationCode}, currentUser: ${currentUser?.email}');
     print('🔗 InvitationGuard: Current URL: ${GoRouterState.of(context).uri}');
 
     if (currentUser == null) {
       print('🔗 InvitationGuard: User not authenticated, showing invitation preview');
       // User is not authenticated, show invitation preview and login prompt
-      return _buildInvitationPreview(context, ref);
+      return _buildInvitationPreview(context);
     }
 
     print('🔗 InvitationGuard: User authenticated, showing invitation acceptance screen');
     // User is authenticated, show the invitation acceptance screen
-    return child;
+    return widget.child;
   }
 
-  Widget _buildInvitationPreview(BuildContext context, WidgetRef ref) {
+  Widget _buildInvitationPreview(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('League Invitation'),
@@ -73,7 +90,7 @@ class InvitationGuard extends ConsumerWidget {
                   onPressed: () {
                     // Redirect to sign in with invitation code as query parameter
                     print('🔗 InvitationGuard: Redirecting to signin with invitation code');
-                    context.go('/signin?invite=$invitationCode');
+                    context.go('/signin?invite=${widget.invitationCode}');
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),

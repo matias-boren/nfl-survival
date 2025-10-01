@@ -38,7 +38,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       
       print('🔄 Router redirect: path=${state.uri.path}, currentUser=${currentUser?.email}, isInviteRoute=$isInviteRoute');
       
-      // If we're on an invitation route, always allow it to proceed (InvitationGuard will handle auth)
+      // CRITICAL: If we're on an invitation route, ALWAYS allow it to proceed
+      // InvitationGuard will handle authentication
       if (isInviteRoute) {
         print('🔄 Router: Invitation route detected, allowing to proceed');
         return null;
