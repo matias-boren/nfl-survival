@@ -36,6 +36,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final isLoadingRoute = state.uri.path == '/loading';
       final isInviteRoute = state.uri.path.startsWith('/invite/');
       final isAdminRoute = state.uri.path.startsWith('/admin/');
+      
+      print('🔄 Router redirect: path=${state.uri.path}, currentUser=${currentUser?.email}, isInviteRoute=$isInviteRoute');
 
       // If user is authenticated and on signin page, check for redirect
       if (currentUser != null && isSignInRoute) {
@@ -50,6 +52,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       // EXCEPT for invitation routes (handled by InvitationGuard) and admin routes (handled by AuthGuard)
       if (currentUser == null && !isSignInRoute && !isLoadingRoute && !isInviteRoute && !isAdminRoute) {
         return '/signin';
+      }
+
+      // If user is authenticated and on invitation route, allow it to proceed
+      if (currentUser != null && isInviteRoute) {
+        print('🔄 Router: User authenticated on invitation route, allowing to proceed');
+        return null; // No redirect needed
       }
 
       // If user is authenticated and not on loading page, go to home
