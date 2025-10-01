@@ -74,7 +74,9 @@ class InvitationGuard extends ConsumerWidget {
                   onPressed: () {
                     // Store the invitation code and redirect to sign in
                     // After successful sign in, user will be redirected back to invitation
-                    context.go('/signin?redirect=/invite/$invitationCode');
+                    print('🔗 InvitationGuard: Storing invitation code and redirecting to signin');
+                    InvitationStorageService.storeInvitationCode(invitationCode);
+                    context.go('/signin');
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),

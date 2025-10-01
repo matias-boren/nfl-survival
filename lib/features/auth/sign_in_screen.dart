@@ -356,9 +356,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         if (mounted) {
           // Check for redirect parameter
           final redirectParam = GoRouterState.of(context).uri.queryParameters['redirect'];
+          print('🔐 SignInScreen: Redirect parameter: $redirectParam');
           if (redirectParam != null && redirectParam.isNotEmpty) {
+            print('🔐 SignInScreen: Redirecting to: $redirectParam');
             context.go(redirectParam);
           } else {
+            print('🔐 SignInScreen: No redirect parameter, going to home');
             context.go('/');
           }
         }
