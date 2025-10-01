@@ -43,7 +43,7 @@ class MakePickScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Always use current week from provider
     final currentWeekAsync = ref.watch(currentWeekProvider);
-    final currentWeek = currentWeekAsync.valueOrNull ?? 4; // Default to week 4
+    final currentWeek = currentWeekAsync.valueOrNull ?? 1; // Default to week 1 if not available
 
     final gamesAsync = ref.watch(gamesForWeekProvider(currentWeek));
     final pickLockedAsync = ref.watch(pickLockedProvider(currentWeek));

@@ -2,16 +2,20 @@ import 'package:pick1/data/models/league.dart';
 import 'package:pick1/data/models/pick.dart';
 import 'package:pick1/data/picks/picks_repositories.dart';
 import 'package:pick1/data/leagues/league_repositories.dart';
+import 'package:pick1/core/services/deadline_service.dart';
 
 class EliminationService {
   final PicksRepository _picksRepository;
   final LeagueRepository _leagueRepository;
+  final DeadlineService _deadlineService;
 
   EliminationService({
     required PicksRepository picksRepository,
     required LeagueRepository leagueRepository,
+    required DeadlineService deadlineService,
   }) : _picksRepository = picksRepository,
-       _leagueRepository = leagueRepository;
+       _leagueRepository = leagueRepository,
+       _deadlineService = deadlineService;
 
   /// Check if a user is eliminated from a league
   Future<bool> isUserEliminated({
@@ -63,8 +67,8 @@ class EliminationService {
 
     // Check auto-eliminate on no pick rule
     if (league.settings.autoEliminateOnNoPick) {
-      // Get current week (this would need to be injected or calculated)
-      final currentWeek = _getCurrentWeek();
+      // Get current week from the deadline service (which uses ESPN API)
+      final currentWeek = _deadlineService.getCurrentWeek();
       
       // Check if user has a pick for current week
       final currentWeekPick = userPicks
@@ -164,14 +168,6 @@ class EliminationService {
     }
   }
 
-  /// Simple current week calculation - in production this should be injected
-  int _getCurrentWeek() {
-    final now = DateTime.now();
-    final seasonStart = DateTime(now.year, 9, 1); // Approximate season start
-    final daysSinceStart = now.difference(seasonStart).inDays;
-    final week = (daysSinceStart / 7).floor() + 1;
-    return week.clamp(1, 18); // NFL regular season is 18 weeks
-  }
 }
 
 class EliminationStats {

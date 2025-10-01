@@ -16,7 +16,7 @@ class ResultProcessingScreen extends ConsumerStatefulWidget {
 class _ResultProcessingScreenState
     extends ConsumerState<ResultProcessingScreen> {
   String? _selectedLeagueId;
-  int _selectedWeek = 4;
+  int _selectedWeek = 1;
   bool _isProcessing = false;
   String _lastResult = '';
 

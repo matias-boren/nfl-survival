@@ -411,6 +411,7 @@ final eliminationServiceProvider = Provider<EliminationService>((ref) {
   return EliminationService(
     picksRepository: ref.read(picksRepositoryProvider),
     leagueRepository: ref.read(leagueRepositoryProvider),
+    deadlineService: ref.read(deadlineServiceProvider),
   );
 });
 

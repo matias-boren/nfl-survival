@@ -12,7 +12,7 @@ import 'package:pick1/core/services/team_logo_service.dart';
 final nextWeekGamesProvider = FutureProvider<List<Game>>((ref) async {
   print('nextWeekGamesProvider called');
   final currentWeekAsync = ref.watch(currentWeekProvider);
-  final currentWeek = currentWeekAsync.valueOrNull ?? 4; // Default to week 4
+  final currentWeek = currentWeekAsync.valueOrNull ?? 1; // Default to week 1 if not available
   print('Current week: $currentWeek');
   // Get current week's games
   final games = await ref
@@ -147,7 +147,7 @@ class HomeScreen extends ConsumerWidget {
                                           currentWeekProvider,
                                         );
                                         final currentWeek =
-                                            currentWeekAsync.valueOrNull ?? 4;
+                                            currentWeekAsync.valueOrNull ?? 1;
                                         final timeLeftAsync = ref.watch(
                                           deadlineStatusProvider(currentWeek),
                                         );
@@ -280,7 +280,7 @@ class HomeScreen extends ConsumerWidget {
                               currentWeekProvider,
                             );
                             final currentWeek =
-                                currentWeekAsync.valueOrNull ?? 4;
+                                currentWeekAsync.valueOrNull ?? 1;
                             return Text(
                               'Week $currentWeek Schedule',
                               style: Theme.of(context).textTheme.titleLarge
