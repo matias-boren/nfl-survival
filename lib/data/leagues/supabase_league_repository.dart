@@ -35,7 +35,13 @@ class SupabaseLeagueRepository implements LeagueRepository {
       'user_id': draft.ownerId,
     });
 
-    return _leagueFromSupabase(response);
+    // Add league_members data to the response
+    final responseWithMembers = Map<String, dynamic>.from(response);
+    responseWithMembers['league_members'] = [
+      {'user_id': draft.ownerId}
+    ];
+
+    return _leagueFromSupabase(responseWithMembers);
   }
 
   @override
@@ -47,7 +53,7 @@ class SupabaseLeagueRepository implements LeagueRepository {
     // First, get all leagues where the user is the owner
     final ownedLeagues = await _supabase
         .from('leagues')
-        .select('*, league_members(user_id)')
+        .select('*')
         .eq('owner_id', userId);
 
     print('Found ${ownedLeagues.length} owned leagues');
@@ -56,7 +62,7 @@ class SupabaseLeagueRepository implements LeagueRepository {
     // Also try with creator_id
     final ownedLeaguesByCreator = await _supabase
         .from('leagues')
-        .select('*, league_members(user_id)')
+        .select('*')
         .eq('creator_id', userId);
 
     print('Found ${ownedLeaguesByCreator.length} leagues by creator_id');
@@ -74,21 +80,54 @@ class SupabaseLeagueRepository implements LeagueRepository {
     // Combine all lists and remove duplicates immediately
     final uniqueLeagues = <String, Map<String, dynamic>>{};
 
-    // Add owned leagues
-    for (final league in ownedLeagues) {
-      uniqueLeagues[league['id']] = league;
-    }
-
-    // Add leagues by creator_id (only if not already added)
-    for (final league in ownedLeaguesByCreator) {
-      uniqueLeagues[league['id']] = league;
-    }
-
-    // Add member leagues
+    // Add member leagues first (they have the correct league_members data)
     for (final memberLeague in memberLeagues) {
       if (memberLeague['leagues'] != null) {
         final league = memberLeague['leagues'] as Map<String, dynamic>;
         uniqueLeagues[league['id']] = league;
+      }
+    }
+
+    // Add owned leagues (only if not already added)
+    for (final league in ownedLeagues) {
+      if (!uniqueLeagues.containsKey(league['id'])) {
+        uniqueLeagues[league['id']] = league;
+      }
+    }
+
+    // Add leagues by creator_id (only if not already added)
+    for (final league in ownedLeaguesByCreator) {
+      if (!uniqueLeagues.containsKey(league['id'])) {
+        uniqueLeagues[league['id']] = league;
+      }
+    }
+
+    // Now fetch league_members data for all leagues that don't have it
+    final leagueIds = uniqueLeagues.keys.toList();
+    if (leagueIds.isNotEmpty) {
+      final leagueMembersData = await _supabase
+          .from('league_members')
+          .select('league_id, user_id')
+          .inFilter('league_id', leagueIds);
+      
+      // Group members by league_id
+      final Map<String, List<Map<String, dynamic>>> membersByLeague = {};
+      for (final member in leagueMembersData) {
+        final leagueId = member['league_id'] as String;
+        if (!membersByLeague.containsKey(leagueId)) {
+          membersByLeague[leagueId] = [];
+        }
+        membersByLeague[leagueId]!.add(member);
+      }
+      
+      // Add league_members data to leagues that don't have it
+      for (final leagueId in leagueIds) {
+        if (uniqueLeagues.containsKey(leagueId)) {
+          final league = uniqueLeagues[leagueId]!;
+          if (!league.containsKey('league_members') || league['league_members'] == null) {
+            league['league_members'] = membersByLeague[leagueId] ?? [];
+          }
+        }
       }
     }
 
