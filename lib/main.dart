@@ -68,14 +68,15 @@ class MyApp extends ConsumerWidget {
       dataRefreshService.startService();
       print('🔄 Automated data refresh service started');
 
-      // Initialize automated news generation service
-      final newsGenerator = ref.read(newsGeneratorProvider);
-      if (NewsConfig.openAIApiKey.isNotEmpty) {
-        newsGenerator.startService();
-        print('📰 News generation service started');
-      } else {
-        print('OpenAI API key not found - news generation service disabled');
-      }
+        // Initialize automated news generation service
+        final newsGenerator = ref.read(newsGeneratorProvider);
+        if (NewsConfig.openAIApiKey.isNotEmpty) {
+          // Temporarily disabled to prevent API rate limiting
+          // newsGenerator.startService();
+          print('📰 News generation service temporarily disabled');
+        } else {
+          print('OpenAI API key not found - news generation service disabled');
+        }
     });
 
     return MaterialApp.router(

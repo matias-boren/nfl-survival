@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pick1/app/providers.dart';
 import 'package:pick1/data/models/league.dart';
 import 'package:pick1/widgets/app_scaffold.dart';
+import 'package:pick1/features/league/table/league_list_screen.dart';
 
 class LeagueCreateScreen extends ConsumerStatefulWidget {
   const LeagueCreateScreen({super.key});
@@ -75,20 +76,27 @@ class _LeagueCreateScreenState extends ConsumerState<LeagueCreateScreen> {
         memberIds: [currentUser.id],
       );
 
+      print('🔍 Creating league: ${newLeague.name}');
       final createdLeague = await ref
           .read(leagueRepositoryProvider)
           .createLeague(newLeague);
+      print('🔍 League created with ID: ${createdLeague.id}');
 
       // Update user's joinedLeagueIds
       final updatedUser = currentUser.copyWith(
         joinedLeagueIds: [...currentUser.joinedLeagueIds, createdLeague.id],
       );
+      print('🔍 Updated user joinedLeagueIds: ${updatedUser.joinedLeagueIds}');
       ref.read(currentUserProvider.notifier).state = updatedUser;
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('League created successfully!')),
         );
+        
+        // Invalidate the league list provider to refresh it
+        ref.invalidate(userLeaguesProvider);
+        
         context.go('/league/${createdLeague.id}');
       }
     } catch (e) {
