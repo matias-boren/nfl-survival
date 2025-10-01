@@ -47,6 +47,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       // If user is authenticated and on signin page, check for redirect
       if (currentUser != null && isSignInRoute) {
         print('🔄 Router: Authenticated user on signin page');
+        // Check for invitation code parameter first
+        final inviteCode = state.uri.queryParameters['invite'];
+        if (inviteCode != null && inviteCode.isNotEmpty) {
+          print('🔄 Router: Found invite parameter: $inviteCode, redirecting to /invite/$inviteCode');
+          return '/invite/$inviteCode';
+        }
+        // Then check for redirect parameter
         final redirectParam = state.uri.queryParameters['redirect'];
         if (redirectParam != null) {
           print('🔄 Router: Found redirect parameter: $redirectParam');
