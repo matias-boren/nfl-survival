@@ -30,4 +30,10 @@ abstract class InvitationRepository {
 
   // Check if invitation is valid
   bool isInvitationValid(LeagueInvitation invitation);
+  
+  // Get acceptance count for an invitation (multi-use)
+  Future<int> getInvitationAcceptanceCount(String invitationCode);
+  
+  // Check if user has already accepted an invitation
+  Future<bool> hasUserAcceptedInvitation(String invitationCode, String userId);
 }

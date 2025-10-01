@@ -22,6 +22,8 @@ class _AcceptInvitationScreenState
   LeagueInvitation? _invitation;
   League? _league;
   String? _inviterDisplayName;
+  int _acceptanceCount = 0;
+  bool _hasUserAccepted = false;
 
   @override
   void initState() {
@@ -52,10 +54,26 @@ class _AcceptInvitationScreenState
         );
         print('🔗 AcceptInvitationScreen: Inviter display name: $inviterDisplayName');
 
+        // Get acceptance count and check if current user has already accepted
+        final currentUser = ref.read(currentUserProvider);
+        int acceptanceCount = 0;
+        bool hasUserAccepted = false;
+        
+        if (currentUser != null) {
+          acceptanceCount = await ref
+              .read(invitationRepositoryProvider)
+              .getInvitationAcceptanceCount(invitation.invitationCode);
+          hasUserAccepted = await ref
+              .read(invitationRepositoryProvider)
+              .hasUserAcceptedInvitation(invitation.invitationCode, currentUser.id);
+        }
+
         setState(() {
           _invitation = invitation;
           _league = league;
           _inviterDisplayName = inviterDisplayName;
+          _acceptanceCount = acceptanceCount;
+          _hasUserAccepted = hasUserAccepted;
         });
       } else {
         print('🔗 AcceptInvitationScreen: No invitation found for code: ${widget.invitationCode}');
@@ -152,6 +170,14 @@ class _AcceptInvitationScreenState
                                 'Invited by: ${_inviterDisplayName ?? 'Unknown User'}',
                                 style: const TextStyle(color: Colors.grey),
                               ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${_acceptanceCount} people have joined',
+                                style: const TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -204,32 +230,74 @@ class _AcceptInvitationScreenState
 
             // Action Buttons
             if (_invitation!.status == InvitationStatus.pending) ...[
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: _acceptInvitation,
-                  icon: const Icon(Icons.check),
-                  label: const Text('Accept Invitation'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+              if (_hasUserAccepted) ...[
+                // User has already accepted
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.green),
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.check_circle, color: Colors.green),
+                      SizedBox(width: 8),
+                      Text(
+                        'You have already joined this league!',
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: _declineInvitation,
-                  icon: const Icon(Icons.close),
-                  label: const Text('Decline Invitation'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.red,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () => context.go('/league/${_league!.id}'),
+                    icon: const Icon(Icons.arrow_forward),
+                    label: const Text('Go to League'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
                   ),
                 ),
-              ),
+              ] else ...[
+                // User hasn't accepted yet
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: _acceptInvitation,
+                    icon: const Icon(Icons.check),
+                    label: const Text('Accept Invitation'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: _declineInvitation,
+                    icon: const Icon(Icons.close),
+                    label: const Text('Decline Invitation'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                  ),
+                ),
+              ],
             ] else ...[
               Container(
                 width: double.infinity,
@@ -348,13 +416,23 @@ class _AcceptInvitationScreenState
     try {
       await ref
           .read(invitationRepositoryProvider)
-          .acceptInvitation(_invitation!.id, currentUser.id);
+          .acceptInvitation(_invitation!.invitationCode, currentUser.id);
 
       // Add user to league
       final updatedUser = currentUser.copyWith(
         joinedLeagueIds: [...currentUser.joinedLeagueIds, _league!.id],
       );
       ref.read(currentUserProvider.notifier).state = updatedUser;
+
+      // Refresh acceptance count and user status
+      final newAcceptanceCount = await ref
+          .read(invitationRepositoryProvider)
+          .getInvitationAcceptanceCount(_invitation!.invitationCode);
+      
+      setState(() {
+        _acceptanceCount = newAcceptanceCount;
+        _hasUserAccepted = true;
+      });
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -363,7 +441,7 @@ class _AcceptInvitationScreenState
             backgroundColor: Colors.green,
           ),
         );
-        context.go('/league/${_league!.id}');
+        // Don't navigate away - let user see the updated UI
       }
     } catch (e) {
       if (mounted) {

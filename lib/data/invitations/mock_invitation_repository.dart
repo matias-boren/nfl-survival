@@ -140,4 +140,29 @@ class MockInvitationRepository implements InvitationRepository {
     }
     return true;
   }
+
+  @override
+  Future<int> getInvitationAcceptanceCount(String invitationCode) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    
+    // Mock implementation - return a random count for testing
+    return _invitations
+        .where((inv) => inv.invitationCode == invitationCode)
+        .length * 3; // Mock: 3 people per invitation
+  }
+
+  @override
+  Future<bool> hasUserAcceptedInvitation(String invitationCode, String userId) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    
+    // Mock implementation - check if user has accepted this invitation
+    final invitation = _invitations
+        .where((inv) => inv.invitationCode == invitationCode)
+        .firstOrNull;
+    
+    if (invitation == null) return false;
+    
+    // Mock: user has accepted if they're the invited user
+    return invitation.invitedUserId == userId;
+  }
 }

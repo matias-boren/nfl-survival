@@ -112,18 +112,24 @@ class SupabaseInvitationRepository implements InvitationRepository {
   @override
   Future<LeagueInvitation> acceptInvitation(String invitationId, String userId) async {
     try {
-      final response = await _supabase
-          .from('league_invitations')
-          .update({
-            'status': 'accepted',
-            'invitedUserId': userId,
-            'acceptedAt': DateTime.now().toIso8601String(),
-          })
-          .eq('id', invitationId)
-          .select()
-          .single();
+      // For multi-use invitations, we don't update the invitation record
+      // Instead, we use the database function to handle the acceptance
+      final response = await _supabase.rpc('accept_invitation_multi_use', params: {
+        'invitation_code': invitationId, // Using invitation code instead of ID
+        'user_uuid': userId,
+      });
 
-      return LeagueInvitation.fromJson(response);
+      if (response['success'] == false) {
+        throw Exception(response['error'] ?? 'Failed to accept invitation');
+      }
+
+      // Get the updated invitation record
+      final invitation = await getInvitationByCode(invitationId);
+      if (invitation == null) {
+        throw Exception('Invitation not found after acceptance');
+      }
+
+      return invitation;
     } catch (e) {
       print('Error accepting invitation: $e');
       rethrow;
@@ -181,5 +187,44 @@ class SupabaseInvitationRepository implements InvitationRepository {
     if (invitation.status != InvitationStatus.pending) return false;
     if (invitation.expiresAt == null) return true;
     return DateTime.now().isBefore(invitation.expiresAt!);
+  }
+
+  @override
+  Future<int> getInvitationAcceptanceCount(String invitationCode) async {
+    try {
+      // First get the invitation ID
+      final invitation = await getInvitationByCode(invitationCode);
+      if (invitation == null) return 0;
+
+      // Get the acceptance count using the database function
+      final response = await _supabase.rpc('get_invitation_acceptance_count', params: {
+        'invitation_uuid': invitation.id,
+      });
+
+      return response ?? 0;
+    } catch (e) {
+      print('Error getting invitation acceptance count: $e');
+      return 0;
+    }
+  }
+
+  @override
+  Future<bool> hasUserAcceptedInvitation(String invitationCode, String userId) async {
+    try {
+      // First get the invitation ID
+      final invitation = await getInvitationByCode(invitationCode);
+      if (invitation == null) return false;
+
+      // Check if user has already accepted using the database function
+      final response = await _supabase.rpc('user_has_accepted_invitation', params: {
+        'invitation_uuid': invitation.id,
+        'user_uuid': userId,
+      });
+
+      return response ?? false;
+    } catch (e) {
+      print('Error checking if user has accepted invitation: $e');
+      return false;
+    }
   }
 }
