@@ -79,6 +79,9 @@ class _AcceptInvitationScreenState
 
   @override
   Widget build(BuildContext context) {
+    print('🔗 AcceptInvitationScreen: Building with invitationCode: ${widget.invitationCode}');
+    print('🔗 AcceptInvitationScreen: _isLoading: $_isLoading, _invitation: ${_invitation?.id}, _league: ${_league?.name}');
+    
     if (_isLoading) {
       return AppScaffold(
         appBar: AppBar(title: const Text('Invitation')),
