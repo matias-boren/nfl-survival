@@ -9,13 +9,13 @@ class SupabaseUserRepository implements UserRepository {
   Future<pick1_user.User?> getUserById(String userId) async {
     try {
       final response = await _supabase
-          .from('users')
+          .from('user_profiles')
           .select('*')
-          .eq('id', userId)
+          .eq('user_id', userId)
           .single();
 
       return pick1_user.User(
-        id: response['id'],
+        id: userId,
         displayName: response['display_name'] ?? 'User',
         email: response['email'] ?? '',
         isPremium: response['is_premium'] ?? false,
@@ -34,12 +34,12 @@ class SupabaseUserRepository implements UserRepository {
       if (userIds.isEmpty) return [];
 
       final response = await _supabase
-          .from('users')
+          .from('user_profiles')
           .select('*')
-          .inFilter('id', userIds);
+          .inFilter('user_id', userIds);
 
       return response.map<pick1_user.User>((data) => pick1_user.User(
-        id: data['id'],
+        id: data['user_id'],
         displayName: data['display_name'] ?? 'User',
         email: data['email'] ?? '',
         isPremium: data['is_premium'] ?? false,
