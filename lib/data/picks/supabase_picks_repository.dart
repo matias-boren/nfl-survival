@@ -12,6 +12,12 @@ class SupabasePicksRepository implements PicksRepository {
     required int week,
     required String teamId,
   }) async {
+    print('=== submitPick called ===');
+    print('leagueId: $leagueId');
+    print('userId: $userId');
+    print('week: $week');
+    print('teamId: $teamId');
+
     // Check if user already has a pick for this week in this league
     final existingPicks = await _supabase
         .from('picks')
@@ -20,16 +26,26 @@ class SupabasePicksRepository implements PicksRepository {
         .eq('league_id', leagueId)
         .eq('week', week);
 
+    print('Existing picks found: ${existingPicks.length}');
+    print('Existing picks: $existingPicks');
+
     final now = DateTime.now().toIso8601String();
 
     if (existingPicks.isNotEmpty) {
       // Update existing pick
-      await _supabase
-          .from('picks')
-          .update({'team_id': teamId, 'updated_at': now})
-          .eq('user_id', userId)
-          .eq('league_id', leagueId)
-          .eq('week', week);
+      print('Updating existing pick...');
+      try {
+        await _supabase
+            .from('picks')
+            .update({'team_id': teamId, 'updated_at': now})
+            .eq('user_id', userId)
+            .eq('league_id', leagueId)
+            .eq('week', week);
+        print('Pick updated successfully');
+      } catch (e) {
+        print('Error updating pick: $e');
+        rethrow;
+      }
 
       // Return the updated pick
       return Pick(
@@ -44,30 +60,37 @@ class SupabasePicksRepository implements PicksRepository {
       );
     } else {
       // Create new pick
-      final response = await _supabase
-          .from('picks')
-          .insert({
-            'user_id': userId,
-            'league_id': leagueId,
-            'team_id': teamId,
-            'week': week,
-            'result': PickResult.PENDING.name,
-            'created_at': now,
-            'updated_at': now,
-          })
-          .select()
-          .single();
+      print('Creating new pick...');
+      try {
+        final response = await _supabase
+            .from('picks')
+            .insert({
+              'user_id': userId,
+              'league_id': leagueId,
+              'team_id': teamId,
+              'week': week,
+              'result': PickResult.PENDING.name,
+              'created_at': now,
+              'updated_at': now,
+            })
+            .select()
+            .single();
+        print('Pick created successfully: $response');
 
-      return Pick(
-        id: response['id'],
-        leagueId: leagueId,
-        userId: userId,
-        week: week,
-        teamId: teamId,
-        madeAtIso: now,
-        locked: false,
-        result: PickResult.PENDING,
-      );
+        return Pick(
+          id: response['id'],
+          leagueId: leagueId,
+          userId: userId,
+          week: week,
+          teamId: teamId,
+          madeAtIso: now,
+          locked: false,
+          result: PickResult.PENDING,
+        );
+      } catch (e) {
+        print('Error creating pick: $e');
+        rethrow;
+      }
     }
   }
 
