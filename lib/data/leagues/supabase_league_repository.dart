@@ -102,10 +102,16 @@ class SupabaseLeagueRepository implements LeagueRepository {
     for (final data in finalLeagues) {
       final league = _leagueFromSupabase(data);
       print('League ${league.name} (${league.id}) has ${league.memberIds.length} members: ${league.memberIds}');
-      leagues.add(league);
+      
+      // Only include leagues that have at least one member
+      if (league.memberIds.isNotEmpty) {
+        leagues.add(league);
+      } else {
+        print('Skipping league ${league.name} - no members');
+      }
     }
 
-    print('=== Returning ${leagues.length} leagues to user ===');
+    print('=== Returning ${leagues.length} leagues to user (filtered out empty leagues) ===');
     return leagues;
   }
 
@@ -208,6 +214,17 @@ class SupabaseLeagueRepository implements LeagueRepository {
     print('=== leaveLeague called ===');
     print('Removing user $userId from league $leagueId');
     
+    // First, check if the user is the owner of the league
+    final leagueResponse = await _supabase
+        .from('leagues')
+        .select('owner_id, creator_id')
+        .eq('id', leagueId)
+        .single();
+    
+    final isOwner = leagueResponse['owner_id'] == userId || leagueResponse['creator_id'] == userId;
+    print('User is owner: $isOwner');
+    
+    // Remove user from league_members table
     final result = await _supabase
         .from('league_members')
         .delete()
@@ -215,6 +232,20 @@ class SupabaseLeagueRepository implements LeagueRepository {
         .eq('user_id', userId);
     
     print('Leave league result: $result');
+    
+    // If user is the owner, clear the owner_id and creator_id fields
+    if (isOwner) {
+      await _supabase
+          .from('leagues')
+          .update({
+            'owner_id': null,
+            'creator_id': null,
+          })
+          .eq('id', leagueId);
+      
+      print('Cleared owner_id and creator_id for league $leagueId');
+    }
+    
     print('=== leaveLeague completed ===');
   }
 

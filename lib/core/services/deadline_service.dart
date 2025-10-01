@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DeadlineService {
@@ -9,10 +11,15 @@ class DeadlineService {
   Timer? _refreshTimer;
   final StreamController<int> _weekController =
       StreamController<int>.broadcast();
+  final http.Client _client = http.Client();
+  int? _cachedWeek;
 
   Stream<int> get weekStream => _weekController.stream;
 
   void startAutoRefresh() {
+    // Initialize week immediately
+    _checkForNewWeek();
+    
     // Refresh every 5 minutes to check for new weeks
     _refreshTimer = Timer.periodic(const Duration(minutes: 5), (timer) {
       _checkForNewWeek();
@@ -24,15 +31,55 @@ class DeadlineService {
     _refreshTimer = null;
   }
 
-  void _checkForNewWeek() {
-    // This would typically check with your backend or API
-    // For now, we'll emit the current week
-    final currentWeek = getCurrentWeek();
-    _weekController.add(currentWeek);
+  void _checkForNewWeek() async {
+    try {
+      // Get current week from ESPN API
+      final currentWeek = await _getCurrentWeekFromEspn();
+      if (currentWeek != null && currentWeek != _cachedWeek) {
+        _cachedWeek = currentWeek;
+        _weekController.add(currentWeek);
+        print('📅 Week updated to: $currentWeek');
+      }
+    } catch (e) {
+      print('❌ Error getting current week from ESPN: $e');
+      // Fallback to calculated week
+      final fallbackWeek = getCurrentWeek();
+      _weekController.add(fallbackWeek);
+    }
+  }
+
+  /// Get current week from ESPN API
+  Future<int?> _getCurrentWeekFromEspn() async {
+    try {
+      final response = await _client.get(
+        Uri.parse('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard'),
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final week = data['week']?['number'];
+        print('📅 ESPN API returned week: $week');
+        return week;
+      } else {
+        print('❌ ESPN API returned status: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('❌ Error fetching week from ESPN API: $e');
+      return null;
+    }
   }
 
   int getCurrentWeek() {
-    // Simple week calculation - in production, you'd want more sophisticated logic
+    // Return cached week if available, otherwise calculate
+    if (_cachedWeek != null) {
+      return _cachedWeek!;
+    }
+    
+    // Simple week calculation - fallback only
     final now = DateTime.now();
     final seasonStart = DateTime(now.year, 9, 1); // Approximate season start
     final daysSinceStart = now.difference(seasonStart).inDays;
