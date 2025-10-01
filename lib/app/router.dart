@@ -30,26 +30,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: '/',
     redirect: (context, state) {
-      // Check if we're on an invitation route by looking at the current URL
-      final currentPath = state.uri.path;
-      final isInviteRoute = currentPath.startsWith('/invite/');
-      
-      print('🔄 Router redirect: currentPath=$currentPath, isInviteRoute=$isInviteRoute');
-      
-      if (isInviteRoute) {
-        print('🔄 Router: Invitation route detected, allowing to proceed');
-        return null; // Let InvitationGuard handle it
-      }
-      
-      // Continue with normal redirect logic
       final currentUser = ref.watch(currentUserProvider);
       final isSignInRoute =
           state.uri.path == '/signin' || state.uri.path == '/sign-in';
       final isLoadingRoute = state.uri.path == '/loading';
+      final isInviteRoute = state.uri.path.startsWith('/invite/');
       final isAdminRoute = state.uri.path.startsWith('/admin/');
       
       print('🔄 Router redirect: path=${state.uri.path}, currentUser=${currentUser?.email}, isInviteRoute=$isInviteRoute');
-      print('🔄 Router redirect: full URI=${state.uri}');
       
       // If we're on an invitation route, always allow it to proceed (InvitationGuard will handle auth)
       if (isInviteRoute) {
