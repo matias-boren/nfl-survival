@@ -18,10 +18,9 @@ class InvitationGuard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.watch(currentUserProvider);
     print('🔗 InvitationGuard: Building with invitationCode: $invitationCode, currentUser: ${currentUser?.email}');
+    print('🔗 InvitationGuard: Current URL: ${GoRouterState.of(context).uri}');
 
     if (currentUser == null) {
-      // Store the invitation code for later use after authentication
-      InvitationStorageService.storeInvitationCode(invitationCode);
       print('🔗 InvitationGuard: User not authenticated, showing invitation preview');
       // User is not authenticated, show invitation preview and login prompt
       return _buildInvitationPreview(context, ref);

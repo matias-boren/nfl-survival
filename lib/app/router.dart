@@ -51,7 +51,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       // If user is not authenticated and not on signin page, redirect to signin
       // EXCEPT for invitation routes (handled by InvitationGuard) and admin routes (handled by AuthGuard)
       if (currentUser == null && !isSignInRoute && !isLoadingRoute && !isInviteRoute && !isAdminRoute) {
+        print('🔄 Router: Redirecting unauthenticated user to signin');
         return '/signin';
+      }
+
+      // If user is not authenticated and on invitation route, allow it to proceed
+      if (currentUser == null && isInviteRoute) {
+        print('🔄 Router: Unauthenticated user on invitation route, allowing to proceed');
+        return null; // No redirect needed
       }
 
       // If user is authenticated and on invitation route, allow it to proceed
