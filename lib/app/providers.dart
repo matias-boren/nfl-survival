@@ -33,7 +33,7 @@ import 'package:pick1/data/teams/supabase_team_record_repository.dart';
 import 'package:pick1/core/services/team_service.dart';
 import 'package:pick1/core/services/automated_data_refresh_service.dart';
 import 'package:pick1/data/users/user_repositories.dart';
-import 'package:pick1/data/users/mock_user_repository.dart';
+import 'package:pick1/data/users/supabase_user_repository.dart';
 import 'package:pick1/data/chat/chat_repositories.dart';
 import 'package:pick1/data/chat/supabase_chat_repository.dart';
 import 'package:pick1/data/models/user.dart';
@@ -102,7 +102,7 @@ final automatedDataRefreshServiceProvider = Provider<AutomatedDataRefreshService
   return service;
 });
 final userRepositoryProvider = Provider<UserRepository>(
-  (ref) => MockUserRepository(),
+  (ref) => SupabaseUserRepository(),
 );
 
 // Services
