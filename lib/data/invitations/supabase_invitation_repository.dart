@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:pick1/data/invitations/invitation_repositories.dart';
 import 'package:pick1/data/models/league_invitation.dart';
@@ -164,16 +165,15 @@ class SupabaseInvitationRepository implements InvitationRepository {
 
   @override
   String generateInvitationCode() {
-    // Generate a random 8-character code
+    // Generate a truly random 8-character code
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    final random = DateTime.now().millisecondsSinceEpoch;
-    final code = StringBuffer();
-    
-    for (int i = 0; i < 8; i++) {
-      code.write(chars[(random + i) % chars.length]);
-    }
-    
-    return code.toString();
+    final random = Random();
+    return String.fromCharCodes(
+      Iterable.generate(
+        8,
+        (_) => chars.codeUnitAt(random.nextInt(chars.length)),
+      ),
+    );
   }
 
   @override

@@ -54,9 +54,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       // If user is authenticated and not on loading page, go to home
       if (currentUser != null && isLoadingRoute) {
+        print('🔄 Router: User authenticated, checking for pending invitation...');
         // Check if there's a pending invitation code
         final pendingInvitationCode = InvitationStorageService.getPendingInvitationCode();
         if (pendingInvitationCode != null) {
+          print('🔄 Router: Found pending invitation code: $pendingInvitationCode, redirecting to /invite/$pendingInvitationCode');
           InvitationStorageService.clearPendingInvitationCode();
           return '/invite/$pendingInvitationCode';
         }
@@ -64,8 +66,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         // Check if there's a stored redirect URL (from invitation flow)
         final redirectParam = state.uri.queryParameters['redirect'];
         if (redirectParam != null && redirectParam.isNotEmpty) {
+          print('🔄 Router: Found redirect parameter: $redirectParam');
           return redirectParam;
         }
+        print('🔄 Router: No pending invitation or redirect, going to home');
         return '/';
       }
 

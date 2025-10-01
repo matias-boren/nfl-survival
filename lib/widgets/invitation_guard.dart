@@ -17,14 +17,17 @@ class InvitationGuard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.watch(currentUserProvider);
+    print('🔗 InvitationGuard: Building with invitationCode: $invitationCode, currentUser: ${currentUser?.email}');
 
     if (currentUser == null) {
       // Store the invitation code for later use after authentication
       InvitationStorageService.storeInvitationCode(invitationCode);
+      print('🔗 InvitationGuard: User not authenticated, showing invitation preview');
       // User is not authenticated, show invitation preview and login prompt
       return _buildInvitationPreview(context, ref);
     }
 
+    print('🔗 InvitationGuard: User authenticated, showing invitation acceptance screen');
     // User is authenticated, show the invitation acceptance screen
     return child;
   }
