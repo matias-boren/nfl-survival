@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:pick1/firebase_options.dart';
 import 'package:pick1/app/router.dart';
 import 'package:pick1/app/providers.dart';
@@ -15,6 +16,9 @@ import 'package:pick1/core/config/news_config.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Enable path-based URL strategy (removes # from URLs)
+  usePathUrlStrategy();
 
   // Load environment variables
   await dotenv.load(fileName: ".env");
