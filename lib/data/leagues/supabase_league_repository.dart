@@ -5,6 +5,7 @@ import 'package:pick1/data/models/user.dart' as app_user;
 
 class SupabaseLeagueRepository implements LeagueRepository {
   final SupabaseClient _supabase = Supabase.instance.client;
+  final Map<String, Map<String, dynamic>> _cache = {};
 
   @override
   Future<League> createLeague(League draft) async {
@@ -49,6 +50,17 @@ class SupabaseLeagueRepository implements LeagueRepository {
     print('=== listLeaguesForUser called ===');
     print('Listing leagues for user: $userId');
     print('Current auth user: ${_supabase.auth.currentUser?.id}');
+    
+    // Add a small cache to prevent duplicate calls within a short time
+    final cacheKey = 'leagues_$userId';
+    final now = DateTime.now().millisecondsSinceEpoch;
+    if (_cache.containsKey(cacheKey)) {
+      final cached = _cache[cacheKey]!;
+      if (now - cached['timestamp'] < 5000) { // 5 second cache
+        print('=== Returning cached leagues ===');
+        return cached['data'] as List<League>;
+      }
+    }
 
     // First, get all leagues where the user is the owner
     final ownedLeagues = await _supabase
@@ -160,6 +172,13 @@ class SupabaseLeagueRepository implements LeagueRepository {
     }
 
     print('=== Returning ${leagues.length} leagues to user (filtered out empty leagues) ===');
+    
+    // Cache the result
+    _cache[cacheKey] = {
+      'data': leagues,
+      'timestamp': now,
+    };
+    
     return leagues;
   }
 

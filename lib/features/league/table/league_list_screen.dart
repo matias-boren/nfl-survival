@@ -14,12 +14,8 @@ final userLeaguesProvider = FutureProvider<List<League>>((ref) async {
     return [];
   }
   print('🔍 userLeaguesProvider: Getting leagues for user ${currentUser.id}');
-  print('🔍 userLeaguesProvider: User joinedLeagueIds: ${currentUser.joinedLeagueIds}');
   final leagues = await ref.read(leagueRepositoryProvider).listLeaguesForUser(currentUser.id);
   print('🔍 userLeaguesProvider: Found ${leagues.length} leagues');
-  for (final league in leagues) {
-    print('🔍 userLeaguesProvider: League ${league.name} (${league.id}) with ${league.memberIds.length} members');
-  }
   return leagues;
 });
 
