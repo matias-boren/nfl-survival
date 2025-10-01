@@ -20,6 +20,22 @@ Map<String, dynamic> _$LeagueSettingsToJson(_LeagueSettings instance) =>
       'autoEliminateOnNoPick': instance.autoEliminateOnNoPick,
     };
 
+_LeagueMember _$LeagueMemberFromJson(Map<String, dynamic> json) =>
+    _LeagueMember(
+      leagueId: json['leagueId'] as String,
+      userId: json['userId'] as String,
+      losses: (json['losses'] as num).toInt(),
+      joinedAt: json['joinedAt'] as String,
+    );
+
+Map<String, dynamic> _$LeagueMemberToJson(_LeagueMember instance) =>
+    <String, dynamic>{
+      'leagueId': instance.leagueId,
+      'userId': instance.userId,
+      'losses': instance.losses,
+      'joinedAt': instance.joinedAt,
+    };
+
 _League _$LeagueFromJson(Map<String, dynamic> json) => _League(
   id: json['id'] as String,
   name: json['name'] as String,

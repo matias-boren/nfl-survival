@@ -99,6 +99,8 @@ class SupabaseLeagueRepository implements LeagueRepository {
 
     // Convert to League objects - league_members data should now be included
     final List<League> leagues = [];
+    final List<String> emptyLeagueIds = [];
+    
     for (final data in finalLeagues) {
       final league = _leagueFromSupabase(data);
       print('League ${league.name} (${league.id}) has ${league.memberIds.length} members: ${league.memberIds}');
@@ -107,8 +109,15 @@ class SupabaseLeagueRepository implements LeagueRepository {
       if (league.memberIds.isNotEmpty) {
         leagues.add(league);
       } else {
-        print('Skipping league ${league.name} - no members');
+        print('Skipping league ${league.name} - no members, will be deleted');
+        emptyLeagueIds.add(league.id);
       }
+    }
+    
+    // Clean up empty leagues
+    if (emptyLeagueIds.isNotEmpty) {
+      print('Deleting ${emptyLeagueIds.length} empty leagues: $emptyLeagueIds');
+      await _cleanupEmptyLeagues(emptyLeagueIds);
     }
 
     print('=== Returning ${leagues.length} leagues to user (filtered out empty leagues) ===');
@@ -268,6 +277,21 @@ class SupabaseLeagueRepository implements LeagueRepository {
     await _supabase.from('leagues').delete().eq('id', leagueId);
   }
 
+  /// Clean up empty leagues by deleting them from the database
+  Future<void> _cleanupEmptyLeagues(List<String> leagueIds) async {
+    try {
+      // Delete from leagues table
+      await _supabase
+          .from('leagues')
+          .delete()
+          .inFilter('id', leagueIds);
+      
+      print('Successfully deleted ${leagueIds.length} empty leagues');
+    } catch (e) {
+      print('Error deleting empty leagues: $e');
+    }
+  }
+
   League _leagueFromSupabase(Map<String, dynamic> data) {
     // Parse member_points from JSONB
     Map<String, int> memberPoints = {};
@@ -295,20 +319,14 @@ class SupabaseLeagueRepository implements LeagueRepository {
       print('  No league_members data (will be fetched separately)');
     }
 
-    // Get member IDs from league_members table, or fallback to owner/creator
+    // Get member IDs from league_members table
     List<String> memberIds = [];
     if (data['league_members'] != null && (data['league_members'] as List).isNotEmpty) {
       memberIds = (data['league_members'] as List<dynamic>)
           .map((member) => member['user_id'] as String)
           .toList();
-    } else {
-      // Fallback: if no league_members data, include the owner/creator as a member
-      final ownerId = data['owner_id'] ?? data['creator_id'];
-      if (ownerId != null) {
-        memberIds = [ownerId];
-        print('  Fallback: Using owner/creator as member: $ownerId');
-      }
     }
+    // No fallback - if no members, league should be empty
 
     return League(
       id: data['id'],

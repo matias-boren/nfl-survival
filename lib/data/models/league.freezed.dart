@@ -282,6 +282,278 @@ as bool,
 
 
 /// @nodoc
+mixin _$LeagueMember {
+
+ String get leagueId; String get userId; int get losses; String get joinedAt;
+/// Create a copy of LeagueMember
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$LeagueMemberCopyWith<LeagueMember> get copyWith => _$LeagueMemberCopyWithImpl<LeagueMember>(this as LeagueMember, _$identity);
+
+  /// Serializes this LeagueMember to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LeagueMember&&(identical(other.leagueId, leagueId) || other.leagueId == leagueId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.losses, losses) || other.losses == losses)&&(identical(other.joinedAt, joinedAt) || other.joinedAt == joinedAt));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,leagueId,userId,losses,joinedAt);
+
+@override
+String toString() {
+  return 'LeagueMember(leagueId: $leagueId, userId: $userId, losses: $losses, joinedAt: $joinedAt)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $LeagueMemberCopyWith<$Res>  {
+  factory $LeagueMemberCopyWith(LeagueMember value, $Res Function(LeagueMember) _then) = _$LeagueMemberCopyWithImpl;
+@useResult
+$Res call({
+ String leagueId, String userId, int losses, String joinedAt
+});
+
+
+
+
+}
+/// @nodoc
+class _$LeagueMemberCopyWithImpl<$Res>
+    implements $LeagueMemberCopyWith<$Res> {
+  _$LeagueMemberCopyWithImpl(this._self, this._then);
+
+  final LeagueMember _self;
+  final $Res Function(LeagueMember) _then;
+
+/// Create a copy of LeagueMember
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? leagueId = null,Object? userId = null,Object? losses = null,Object? joinedAt = null,}) {
+  return _then(_self.copyWith(
+leagueId: null == leagueId ? _self.leagueId : leagueId // ignore: cast_nullable_to_non_nullable
+as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String,losses: null == losses ? _self.losses : losses // ignore: cast_nullable_to_non_nullable
+as int,joinedAt: null == joinedAt ? _self.joinedAt : joinedAt // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [LeagueMember].
+extension LeagueMemberPatterns on LeagueMember {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _LeagueMember value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _LeagueMember() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _LeagueMember value)  $default,){
+final _that = this;
+switch (_that) {
+case _LeagueMember():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _LeagueMember value)?  $default,){
+final _that = this;
+switch (_that) {
+case _LeagueMember() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String leagueId,  String userId,  int losses,  String joinedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _LeagueMember() when $default != null:
+return $default(_that.leagueId,_that.userId,_that.losses,_that.joinedAt);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String leagueId,  String userId,  int losses,  String joinedAt)  $default,) {final _that = this;
+switch (_that) {
+case _LeagueMember():
+return $default(_that.leagueId,_that.userId,_that.losses,_that.joinedAt);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String leagueId,  String userId,  int losses,  String joinedAt)?  $default,) {final _that = this;
+switch (_that) {
+case _LeagueMember() when $default != null:
+return $default(_that.leagueId,_that.userId,_that.losses,_that.joinedAt);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _LeagueMember implements LeagueMember {
+  const _LeagueMember({required this.leagueId, required this.userId, required this.losses, required this.joinedAt});
+  factory _LeagueMember.fromJson(Map<String, dynamic> json) => _$LeagueMemberFromJson(json);
+
+@override final  String leagueId;
+@override final  String userId;
+@override final  int losses;
+@override final  String joinedAt;
+
+/// Create a copy of LeagueMember
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$LeagueMemberCopyWith<_LeagueMember> get copyWith => __$LeagueMemberCopyWithImpl<_LeagueMember>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$LeagueMemberToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LeagueMember&&(identical(other.leagueId, leagueId) || other.leagueId == leagueId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.losses, losses) || other.losses == losses)&&(identical(other.joinedAt, joinedAt) || other.joinedAt == joinedAt));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,leagueId,userId,losses,joinedAt);
+
+@override
+String toString() {
+  return 'LeagueMember(leagueId: $leagueId, userId: $userId, losses: $losses, joinedAt: $joinedAt)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$LeagueMemberCopyWith<$Res> implements $LeagueMemberCopyWith<$Res> {
+  factory _$LeagueMemberCopyWith(_LeagueMember value, $Res Function(_LeagueMember) _then) = __$LeagueMemberCopyWithImpl;
+@override @useResult
+$Res call({
+ String leagueId, String userId, int losses, String joinedAt
+});
+
+
+
+
+}
+/// @nodoc
+class __$LeagueMemberCopyWithImpl<$Res>
+    implements _$LeagueMemberCopyWith<$Res> {
+  __$LeagueMemberCopyWithImpl(this._self, this._then);
+
+  final _LeagueMember _self;
+  final $Res Function(_LeagueMember) _then;
+
+/// Create a copy of LeagueMember
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? leagueId = null,Object? userId = null,Object? losses = null,Object? joinedAt = null,}) {
+  return _then(_LeagueMember(
+leagueId: null == leagueId ? _self.leagueId : leagueId // ignore: cast_nullable_to_non_nullable
+as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String,losses: null == losses ? _self.losses : losses // ignore: cast_nullable_to_non_nullable
+as int,joinedAt: null == joinedAt ? _self.joinedAt : joinedAt // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$League {
 
  String get id; String get name; String get ownerId; LeagueVisibility get visibility; LeagueSettings get settings; int get season; String get createdAtIso; List<String> get memberIds; String? get inviteCode; Map<String, int> get memberPoints;// User ID -> Points

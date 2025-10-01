@@ -282,7 +282,7 @@ class HomeScreen extends ConsumerWidget {
                             final currentWeek =
                                 currentWeekAsync.valueOrNull ?? 1;
                             return Text(
-                              'Week $currentWeek Schedule',
+                              'Schedule',
                               style: Theme.of(context).textTheme.titleLarge
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             );

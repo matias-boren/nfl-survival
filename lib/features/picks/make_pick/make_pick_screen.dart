@@ -52,7 +52,7 @@ class MakePickScreen extends ConsumerWidget {
     final userPickAsync = ref.watch(userPickProvider((leagueId, currentWeek)));
 
     return AppScaffold(
-      appBar: AppBar(title: Text('Make Pick - Week $currentWeek')),
+      appBar: AppBar(title: const Text('Make Pick')),
       child: Column(
         children: [
           // Show previously picked teams

@@ -3,11 +3,13 @@ import 'package:pick1/data/models/pick.dart';
 import 'package:pick1/data/picks/picks_repositories.dart';
 import 'package:pick1/data/leagues/league_repositories.dart';
 import 'package:pick1/core/services/deadline_service.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EliminationService {
   final PicksRepository _picksRepository;
   final LeagueRepository _leagueRepository;
   final DeadlineService _deadlineService;
+  final SupabaseClient _supabase = Supabase.instance.client;
 
   EliminationService({
     required PicksRepository picksRepository,
@@ -31,12 +33,18 @@ class EliminationService {
         return league.eliminatedUsers[userId] ?? false;
       }
 
-      // If not explicitly marked, calculate based on picks
-      return await _calculateEliminationStatus(
-        userId: userId,
-        leagueId: leagueId,
-        league: league,
-      );
+      // Check losses from league_members table
+      final losses = await _getUserLosses(userId, leagueId);
+      final maxLosses = league.settings.maxLosses;
+      
+      // User is eliminated if losses > maxLosses
+      final isEliminated = losses > maxLosses;
+      
+      if (isEliminated) {
+        print('User $userId eliminated: $losses losses > $maxLosses max losses');
+      }
+      
+      return isEliminated;
     } catch (e) {
       print('Error checking elimination status: $e');
       return false; // Default to not eliminated if there's an error
@@ -168,6 +176,37 @@ class EliminationService {
     }
   }
 
+  /// Get user's losses from league_members table
+  Future<int> _getUserLosses(String userId, String leagueId) async {
+    try {
+      final response = await _supabase
+          .from('league_members')
+          .select('losses')
+          .eq('user_id', userId)
+          .eq('league_id', leagueId)
+          .single();
+      
+      return response['losses'] ?? 0;
+    } catch (e) {
+      print('Error getting user losses: $e');
+      return 0; // Default to 0 losses if error
+    }
+  }
+
+  /// Update user's losses in league_members table
+  Future<void> updateUserLosses(String userId, String leagueId, int losses) async {
+    try {
+      await _supabase
+          .from('league_members')
+          .update({'losses': losses})
+          .eq('user_id', userId)
+          .eq('league_id', leagueId);
+      
+      print('Updated user $userId losses to $losses in league $leagueId');
+    } catch (e) {
+      print('Error updating user losses: $e');
+    }
+  }
 }
 
 class EliminationStats {

@@ -18,6 +18,18 @@ abstract class LeagueSettings with _$LeagueSettings {
 }
 
 @freezed
+abstract class LeagueMember with _$LeagueMember {
+  const factory LeagueMember({
+    required String leagueId,
+    required String userId,
+    required int losses,
+    required String joinedAt,
+  }) = _LeagueMember;
+
+  factory LeagueMember.fromJson(Map<String, dynamic> json) => _$LeagueMemberFromJson(json);
+}
+
+@freezed
 abstract class League with _$League {
   const factory League({
     required String id,
