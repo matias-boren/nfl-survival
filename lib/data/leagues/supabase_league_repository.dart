@@ -295,6 +295,21 @@ class SupabaseLeagueRepository implements LeagueRepository {
       print('  No league_members data (will be fetched separately)');
     }
 
+    // Get member IDs from league_members table, or fallback to owner/creator
+    List<String> memberIds = [];
+    if (data['league_members'] != null && (data['league_members'] as List).isNotEmpty) {
+      memberIds = (data['league_members'] as List<dynamic>)
+          .map((member) => member['user_id'] as String)
+          .toList();
+    } else {
+      // Fallback: if no league_members data, include the owner/creator as a member
+      final ownerId = data['owner_id'] ?? data['creator_id'];
+      if (ownerId != null) {
+        memberIds = [ownerId];
+        print('  Fallback: Using owner/creator as member: $ownerId');
+      }
+    }
+
     return League(
       id: data['id'],
       name: data['name'],
@@ -312,11 +327,7 @@ class SupabaseLeagueRepository implements LeagueRepository {
       ),
       season: data['season'] ?? 2025,
       createdAtIso: data['created_at_iso'] ?? DateTime.now().toIso8601String(),
-      memberIds: data['league_members'] != null
-          ? (data['league_members'] as List<dynamic>)
-                .map((member) => member['user_id'] as String)
-                .toList()
-          : [], // Will be populated separately by calling method
+      memberIds: memberIds,
       inviteCode: data['invite_code'],
       memberPoints: memberPoints,
     );
