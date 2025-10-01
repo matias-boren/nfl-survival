@@ -28,7 +28,7 @@ import 'package:pick1/core/services/invitation_storage_service.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/loading',
+    initialLocation: '/',
     redirect: (context, state) {
       final currentUser = ref.watch(currentUserProvider);
       final isSignInRoute =
@@ -38,6 +38,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final isAdminRoute = state.uri.path.startsWith('/admin/');
       
       print('🔄 Router redirect: path=${state.uri.path}, currentUser=${currentUser?.email}, isInviteRoute=$isInviteRoute');
+      
+      // If we're on an invitation route, always allow it to proceed (InvitationGuard will handle auth)
+      if (isInviteRoute) {
+        print('🔄 Router: Invitation route detected, allowing to proceed');
+        return null;
+      }
 
       // If user is authenticated and on signin page, check for redirect
       if (currentUser != null && isSignInRoute) {
@@ -48,24 +54,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         return '/';
       }
 
-      // If user is not authenticated and not on signin page, redirect to signin
+      // If user is not authenticated and not on special routes, redirect to signin
       // EXCEPT for invitation routes (handled by InvitationGuard) and admin routes (handled by AuthGuard)
       if (currentUser == null && !isSignInRoute && !isLoadingRoute && !isInviteRoute && !isAdminRoute) {
         print('🔄 Router: Redirecting unauthenticated user to signin');
         return '/signin';
       }
 
-      // If user is not authenticated and on invitation route, allow it to proceed
-      if (currentUser == null && isInviteRoute) {
-        print('🔄 Router: Unauthenticated user on invitation route, allowing to proceed');
-        return null; // No redirect needed
-      }
-
-      // If user is authenticated and on invitation route, allow it to proceed
-      if (currentUser != null && isInviteRoute) {
-        print('🔄 Router: User authenticated on invitation route, allowing to proceed');
-        return null; // No redirect needed
-      }
 
       // If user is authenticated and not on loading page, go to home
       if (currentUser != null && isLoadingRoute) {
