@@ -29,19 +29,29 @@ import 'package:pick1/core/services/invitation_storage_service.dart';
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     redirect: (context, state) {
-      final currentUser = ref.watch(currentUserProvider);
+      // Get authentication state including initialization status
+      final authState = ref.read(authStateProvider);
+      final currentUser = authState.user;
+      final isInitialized = authState.isInitialized;
+      
       final isSignInRoute =
           state.uri.path == '/signin' || state.uri.path == '/sign-in';
       final isLoadingRoute = state.uri.path == '/loading';
       final isInviteRoute = state.uri.path.startsWith('/invite/');
       final isAdminRoute = state.uri.path.startsWith('/admin/');
       
-      print('🔄 Router redirect: path=${state.uri.path}, currentUser=${currentUser?.email}, isInviteRoute=$isInviteRoute');
+      print('🔄 Router redirect: path=${state.uri.path}, currentUser=${currentUser?.email}, isInitialized=$isInitialized, isInviteRoute=$isInviteRoute');
       
       // CRITICAL: If we're on an invitation route, ALWAYS allow it to proceed
       // InvitationGuard will handle authentication
       if (isInviteRoute) {
         print('🔄 Router: Invitation route detected, allowing to proceed');
+        return null;
+      }
+      
+      // If authentication is not yet initialized, don't redirect yet
+      if (!isInitialized) {
+        print('🔄 Router: Authentication not initialized yet, allowing to proceed');
         return null;
       }
 

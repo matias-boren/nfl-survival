@@ -122,6 +122,13 @@ final currentUserProvider = StateNotifierProvider<CurrentUserNotifier, User?>((
 ) {
   return CurrentUserNotifier(ref.read(authRepositoryProvider));
 });
+
+// Authentication state provider that includes initialization status
+final authStateProvider = Provider<({User? user, bool isInitialized})>((ref) {
+  final notifier = ref.watch(currentUserProvider.notifier);
+  final user = ref.watch(currentUserProvider);
+  return (user: user, isInitialized: notifier.isInitialized);
+});
 final premiumStatusProvider = Provider<bool>((ref) {
   // Use select to only watch the isPremium field, reducing rebuilds
   final isPremium = ref.watch(
