@@ -225,7 +225,7 @@ class MakePickScreen extends ConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Week $currentWeek - ${ref.read(deadlineServiceProvider).formatUtcToLocal(game.date.toIso8601String())}',
+                                    ref.read(deadlineServiceProvider).formatUtcToLocal(game.date.toIso8601String()),
                                     style: const TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey,
