@@ -37,7 +37,7 @@ class SupabasePicksRepository implements PicksRepository {
       try {
         await _supabase
             .from('picks')
-            .update({'team_id': teamId, 'updated_at': now})
+            .update({'team_id': teamId, 'season': 2025, 'updated_at': now})
             .eq('user_id', userId)
             .eq('league_id', leagueId)
             .eq('week', week);
@@ -69,6 +69,7 @@ class SupabasePicksRepository implements PicksRepository {
               'league_id': leagueId,
               'team_id': teamId,
               'week': week,
+              'season': 2025,
               'result': PickResult.PENDING.name,
               'created_at': now,
               'updated_at': now,

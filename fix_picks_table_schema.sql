@@ -13,6 +13,10 @@ ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW();
 ALTER TABLE picks 
 ADD COLUMN IF NOT EXISTS locked BOOLEAN DEFAULT FALSE;
 
+-- Add season column if it doesn't exist
+ALTER TABLE picks 
+ADD COLUMN IF NOT EXISTS season INTEGER DEFAULT 2025;
+
 -- Update existing records to have proper timestamps
 UPDATE picks 
 SET created_at = NOW() 
@@ -22,6 +26,10 @@ UPDATE picks
 SET updated_at = NOW() 
 WHERE updated_at IS NULL;
 
+UPDATE picks 
+SET season = 2025 
+WHERE season IS NULL;
+
 -- Make created_at NOT NULL
 ALTER TABLE picks 
 ALTER COLUMN created_at SET NOT NULL;
@@ -30,6 +38,10 @@ ALTER COLUMN created_at SET NOT NULL;
 ALTER TABLE picks 
 ALTER COLUMN updated_at SET NOT NULL;
 
+-- Make season NOT NULL
+ALTER TABLE picks 
+ALTER COLUMN season SET NOT NULL;
+
 -- Add indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_picks_user_league_week ON picks(user_id, league_id, week);
 CREATE INDEX IF NOT EXISTS idx_picks_league_week ON picks(league_id, week);
@@ -37,8 +49,16 @@ CREATE INDEX IF NOT EXISTS idx_picks_user_league ON picks(user_id, league_id);
 
 -- Add unique constraint to ensure one pick per user per league per week
 -- This prevents duplicate picks (survival pool = one pick per week)
+-- First drop the constraint if it exists, then add it
+DO $$ 
+BEGIN
+    IF EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'unique_user_league_week_pick') THEN
+        ALTER TABLE picks DROP CONSTRAINT unique_user_league_week_pick;
+    END IF;
+END $$;
+
 ALTER TABLE picks 
-ADD CONSTRAINT IF NOT EXISTS unique_user_league_week_pick 
+ADD CONSTRAINT unique_user_league_week_pick 
 UNIQUE (user_id, league_id, week);
 
 -- Verify the table structure
