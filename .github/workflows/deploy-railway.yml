@@ -1,0 +1,46 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches: [ main ]
+    paths: 
+      - 'railway-backend/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Railway CLI
+      run: npm install -g @railway/cli
+
+    - name: Deploy to Railway
+      run: |
+        cd railway-backend
+        railway login --browserless
+        railway up --detach
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+    - name: Set Environment Variables
+      run: |
+        cd railway-backend
+        railway variables set SUPABASE_URL="${{ secrets.SUPABASE_URL }}"
+        railway variables set SUPABASE_ANON_KEY="${{ secrets.SUPABASE_ANON_KEY }}"
+        railway variables set OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}"
+        railway variables set NODE_ENV="production"
+        railway variables set RUN_ON_STARTUP="true"
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+    - name: Health Check
+      run: |
+        echo "Waiting for deployment to be ready..."
+        sleep 30
+        # Railway will provide the URL, but we can't easily get it in CI
+        # Manual health check will be needed after first deployment
+        echo "Deployment completed. Please check Railway dashboard for service URL."

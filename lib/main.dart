@@ -12,7 +12,6 @@ import 'package:pick1/app/router.dart';
 import 'package:pick1/app/providers.dart';
 import 'package:pick1/app/theme/theme.dart';
 import 'package:pick1/core/services/ad_service.dart';
-import 'package:pick1/core/config/news_config.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -72,15 +71,9 @@ class MyApp extends ConsumerWidget {
       dataRefreshService.startService();
       print('🔄 Automated data refresh service started');
 
-        // Initialize automated news generation service
-        final newsGenerator = ref.read(newsGeneratorProvider);
-        if (NewsConfig.openAIApiKey.isNotEmpty) {
-          // Temporarily disabled to prevent API rate limiting
-          // newsGenerator.startService();
-          print('📰 News generation service temporarily disabled');
-        } else {
-          print('OpenAI API key not found - news generation service disabled');
-        }
+        // News generation now handled by Railway backend service
+        // Frontend news generation service permanently disabled
+        print('📰 News generation handled by Railway backend service');
     });
 
     return MaterialApp.router(
