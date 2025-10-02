@@ -73,13 +73,13 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
                         Icon(
                           Icons.chat_bubble_outline,
                           size: 64,
-                          color: Colors.grey,
+                          color: Color(0xFF76ABAE), // Our accent color
                         ),
                         SizedBox(height: 16),
                         Text('No messages yet'),
                         Text(
                           'Start the conversation!',
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: Color(0xFF76ABAE)), // Our accent color
                         ),
                       ],
                     ),
@@ -104,7 +104,9 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
-              border: Border(top: BorderSide(color: Colors.grey[300]!)),
+              border: const Border(
+                top: BorderSide(color: Color(0xFF31363F)), // Our surface color
+              ),
             ),
             child: Row(
               children: [
@@ -129,8 +131,8 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
                   onPressed: _sendMessage,
                   icon: const Icon(Icons.send),
                   style: IconButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
+                    backgroundColor: const Color(0xFF76ABAE), // Our accent color
+                    foregroundColor: const Color(0xFF222831), // Our dark background for contrast
                   ),
                 ),
               ],
@@ -150,13 +152,13 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.grey[200],
+              color: const Color(0xFF31363F), // Our surface color
               borderRadius: BorderRadius.circular(16),
             ),
             child: Text(
               message.message,
-              style: TextStyle(
-                color: Colors.grey[600],
+              style: const TextStyle(
+                color: Color(0xFF76ABAE), // Our accent color for system messages
                 fontSize: 12,
                 fontStyle: FontStyle.italic,
               ),
@@ -173,10 +175,14 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
         children: [
           CircleAvatar(
             radius: 16,
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: const Color(0xFF76ABAE), // Our accent color
             child: Text(
               message.userName[0].toUpperCase(),
-              style: const TextStyle(color: Colors.white, fontSize: 12),
+              style: const TextStyle(
+                color: Color(0xFF222831), // Our dark background for contrast
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const SizedBox(width: 8),
@@ -196,7 +202,10 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
                     const SizedBox(width: 8),
                     Text(
                       _formatTime(message.createdAt),
-                      style: TextStyle(color: Colors.grey[600], fontSize: 10),
+                      style: const TextStyle(
+                        color: Color(0xFF76ABAE), // Our accent color
+                        fontSize: 10,
+                      ),
                     ),
                   ],
                 ),
@@ -204,10 +213,15 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.grey[100],
+                    color: const Color(0xFF31363F), // Our surface color
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Text(message.message),
+                  child: Text(
+                    message.message,
+                    style: const TextStyle(
+                      color: Color(0xFFEEEEEE), // Our light text color
+                    ),
+                  ),
                 ),
               ],
             ),
