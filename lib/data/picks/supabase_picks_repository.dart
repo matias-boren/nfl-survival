@@ -21,12 +21,11 @@ class SupabasePicksRepository implements PicksRepository {
     // First, check league settings for team reuse validation
     final leagueResponse = await _supabase
         .from('leagues')
-        .select('settings')
+        .select('allow_team_reuse')
         .eq('id', leagueId)
         .single();
 
-    final settings = leagueResponse['settings'] as Map<String, dynamic>;
-    final allowTeamReuse = settings['allowTeamReuse'] as bool? ?? false;
+    final allowTeamReuse = leagueResponse['allow_team_reuse'] as bool? ?? false;
 
     print('League allowTeamReuse: $allowTeamReuse');
 

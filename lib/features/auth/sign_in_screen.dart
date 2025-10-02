@@ -78,18 +78,33 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 40),
-            // App Logo/Title
-            Icon(
-              Icons.sports_football,
-              size: 80,
-              color: Theme.of(context).primaryColor,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Pick1',
-              style: Theme.of(
-                context,
-              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+            // App Logo
+            Container(
+              height: 120,
+              width: 300,
+              child: Image.asset(
+                'assets/images/logo/pick1_logo_horizontal.png',
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  // Fallback to icon + text if logo not found
+                  return Column(
+                    children: [
+                      Icon(
+                        Icons.sports_football,
+                        size: 80,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Pick1',
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
             const SizedBox(height: 8),
             Text(

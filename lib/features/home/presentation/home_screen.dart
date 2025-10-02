@@ -41,7 +41,16 @@ class HomeScreen extends ConsumerWidget {
 
     return AppScaffold(
       appBar: AppBar(
-        title: const Text('Pick1'),
+        title: SizedBox(
+          height: 40,
+          child: Image.asset(
+            'assets/images/logo/pick1_logo_horizontal.png',
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return const Text('Pick1');
+            },
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

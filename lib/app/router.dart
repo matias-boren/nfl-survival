@@ -24,6 +24,7 @@ import 'package:pick1/features/league/join/join_leagues_screen.dart';
 import 'package:pick1/features/picks/league_selection/league_selection_screen.dart';
 import 'package:pick1/widgets/auth_guard.dart';
 import 'package:pick1/widgets/invitation_guard.dart';
+import 'package:pick1/widgets/splash_screen.dart';
 import 'package:pick1/core/services/invitation_storage_service.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -116,8 +117,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: '/loading',
-        builder: (context, state) =>
-            const Scaffold(body: Center(child: CircularProgressIndicator())),
+        builder: (context, state) => const SplashScreen(),
       ),
       GoRoute(
         path: '/',
