@@ -18,6 +18,38 @@ class SupabasePicksRepository implements PicksRepository {
     print('week: $week');
     print('teamId: $teamId');
 
+    // First, check league settings for team reuse validation
+    final leagueResponse = await _supabase
+        .from('leagues')
+        .select('settings')
+        .eq('id', leagueId)
+        .single();
+
+    final settings = leagueResponse['settings'] as Map<String, dynamic>;
+    final allowTeamReuse = settings['allowTeamReuse'] as bool? ?? false;
+
+    print('League allowTeamReuse: $allowTeamReuse');
+
+    // If team reuse is not allowed, check if user has already picked this team
+    if (!allowTeamReuse) {
+      final previousPicks = await _supabase
+          .from('picks')
+          .select('team_id')
+          .eq('user_id', userId)
+          .eq('league_id', leagueId)
+          .neq('week', week); // Exclude current week
+
+      final previousTeamIds = previousPicks
+          .map((pick) => pick['team_id'] as String)
+          .toSet();
+
+      if (previousTeamIds.contains(teamId)) {
+        throw Exception(
+          'Team $teamId was already picked in a previous week. This league does not allow team reuse.',
+        );
+      }
+    }
+
     // Check if user already has a pick for this week in this league
     final existingPicks = await _supabase
         .from('picks')

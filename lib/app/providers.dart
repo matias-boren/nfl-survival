@@ -38,6 +38,7 @@ import 'package:pick1/data/chat/chat_repositories.dart';
 import 'package:pick1/data/chat/supabase_chat_repository.dart';
 import 'package:pick1/data/models/user.dart';
 import 'package:pick1/data/models/pick.dart';
+import 'package:pick1/data/models/league.dart';
 // NFL models import removed - LiveScore functionality removed
 import 'package:pick1/data/models/chat_message.dart';
 import 'package:pick1/core/services/deadline_service.dart';
@@ -354,6 +355,14 @@ final leaguePicksProvider = FutureProvider.family<List<Pick>, String>((
   leagueId,
 ) async {
   return await ref.read(picksRepositoryProvider).getLeaguePicks(leagueId);
+});
+
+// League provider for fetching individual league data
+final leagueProvider = FutureProvider.family<League, String>((
+  ref,
+  leagueId,
+) async {
+  return ref.read(leagueRepositoryProvider).getLeague(leagueId);
 });
 
 // Automated result processor provider

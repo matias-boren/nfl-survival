@@ -347,10 +347,14 @@ class MakePickScreen extends ConsumerWidget {
     final pickLockedAsync = ref.watch(pickLockedProvider(currentWeek));
     final isDeadlinePassed = pickLockedAsync.valueOrNull ?? true;
 
-    // Check if this team was already picked in previous weeks
+    // Check if this team was already picked in previous weeks (only if league doesn't allow reuse)
+    final leagueAsync = ref.watch(leagueProvider(leagueId));
+    final league = leagueAsync.valueOrNull;
+    final allowTeamReuse = league?.settings.allowTeamReuse ?? false;
+    
     final userPickedTeamsAsync = ref.watch(userPickedTeamIdsProvider(leagueId));
     final userPickedTeams = userPickedTeamsAsync.valueOrNull ?? <String>{};
-    final isAlreadyPicked = userPickedTeams.contains(teamId);
+    final isAlreadyPicked = !allowTeamReuse && userPickedTeams.contains(teamId);
 
     print(
       '_buildTeamSelection: teamId=$teamId, selectedTeamId=$selectedTeamId, isSelected=$isSelected, deadlinePassed=$isDeadlinePassed, alreadyPicked=$isAlreadyPicked',
@@ -364,7 +368,7 @@ class MakePickScreen extends ConsumerWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      '$teamId was already picked in a previous week!',
+                      '$teamId was already picked in a previous week! This league does not allow team reuse.',
                     ),
                     backgroundColor: Colors.red,
                   ),
