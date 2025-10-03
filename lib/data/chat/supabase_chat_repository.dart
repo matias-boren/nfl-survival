@@ -24,6 +24,20 @@ class SupabaseChatRepository implements ChatRepository {
     }).asyncMap((future) => future);
   }
 
+  @override
+  Future<List<ChatMessage>> getChatMessagesOnce(String leagueId) async {
+    print('📥 Fetching chat messages once for league: $leagueId');
+    
+    final response = await _supabase
+        .from('chat_messages')
+        .select()
+        .eq('league_id', leagueId)
+        .order('created_at', ascending: true);
+
+    print('📨 Fetched ${response.length} messages for league $leagueId');
+    return response.map((row) => _chatMessageFromSupabase(row)).toList();
+  }
+
   /// Get user's display name from user_profiles table
   Future<String> _getUserDisplayName(String userId) async {
     try {

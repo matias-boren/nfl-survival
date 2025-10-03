@@ -1,8 +1,11 @@
 import 'package:pick1/data/models/chat_message.dart';
 
 abstract class ChatRepository {
-  /// Get all chat messages for a league, ordered by creation time
+  /// Get all chat messages for a league, ordered by creation time (stream)
   Stream<List<ChatMessage>> getChatMessages(String leagueId);
+  
+  /// Get all chat messages for a league once (one-time fetch)
+  Future<List<ChatMessage>> getChatMessagesOnce(String leagueId);
 
   /// Send a new message to a league
   Future<void> sendMessage({

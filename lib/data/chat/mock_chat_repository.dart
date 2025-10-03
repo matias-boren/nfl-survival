@@ -22,6 +22,16 @@ class MockChatRepository implements ChatRepository {
   }
 
   @override
+  Future<List<ChatMessage>> getChatMessagesOnce(String leagueId) async {
+    if (!_messages.containsKey(leagueId)) {
+      _messages[leagueId] = [];
+      _addMockMessages(leagueId);
+    }
+    
+    return List.from(_messages[leagueId]!);
+  }
+
+  @override
   Future<void> sendMessage({
     required String leagueId,
     required String userId,

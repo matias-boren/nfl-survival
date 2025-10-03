@@ -257,13 +257,13 @@ final premiumToggleProvider = Provider<void Function()>((ref) {
   };
 });
 
-// Chat messages provider
-final leagueChatProvider = StreamProvider.family<List<ChatMessage>, String>((
+// Chat messages provider - now using FutureProvider for one-time fetch
+final leagueChatProvider = FutureProvider.family<List<ChatMessage>, String>((
   ref,
   leagueId,
 ) {
   final chatRepo = ref.read(chatRepositoryProvider);
-  return chatRepo.getChatMessages(leagueId);
+  return chatRepo.getChatMessagesOnce(leagueId);
 });
 
 // Provider for deadline status using NFL repository

@@ -18,6 +18,15 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
   final ScrollController _scrollController = ScrollController();
 
   @override
+  void initState() {
+    super.initState();
+    // Refresh chat messages when entering the screen
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.invalidate(leagueChatProvider(widget.leagueId));
+    });
+  }
+
+  @override
   void dispose() {
     _messageController.dispose();
     _scrollController.dispose();
@@ -66,38 +75,65 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
             child: chatAsync.when(
               data: (messages) {
                 if (messages.isEmpty) {
-                  return const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.chat_bubble_outline,
-                          size: 64,
-                          color: Color(0xFF76ABAE), // Our accent color
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      ref.invalidate(leagueChatProvider(widget.leagueId));
+                    },
+                    child: const SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      child: SizedBox(
+                        height: 400,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.chat_bubble_outline,
+                                size: 64,
+                                color: Color(0xFF76ABAE), // Our accent color
+                              ),
+                              SizedBox(height: 16),
+                              Text('No messages yet'),
+                              Text(
+                                'Start the conversation!',
+                                style: TextStyle(color: Color(0xFF76ABAE)), // Our accent color
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 16),
-                        Text('No messages yet'),
-                        Text(
-                          'Start the conversation!',
-                          style: TextStyle(color: Color(0xFF76ABAE)), // Our accent color
-                        ),
-                      ],
+                      ),
                     ),
                   );
                 }
 
-                return ListView.builder(
-                  controller: _scrollController,
-                  padding: const EdgeInsets.all(16),
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    final message = messages[index];
-                    return _buildMessageBubble(message);
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    ref.invalidate(leagueChatProvider(widget.leagueId));
                   },
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(16),
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      final message = messages[index];
+                      return _buildMessageBubble(message);
+                    },
+                  ),
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (e, st) => Center(child: Text('Error loading chat: $e')),
+              error: (e, st) => RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(leagueChatProvider(widget.leagueId));
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: SizedBox(
+                    height: 400,
+                    child: Center(child: Text('Error loading chat: $e')),
+                  ),
+                ),
+              ),
             ),
           ),
           Container(
@@ -264,6 +300,9 @@ class _LeagueChatScreenState extends ConsumerState<LeagueChatScreen> {
       );
 
       _messageController.clear();
+
+      // Refresh chat messages to show the new message
+      ref.invalidate(leagueChatProvider(widget.leagueId));
 
       // Scroll to bottom
       WidgetsBinding.instance.addPostFrameCallback((_) {
